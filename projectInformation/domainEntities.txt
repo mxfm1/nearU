@@ -1,0 +1,229 @@
+# Entidades del Dominio
+
+-------------------------------------------------------------------------------
+
+1. User
+
+Representa la cuenta de autenticación del sistema.
+
+Responsabilidades
+
+- Iniciar sesión.
+- Recuperar contraseña.
+- Administrar el perfil empresarial.
+
+Relaciones
+
+- Administra un único Profile.
+
+-------------------------------------------------------------------------------
+
+2. Profile (Entidad Principal)
+
+Representa una empresa registrada dentro de la plataforma.
+
+Es la entidad principal del dominio.
+
+Responsabilidades
+
+- Almacenar información institucional.
+- Publicar servicios.
+- Publicar eventos.
+- Gestionar solicitudes de contacto.
+
+Relaciones
+
+- Pertenece a un User.
+- Posee uno o más ProfileType.
+- Publica múltiples Services.
+- Publica múltiples Events.
+- Posee archivos multimedia institucionales.
+
+-------------------------------------------------------------------------------
+
+3. ProfileType
+
+Define el propósito principal del perfil.
+
+Ejemplos
+
+- Proveedor
+- Organizador
+- Ambos
+
+-------------------------------------------------------------------------------
+
+4. Service
+
+Representa un servicio ofrecido por una empresa.
+
+Es la unidad principal del marketplace.
+
+Responsabilidades
+
+- Publicar información comercial.
+- Mostrar experiencia.
+- Recibir solicitudes de contacto.
+
+Relaciones
+
+- Pertenece a un Profile.
+- Pertenece a una ServiceCategory.
+- Posee un Portfolio.
+- Posee archivos multimedia descriptivos.
+
+-------------------------------------------------------------------------------
+
+5. ServiceCategory
+
+Catálogo maestro que clasifica los servicios.
+
+Ejemplos
+
+- Producción
+- Streaming
+- Catering
+- Fotografía
+- Sonido
+
+-------------------------------------------------------------------------------
+
+6. ServicePortfolio
+
+Representa el portafolio de trabajos realizados para un servicio.
+
+Cada elemento del portafolio puede contener:
+
+- Título
+- Descripción
+- Fecha
+- Cliente (opcional)
+- Galería multimedia
+
+Su objetivo es demostrar experiencia y generar confianza.
+
+-------------------------------------------------------------------------------
+
+7. Event
+
+Representa un evento publicado por una empresa.
+
+Responsabilidades
+
+- Publicar información del evento.
+- Indicar las categorías de servicios requeridas.
+- Mostrar antecedentes del evento.
+
+Las categorías requeridas forman parte del propio evento y no constituyen una entidad independiente del dominio.
+
+Relaciones
+
+- Pertenece a un Profile.
+- Pertenece a una EventCategory.
+- Posee un Portfolio.
+- Posee archivos multimedia.
+
+-------------------------------------------------------------------------------
+
+8. EventCategory
+
+Catálogo maestro que clasifica los eventos.
+
+Ejemplos
+
+- Congreso
+- Feria
+- Seminario
+- Evento Corporativo
+
+-------------------------------------------------------------------------------
+
+9. EventPortfolio
+
+Representa la evidencia asociada a un evento.
+
+Puede contener
+
+- Fotografías de versiones anteriores.
+- Videos.
+- Planos.
+- Material promocional.
+- Archivos de apoyo.
+
+Su objetivo es entregar mayor contexto y confianza a los posibles proveedores interesados.
+
+-------------------------------------------------------------------------------
+
+10. ContactRequest
+
+Representa la solicitud inicial de contacto entre dos empresas.
+
+Almacena
+
+- Empresa remitente.
+- Empresa destinataria.
+- Mensaje.
+- Estado.
+- Fecha.
+- Servicio o evento relacionado.
+
+-------------------------------------------------------------------------------
+
+11. Media
+
+Representa un archivo multimedia almacenado por la plataforma.
+
+Contiene
+
+- Nombre
+- Ruta
+- Tipo MIME
+- Tamaño
+- Fecha de carga
+
+-------------------------------------------------------------------------------
+
+12. ProfileMedia
+
+Relaciona archivos multimedia con el perfil.
+
+Ejemplos
+
+- Logo
+- Banner
+- Imagen institucional
+
+-------------------------------------------------------------------------------
+
+13. ServiceMedia
+
+Relaciona archivos multimedia descriptivos con un servicio.
+
+Ejemplos
+
+- Imagen principal
+- Video promocional
+- PDF informativo
+
+-------------------------------------------------------------------------------
+
+14. ServicePortfolioMedia
+
+Relaciona archivos multimedia con un elemento del portafolio de un servicio.
+
+-------------------------------------------------------------------------------
+
+15. EventMedia
+
+Relaciona archivos multimedia descriptivos con un evento.
+
+Ejemplos
+
+- Imagen de portada
+- Banner
+- Documento informativo
+
+-------------------------------------------------------------------------------
+
+16. EventPortfolioMedia
+
