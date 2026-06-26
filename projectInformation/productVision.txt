@@ -1,0 +1,264 @@
+# Descripción del Producto
+
+## 1. Visión General
+
+La plataforma tiene como objetivo convertirse en un punto de encuentro especializado para empresas relacionadas con la industria de eventos en Chile, permitiendo que organizaciones puedan encontrar proveedores especializados, publicar requerimientos y establecer contactos comerciales dentro de un mismo ecosistema digital.
+
+A diferencia de una red social tradicional, el enfoque principal de la plataforma no es la generación de contenido, sino facilitar la conexión entre empresas que ofrecen servicios y aquellas que necesitan contratarlos para la organización de eventos corporativos, ferias, congresos, exposiciones y otras actividades del sector.
+
+El producto busca resolver la fragmentación actual del mercado, donde la búsqueda de proveedores suele realizarse mediante redes sociales, recomendaciones personales o directorios poco especializados.
+
+---
+
+# 2. Objetivo del MVP
+
+La primera versión de la plataforma estará orientada exclusivamente a validar la generación de contactos entre empresas.
+
+El MVP permitirá que una empresa pueda:
+
+* Crear un perfil empresarial.
+* Publicar los servicios que ofrece.
+* Publicar eventos o requerimientos donde necesita contratar proveedores.
+* Buscar servicios mediante categorías especializadas.
+* Visualizar la experiencia de otras empresas a través de casos de éxito.
+* Contactar otras empresas interesadas en colaborar.
+
+En esta etapa no se incorporarán funcionalidades propias de una red social, como publicaciones, seguidores o reacciones, priorizando un producto sencillo y enfocado en validar la interacción entre oferta y demanda.
+
+---
+
+# 3. Modelo de Negocio
+
+La plataforma adopta un enfoque similar al de marketplaces B2B como Fiverr o Upwork, pero especializado en la industria de eventos.
+
+En este modelo:
+
+* Las empresas publican los servicios que ofrecen.
+* Otras empresas publican eventos o requerimientos donde necesitan contratar proveedores.
+* La plataforma facilita el descubrimiento, el contacto y la futura colaboración entre ambas partes.
+
+El principal activo de la plataforma será la información estructurada sobre servicios especializados y empresas, permitiendo búsquedas precisas según las necesidades de cada proyecto.
+
+---
+
+# 4. Actores del Sistema
+
+El sistema considera un único tipo de usuario autenticado.
+
+Cada usuario administrará un único perfil empresarial.
+
+No existe una diferenciación técnica entre clientes y proveedores, ya que una misma empresa puede desempeñar ambos roles dependiendo del contexto.
+
+Por ejemplo:
+
+* Una productora puede ofrecer servicios audiovisuales.
+* Esa misma productora puede buscar una empresa de catering para un evento.
+* Un hotel puede ofrecer sus salones y, simultáneamente, contratar servicios de producción.
+
+Por esta razón, la plataforma modela organizaciones y sus capacidades, evitando clasificaciones rígidas entre proveedor y cliente.
+
+---
+
+# 5. Perfil Empresarial
+
+El perfil representa la organización dentro de la plataforma y constituye la entidad principal del dominio.
+
+Durante el registro, el usuario podrá indicar el propósito principal de su empresa dentro de la plataforma, pudiendo seleccionar una o más capacidades, como:
+
+* Ofrecer servicios.
+* Organizar eventos.
+* Ambas.
+
+El perfil almacenará información institucional, entre ella:
+
+* Nombre de la empresa.
+* Descripción.
+* Información de contacto.
+* Sitio web.
+* Redes sociales.
+* Región.
+* Logotipo.
+* Imagen de portada.
+
+A diferencia de una red social tradicional, el perfil no almacenará una galería general de trabajos, ya que la evidencia de la experiencia profesional estará asociada directamente a los servicios publicados.
+
+---
+
+# 6. Publicación de Servicios
+
+Los servicios representan la unidad principal de búsqueda dentro de la plataforma.
+
+Cada empresa podrá publicar múltiples servicios independientes, cada uno orientado a un área específica de especialización.
+
+Cada servicio incluirá información como:
+
+* Título.
+* Descripción.
+* Categoría.
+* Precio referencial (opcional).
+* Cobertura geográfica.
+* Galería multimedia.
+
+Cada servicio podrá además registrar **casos de éxito**, permitiendo demostrar la experiencia adquirida mediante proyectos previamente realizados.
+
+Cada caso de éxito incluirá información como:
+
+* Nombre del proyecto o evento.
+* Cliente (opcional).
+* Descripción.
+* Fecha de ejecución.
+* Galería de imágenes o archivos asociados.
+
+De esta forma, la experiencia profesional queda vinculada directamente al servicio correspondiente, facilitando que los potenciales clientes evalúen el trabajo realizado en un contexto específico.
+
+---
+
+# 7. Publicación de Eventos
+
+Las empresas también podrán publicar eventos o requerimientos cuando necesiten contratar proveedores.
+
+Cada publicación representará una oportunidad de colaboración dentro de la plataforma.
+
+La información considerada incluye:
+
+* Nombre del evento.
+* Descripción.
+* Categoría del evento.
+* Categorías de servicios requeridos.
+* Fecha estimada.
+* Región o ubicación.
+* Presupuesto referencial (opcional).
+* Archivos o imágenes de apoyo.
+
+Las categorías de servicios requeridos permitirán que proveedores especializados encuentren oportunidades acordes a su experiencia.
+
+---
+
+# 8. Sistema de Búsqueda
+
+El buscador constituye uno de los componentes principales del sistema.
+
+Las búsquedas estarán centradas principalmente en los servicios publicados y no únicamente en las empresas.
+
+Los usuarios podrán filtrar utilizando criterios como:
+
+* Categoría del servicio.
+* Tipo de evento.
+* Región.
+* Nombre de la empresa.
+* Palabras clave.
+
+Una vez encontrado un servicio, el usuario podrá acceder al perfil de la empresa y revisar su información institucional, los casos de éxito asociados y la experiencia demostrada antes de establecer contacto.
+
+---
+
+# 9. Comunicación entre Empresas
+
+Con el objetivo de mantener una implementación sencilla durante el MVP, la plataforma utilizará un sistema de solicitudes de contacto.
+
+Cuando una empresa encuentre un servicio o un evento de interés, podrá completar un formulario de contacto enviando un mensaje inicial al propietario de la publicación.
+
+Cada solicitud almacenará información como:
+
+* Empresa remitente.
+* Empresa destinataria.
+* Servicio o evento asociado (cuando corresponda).
+* Mensaje enviado.
+* Fecha de creación.
+* Estado de la solicitud.
+
+Inicialmente, el sistema no incorporará mensajería en tiempo real.
+
+Esta decisión reduce significativamente la complejidad técnica del MVP y permite incorporar posteriormente un sistema de conversaciones sin modificar el modelo principal del dominio.
+
+---
+
+# 10. Gestión Multimedia
+
+La plataforma permitirá asociar archivos multimedia a diferentes entidades del sistema.
+
+Para ello se utilizará una entidad central encargada del almacenamiento de la información de los archivos (nombre, ruta, tipo, tamaño, entre otros), mientras que cada módulo que requiera contenido multimedia dispondrá de su propia tabla de asociación.
+
+Inicialmente se contemplan asociaciones para:
+
+* Perfil empresarial.
+* Servicios.
+* Eventos.
+* Casos de éxito de los servicios.
+
+Este enfoque mantiene la integridad referencial mediante claves foráneas, facilita la reutilización del almacenamiento y permite evolucionar hacia un modelo más genérico si el crecimiento de la plataforma así lo requiere.
+
+---
+
+# 11. Categorización
+
+La plataforma utilizará catálogos independientes para clasificar la información.
+
+## Categorías de Servicios
+
+Representan las especialidades que una empresa ofrece.
+
+Ejemplos:
+
+* Producción de eventos.
+* Streaming.
+* Catering.
+* Fotografía.
+* Iluminación.
+* Sonido.
+* Decoración.
+* Seguridad.
+
+## Categorías de Eventos
+
+Representan el tipo de evento publicado.
+
+Ejemplos:
+
+* Congreso.
+* Seminario.
+* Feria.
+* Exposición.
+* Lanzamiento.
+* Evento corporativo.
+* Activación de marca.
+
+La separación entre ambas categorías evita mezclar conceptos pertenecientes a dominios diferentes y facilita futuras ampliaciones.
+
+---
+
+# 12. Principios Arquitectónicos
+
+El diseño del MVP se basa en los siguientes principios:
+
+* Un usuario administra un único perfil empresarial.
+* El perfil representa a la organización y centraliza toda la información institucional.
+* Una empresa puede ofrecer servicios y organizar eventos simultáneamente.
+* Los servicios constituyen el principal elemento de búsqueda dentro del marketplace.
+* La experiencia profesional se representa mediante casos de éxito asociados a cada servicio.
+* Los eventos representan oportunidades para establecer colaboraciones.
+* La comunicación inicial se realiza mediante solicitudes de contacto.
+* La gestión multimedia se encuentra desacoplada mediante una entidad reutilizable y tablas de asociación específicas.
+* La arquitectura prioriza simplicidad, normalización y facilidad de evolución.
+
+---
+
+# 13. Escalabilidad
+
+Aunque el MVP tendrá un alcance acotado, el diseño permitirá incorporar futuras funcionalidades sin modificar la estructura principal del dominio.
+
+Entre las posibles evoluciones se consideran:
+
+* Conversaciones entre empresas.
+* Sistema de reseñas y reputación.
+* Solicitudes de cotización.
+* Comparación de proveedores.
+* Agenda de eventos.
+* Marketplace de productos.
+* Pagos integrados.
+* Suscripciones premium.
+* Estadísticas para empresas.
+* Administración de múltiples usuarios por empresa.
+
+La separación de responsabilidades entre perfiles, servicios, eventos, casos de éxito y contenido multimedia permitirá incorporar estas funcionalidades de manera incremental, manteniendo un modelo de datos consistente y escalable.
+
