@@ -29,7 +29,7 @@ export function SearchFilters({
   onFilterChange,
 }: SearchFiltersProps) {
   const categoryType = type === 'eventos' ? 'event' : 'service'
-  const showDateFilter = type !== 'proveedores'
+  const showDateFilter = type === 'eventos'
   const hasActiveFilters = category || region || dateFrom || dateTo
 
   return (

@@ -99,7 +99,7 @@ export function HorizontalSearchBar({
 
   const categoryType = localType === 'eventos' ? 'event' : 'service'
   const categories = categoryType === 'service' ? serviceCategories : eventCategories
-  const showDateFilter = localType !== 'proveedores'
+  const showDateFilter = localType === 'eventos'
   const hasActiveFilters = !!(localCategory || localRegion || localDateFrom || localDateTo)
   const dateLabel = formatDateRange(localDateFrom, localDateTo)
 
@@ -216,7 +216,11 @@ export function HorizontalSearchBar({
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!query.trim()) return
+
+    if (!query.trim() && !localType && !localCategory && !localRegion && !localDateFrom && !localDateTo) {
+      router.push('/search')
+      return
+    }
 
     if (isCallbackMode) {
       if (onSearch) onSearch(query.trim())
@@ -335,11 +339,7 @@ export function HorizontalSearchBar({
 
       <button
         type="submit"
-        disabled={!query.trim()}
-        className={cn(
-          'bg-primary text-primary-foreground rounded-md px-7 py-2.5 text-sm font-semibold whitespace-nowrap hover:bg-primary/90 transition-colors',
-          !query.trim() && 'opacity-50 pointer-events-none',
-        )}
+        className="bg-primary text-primary-foreground rounded-md px-7 py-2.5 text-sm font-semibold whitespace-nowrap hover:bg-primary/90 transition-colors"
       >
         Buscar
       </button>
@@ -374,11 +374,7 @@ export function HorizontalSearchBar({
         </button>
         <button
           type="submit"
-          disabled={!query.trim()}
-          className={cn(
-            'bg-primary text-primary-foreground rounded-md px-7 py-2.5 text-sm font-semibold whitespace-nowrap hover:bg-primary/90 transition-colors',
-            !query.trim() && 'opacity-50 pointer-events-none',
-          )}
+          className="bg-primary text-primary-foreground rounded-md px-7 py-2.5 text-sm font-semibold whitespace-nowrap hover:bg-primary/90 transition-colors"
         >
           Buscar
         </button>

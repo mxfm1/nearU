@@ -13,6 +13,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import type { MockContactInfo } from '@/lib/service-mock-data'
+import ApplyFormSection from './apply-form-section'
 
 interface ContactSectionProps {
   contactInformation: MockContactInfo[]
@@ -92,9 +93,11 @@ export function ContactSection({
           })}
         </div>
 
-        <Button className="w-full mt-6 hover:cursor-pointer" size="lg">
-          Solicitar cotización
-        </Button>
+        <ApplyFormSection>
+          <Button className="w-full mt-6 hover:cursor-pointer" size="lg">
+            Solicitar cotización
+          </Button>
+        </ApplyFormSection>
       </div>
     </motion.aside>
   )

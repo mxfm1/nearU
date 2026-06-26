@@ -23,10 +23,10 @@ export function SearchPageContent() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="px-4 pt-28 pb-12 md:pt-36 md:pb-16">
+      <section className="px-4 pb-12 pt-8 md:pt-10 md:pb-16">
         <div className="max-w-[1200px] mx-auto">
           <h1 className="text-[40px] font-semibold leading-[1.2] text-foreground mb-4">
-            {q ? `Resultados para "${q}"` : 'Buscar'}
+            {q ? `Resultados para "${q}"` : 'Encuentra a tu compañero de negocios'}
           </h1>
 
           <HorizontalSearchBar />

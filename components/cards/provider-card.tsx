@@ -25,18 +25,18 @@ export function ProviderCard({
 }: ProviderCardProps) {
   return (
     <Link
-      href={`/proveedores/${slug}`}
+      href={`/servicios/${slug}`}
       className={cn(
-        'group block w-[300px] bg-card rounded-lg overflow-hidden',
+        'group block w-[300px] bg-card rounded-md overflow-hidden',
         'shadow-sm hover:shadow-md transition-shadow duration-300',
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+      <div className="relative aspect-video overflow-hidden bg-muted">
         <Image
           src={thumbnail}
           alt={name}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover group-hover:scale-105 transition-transform duration-500 aspect-[16/9]"
           sizes="300px"
         />
       </div>

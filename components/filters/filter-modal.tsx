@@ -48,7 +48,7 @@ export function FilterModal({
   onApply,
 }: FilterModalProps) {
   const categoryType = type === 'eventos' ? 'event' : 'service'
-  const showDateFilter = type !== 'proveedores'
+  const showDateFilter = type === 'eventos'
 
   function handleTypeClick(value: string) {
     onTypeChange(value)

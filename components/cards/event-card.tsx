@@ -26,11 +26,11 @@ export function EventCard({
     <Link
       href={`/eventos/${slug}`}
       className={cn(
-        'group block w-[300px] bg-card rounded-lg overflow-hidden',
+        'group block w-[300px] bg-card rounded-md overflow-hidden',
         'shadow-sm hover:shadow-md transition-shadow duration-300',
       )}
     >
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+      <div className="relative aspect-video overflow-hidden bg-muted max-h-56">
         <Image
           src={thumbnail}
           alt={title}
