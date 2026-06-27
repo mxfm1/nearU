@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/use-auth'
 import { authClient } from '@/lib/auth-client'
@@ -14,25 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { SearchBar } from '@/components/search-bar'
 import { Plus, LogOut, User, Mail } from 'lucide-react'
+import { NotificationDropdown } from './notification-dropdown'
 
 export function NavbarActions() {
   const { user, isPending } = useAuth()
-  const router = useRouter()
-
-  function handleSearch(query: string) {
-    if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
-    }
-  }
 
   return (
     <>
-      <SearchBar onSearch={handleSearch} className="max-w-md" />
-      <div className="flex-1" />
-
-      {!isPending && !user && (
+      {!isPending && user && (
         <Button variant="default" asChild>
           <Link href="/crear">
             <Plus className="h-4 w-4" />
@@ -43,12 +32,8 @@ export function NavbarActions() {
 
       {!isPending && user ? (
         <>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/inbox" aria-label="Bandeja de entrada">
-              <Mail className="h-5 w-5" />
-            </Link>
-          </Button>
-          <DropdownMenu>
+          <NotificationDropdown />
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
@@ -61,20 +46,26 @@ export function NavbarActions() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user?.name ?? 'Usuario'}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
+              <DropdownMenuItem asChild className='hover:cursor-pointer'>
+                <Link href="/user/perfil">
                   <User className="mr-2 h-4 w-4" />
                   Perfil
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/inbox">
+              <DropdownMenuItem asChild className='hover:cursor-pointer'>
+                <Link href="/user/inbox">
                   <Mail className="mr-2 h-4 w-4" />
                   Bandeja de entrada
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild className='hover:cursor-pointer'>
+                <Link href="/user/servicios">
+                  <User className="mr-2 h-4 w-4" />
+                  Mis publicaciones
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => authClient.signOut()}>
+              <DropdownMenuItem className='hover:cursor-pointer bg-red-500 hover:bg-red-500/80! text-white hover:text-white' onClick={() => authClient.signOut()}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Cerrar Sesión
               </DropdownMenuItem>

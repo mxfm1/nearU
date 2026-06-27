@@ -7,7 +7,7 @@ import { Search, SlidersHorizontal } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
-import { FilterModal } from '@/components/filters/filter-modal'
+import { FilterModal } from './filters/filter-modal'
 
 interface HorizontalSearchBarProps {
   onSearch?: (query: string) => void

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { SearchPageContent } from '@/components/search/search-page-content'
-import { SearchSkeleton } from '@/components/search/search-skeleton'
+import { SearchPageContent } from './_components/search-page-content'
+import { SearchSkeleton } from './_components/search-skeleton'
 
 export default function SearchPage() {
   return (

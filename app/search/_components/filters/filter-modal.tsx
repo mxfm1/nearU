@@ -10,9 +10,9 @@ import {
   DialogTitle,
   DialogClose,
 } from '@/components/ui/dialog'
-import { CategoryFilter } from '@/components/filters/category-filter'
-import { RegionFilter } from '@/components/filters/region-filter'
-import { DateFilter } from '@/components/filters/date-filter'
+import { CategoryFilter } from './category-filter'
+import { RegionFilter } from './region-filter'
+import { DateFilter } from './date-filter'
 
 interface FilterModalProps {
   open: boolean
