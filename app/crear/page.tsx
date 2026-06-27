@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { CrearPageContent } from '@/components/crear/crear-page-content'
-import { CrearSkeleton } from '@/components/crear/crear-skeleton'
+import { CrearPageContent } from './_components/crear-page-content'
+import { CrearSkeleton } from './_components/crear-skeleton'
 
 export default function CrearPage() {
   return (

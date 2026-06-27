@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { CrearEventoContent } from '@/components/crear/crear-evento-content'
-import { EventoSkeleton } from '@/components/crear/evento-skeleton'
+import { CrearEventoContent } from '../_components/crear-evento-content'
+import { EventoSkeleton } from '../_components/evento-skeleton'
 
 export default function CrearEventoPage() {
   return (

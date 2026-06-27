@@ -165,3 +165,15 @@ export interface EventPortfolioMedia {
   mediaId: string
   media: Media
 }
+
+export interface Notification {
+  id: string
+  userId: string
+  type: string
+  title: string
+  message: string | null
+  read: boolean
+  link: string | null
+  createdAt: string
+  updatedAt: string
+}

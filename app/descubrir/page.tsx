@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { HorizontalScroll } from '@/components/cards/horizontal-scroll'
 import { ProviderCard } from '@/components/cards/provider-card'
 import { EventCard } from '@/components/cards/event-card'
-import { HorizontalSearchBar } from '@/components/search/horizontal-search-bar'
+import { HorizontalSearchBar } from '@/app/search/_components/horizontal-search-bar'
 import { mockProviders, mockEvents } from '@/components/cards/mock-data'
 
 export default function DescubrirPage() {

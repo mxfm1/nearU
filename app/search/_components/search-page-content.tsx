@@ -1,11 +1,11 @@
 'use client'
 
 import { useSearch } from '@/hooks/use-search'
-import { HorizontalSearchBar } from '@/components/search/horizontal-search-bar'
-import { SearchSkeleton } from '@/components/search/search-skeleton'
-import { SearchResults } from '@/components/search/search-results'
-import { PaginationBar } from '@/components/search/pagination-bar'
-import { SearchEmptyState } from '@/components/search/search-empty-state'
+import { HorizontalSearchBar } from './horizontal-search-bar'
+import { SearchSkeleton } from './search-skeleton'
+import { SearchResults } from './search-results'
+import { PaginationBar } from './pagination-bar'
+import { SearchEmptyState } from './search-empty-state'
 
 export function SearchPageContent() {
   const {
