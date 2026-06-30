@@ -1,37 +1,38 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import {
-  mockProviders,
-  mockEvents,
-  type MockProvider,
-  type MockEvent,
-} from '@/components/cards/mock-data'
-import { normalize, parseEventDate } from '@/lib/normalize'
+import { useQuery } from '@tanstack/react-query'
+import { serviciosApi, type ServicioResumen } from '@/lib/servicios-api'
+import { eventosApi, type EventoResumen } from '@/lib/eventos-api'
+import { normalize } from '@/lib/normalize'
 import { REGION_ALIASES } from '@/lib/region-aliases'
 
 const PAGINATION_SIZE = 6
 
 function filterProviders(
-  providers: MockProvider[],
+  providers: ServicioResumen[],
   q: string,
   category: string,
   region: string,
-): MockProvider[] {
+): ServicioResumen[] {
   return providers.filter((p) => {
-    if (q && !normalize(p.name).includes(normalize(q)) && !normalize(p.category).includes(normalize(q))) {
+    const name = normalize(p.marca)
+    const catName = normalize(p.category?.name ?? '')
+    const locName = normalize(p.location?.name ?? '')
+    const query = normalize(q)
+
+    if (q && !name.includes(query) && !catName.includes(query)) {
       return false
     }
-    if (category && !normalize(p.category).includes(normalize(category))) {
+    if (category && !catName.includes(normalize(category))) {
       return false
     }
     if (region) {
-      const location = normalize(p.location)
       const regionNorm = normalize(region)
-      if (!location.includes(regionNorm)) {
-        const regionAliases = REGION_ALIASES[regionNorm]
-        if (!regionAliases || !regionAliases.some((a) => location.includes(a))) {
+      if (!locName.includes(regionNorm)) {
+        const aliases = REGION_ALIASES[regionNorm]
+        if (!aliases || !aliases.some((a) => locName.includes(a))) {
           return false
         }
       }
@@ -40,23 +41,33 @@ function filterProviders(
   })
 }
 
+function parseISO(dateStr: string): Date | null {
+  const d = new Date(dateStr)
+  return isNaN(d.getTime()) ? null : d
+}
+
 function filterEvents(
-  events: MockEvent[],
+  events: EventoResumen[],
   q: string,
   category: string,
   region: string,
   dateFrom: string,
   dateTo: string,
-): MockEvent[] {
+): EventoResumen[] {
   return events.filter((e) => {
-    if (q && !normalize(e.title).includes(normalize(q)) && !normalize(e.description).includes(normalize(q))) {
+    const title = normalize(e.title)
+    const description = normalize(e.description ?? '')
+    const query = normalize(q)
+    const catNorm = normalize(category)
+
+    if (q && !title.includes(query) && !description.includes(query)) {
       return false
     }
-    if (category && !normalize(e.title).includes(normalize(category)) && !normalize(e.description).includes(normalize(category))) {
+    if (category && !title.includes(catNorm) && !description.includes(catNorm)) {
       return false
     }
     if (region) {
-      const location = normalize(e.location)
+      const location = normalize(e.location?.name ?? '')
       const regionNorm = normalize(region)
       if (!location.includes(regionNorm)) {
         const regionAliases = REGION_ALIASES[regionNorm]
@@ -66,7 +77,7 @@ function filterEvents(
       }
     }
     if (dateFrom || dateTo) {
-      const eventDate = parseEventDate(e.date)
+      const eventDate = parseISO(e.startAt)
       if (eventDate) {
         if (dateFrom) {
           const fromDate = new Date(dateFrom)
@@ -95,17 +106,32 @@ export function useSearch() {
   const dateTo = searchParams.get('dateTo') || ''
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10))
 
-  const [isLoading, setIsLoading] = useState(true)
+  // ── Queries ──
 
-  useEffect(() => {
-    setIsLoading(true)
-    const timer = setTimeout(() => setIsLoading(false), 200)
-    return () => clearTimeout(timer)
-  }, [q, category, region, type, dateFrom, dateTo, page])
+  const {
+    data: serviciosRes,
+    isLoading: serviciosLoading,
+    isError: serviciosError,
+  } = useQuery({
+    queryKey: ['servicios'],
+    queryFn: () => serviciosApi.list(),
+  })
 
-  useEffect(() => {
-    setIsLoading(false)
-  }, [])
+  const {
+    data: eventosRes,
+    isLoading: eventosLoading,
+    isError: eventosError,
+  } = useQuery({
+    queryKey: ['eventos'],
+    queryFn: () => eventosApi.list(),
+  })
+
+  const servicios = serviciosRes?.data ?? []
+  const eventos = eventosRes?.data ?? []
+  const isLoading = serviciosLoading || eventosLoading
+  const isError = serviciosError || eventosError
+
+  // ── URL helpers ──
 
   const updateParams = useCallback(
     (updates: Record<string, string>) => {
@@ -137,23 +163,25 @@ export function useSearch() {
     [updateParams],
   )
 
+  // ── Filtering ──
+
   const showProviders = !type || type === 'proveedores'
   const showEvents = !type || type === 'eventos'
 
   const filteredProviders = useMemo(
-    () => (showProviders ? filterProviders(mockProviders, q, category, region) : []),
-    [q, category, region, showProviders],
+    () => (showProviders ? filterProviders(servicios, q, category, region) : []),
+    [servicios, q, category, region, showProviders],
   )
 
   const filteredEvents = useMemo(
-    () => (showEvents ? filterEvents(mockEvents, q, category, region, dateFrom, dateTo) : []),
-    [q, category, region, dateFrom, dateTo, showEvents],
+    () => (showEvents ? filterEvents(eventos, q, category, region, dateFrom, dateTo) : []),
+    [eventos, q, category, region, dateFrom, dateTo, showEvents],
   )
 
   const results = useMemo(() => {
     const combined: Array<
-      | { type: 'provider'; data: MockProvider }
-      | { type: 'event'; data: MockEvent }
+      | { type: 'provider'; data: ServicioResumen }
+      | { type: 'event'; data: EventoResumen }
     > = []
     if (showProviders) {
       filteredProviders.forEach((p) => combined.push({ type: 'provider', data: p }))
@@ -181,6 +209,7 @@ export function useSearch() {
     dateFrom,
     dateTo,
     isLoading,
+    isError,
     results,
     totalPages,
     currentPage,

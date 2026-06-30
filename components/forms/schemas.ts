@@ -16,7 +16,6 @@ export const ApplySchema = z.object({
 
 // Guardar fecha de cuando se realizo la solicitud
 
-
 export type ApplyFormValues = z.infer<typeof ApplySchema>
 
 
@@ -42,37 +41,53 @@ export const CrearEventoSchema = z.object({
 export type CrearEventoFormValues = z.infer<typeof CrearEventoSchema>
 
 
-// Crear Servicio Schema
+// Contact info item
+const ContactInfoItemSchema = z.object({
+    type: z.enum(['email', 'telefono', 'whatsapp', 'website', 'instagram', 'facebook', 'twitter']),
+    value: z.string().min(1, 'El valor es requerido'),
+})
+
+// Crear Servicio Schema (alineado con API)
 export const CrearServicioSchema = z.object({
-    serviceTitle: z
-        .string({ message: "You must enter a service title" })
-        .min(2, { message: "Service title must be at least 2 characters" })
-        .max(200, { message: "Service title cannot exceed 200 characters" }),
-    brandName: z
-        .string({ message: "You must enter a brand name" })
-        .min(2, { message: "Brand name must be at least 2 characters" })
-        .max(100, { message: "Brand name cannot exceed 100 characters" }),
-    specialty: z.string({ message: "You must select a specialty" }).min(1, { message: "Specialty is required" }),
+    title: z
+        .string({ message: 'Debes ingresar un título' })
+        .min(2, 'El título debe tener al menos 2 caracteres')
+        .max(200, 'El título no puede superar los 200 caracteres'),
+    slug: z.string().optional().or(z.literal('')),
+    marca: z
+        .string()
+        .max(200, 'La marca no puede superar los 200 caracteres')
+        .optional()
+        .or(z.literal('')),
+    description: z
+        .string()
+        .max(5000, 'La descripción no puede superar los 5000 caracteres')
+        .optional()
+        .or(z.literal('')),
     yearsExperience: z
-        .string({ message: "You must enter years of experience" })
-        .min(1, { message: "Years of experience is required" }),
-    coverage: z
-        .string({ message: "You must enter coverage area" })
-        .min(2, { message: "Coverage area must be at least 2 characters" })
-        .max(200, { message: "Coverage area cannot exceed 200 characters" }),
-    serviceDescription: z
-        .string({ message: "You must enter a description" })
-        .min(20, { message: "Description must be at least 20 characters" })
-        .max(5000, { message: "Description cannot exceed 5000 characters" }),
-    portfolioImages: z.array(z.string()).optional(),
-    pricingRange: z.string().optional(),
-    availability: z.string().optional(),
-    professionalEmail: z
-        .string({ message: "You must enter a valid email" })
-        .email({ message: "Invalid email address" }),
-    businessPhone: z.string().optional(),
-    website: z.string().optional(),
-    socialMediaLinks: z.string().optional(),
+        .string()
+        .optional()
+        .or(z.literal('')),
+    priceMin: z
+        .string()
+        .optional()
+        .or(z.literal('')),
+    priceMax: z
+        .string()
+        .optional()
+        .or(z.literal('')),
+    availability: z
+        .string()
+        .max(500, 'La disponibilidad no puede superar los 500 caracteres')
+        .optional()
+        .or(z.literal('')),
+    contactInfo: z.array(ContactInfoItemSchema).optional().default([]),
+    categoryId: z.string().optional().or(z.literal('')),
+    locationId: z.string().optional().or(z.literal('')),
+    bannerUrl: z.string().optional().or(z.literal('')),
+    thumbnailUrl: z.string().optional().or(z.literal('')),
+    serviceImages: z.array(z.string()).optional().default([]),
+    serviceStatus: z.enum(['draft', 'published']).default('draft'),
 })
 
 export type CrearServicioFormValues = z.infer<typeof CrearServicioSchema>

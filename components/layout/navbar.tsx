@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Suspense } from 'react'
 import { TypeaheadSearch } from '@/components/typeahead-search'
 import { NavbarActions } from './navbar-actions'
+import { NavbarLinks } from './navbar-links'
 
 export function Navbar() {
   return (
@@ -13,12 +14,7 @@ export function Navbar() {
             NearU
           </Link>
         </div>
-        <Link
-          href="/descubrir"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          Descubrir
-        </Link>
+        <NavbarLinks />
       </div>
 
       {/* Middle: 2/3 — search */}

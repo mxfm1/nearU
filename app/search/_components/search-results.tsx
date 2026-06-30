@@ -1,16 +1,27 @@
 'use client'
 
-import type { MockProvider, MockEvent } from '@/components/cards/mock-data'
+import type { ServicioResumen } from '@/lib/servicios-api'
+import type { EventoResumen } from '@/lib/eventos-api'
 import { ProviderCard } from '@/components/cards/provider-card'
 import { EventCard } from '@/components/cards/event-card'
 
 interface SearchResultsProps {
   results: Array<
-    | { type: 'provider'; data: MockProvider }
-    | { type: 'event'; data: MockEvent }
+    | { type: 'provider'; data: ServicioResumen }
+    | { type: 'event'; data: EventoResumen }
   >
   totalCount: number
   hasFilters: boolean
+}
+
+function formatEventDate(iso: string): string {
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return iso
+  return d.toLocaleDateString('es-CL', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
 }
 
 export function SearchResults({
@@ -30,22 +41,22 @@ export function SearchResults({
         {results.map((item) =>
           item.type === 'provider' ? (
             <ProviderCard
-              key={item.data.slug}
-              name={item.data.name}
-              category={item.data.category}
-              verified={item.data.verified}
-              location={item.data.location}
-              thumbnail={item.data.thumbnail}
+              key={item.data.id}
+              name={item.data.marca}
+              category={item.data.category?.name ?? 'Sin categoría'}
+              verified={false}
+              location={item.data.location?.name ?? 'Ubicación no disponible'}
+              thumbnail={item.data.thumbnailUrl ?? 'https://placehold.co/400x300?text=Sin+imagen'}
               slug={item.data.slug}
             />
           ) : (
             <EventCard
-              key={item.data.slug}
+              key={item.data.id}
               title={item.data.title}
               description={item.data.description}
-              date={item.data.date}
-              location={item.data.location}
-              thumbnail={item.data.thumbnail}
+              date={formatEventDate(item.data.startAt)}
+              location={item.data.location?.name ?? 'Ubicación no disponible'}
+              thumbnail={item.data.thumbnailUrl ?? 'https://placehold.co/400x250?text=Sin+imagen'}
               slug={item.data.slug}
             />
           ),
