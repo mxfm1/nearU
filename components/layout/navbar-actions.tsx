@@ -1,9 +1,8 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/use-auth'
-import { authClient } from '@/lib/auth-client'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -14,25 +13,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { SearchBar } from '@/components/search-bar'
 import { Plus, LogOut, User, Mail } from 'lucide-react'
+import { NotificationDropdown } from './notification-dropdown'
+import { LoginDialog } from '@/app/(auth)/auth/login/_components/login-dialog'
 
 export function NavbarActions() {
-  const { user, isPending } = useAuth()
+  const { user, loading, logout } = useAuth()
   const router = useRouter()
-
-  function handleSearch(query: string) {
-    if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
-    }
-  }
 
   return (
     <>
-      <SearchBar onSearch={handleSearch} className="max-w-md" />
-      <div className="flex-1" />
-
-      {!isPending && !user && (
+      {!loading && user && (
         <Button variant="default" asChild>
           <Link href="/crear">
             <Plus className="h-4 w-4" />
@@ -41,14 +32,10 @@ export function NavbarActions() {
         </Button>
       )}
 
-      {!isPending && user ? (
+      {!loading && user ? (
         <>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/inbox" aria-label="Bandeja de entrada">
-              <Mail className="h-5 w-5" />
-            </Link>
-          </Button>
-          <DropdownMenu>
+          <NotificationDropdown />
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
@@ -61,33 +48,42 @@ export function NavbarActions() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{user?.name ?? 'Usuario'}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/profile">
+              <DropdownMenuItem asChild className='hover:cursor-pointer'>
+                <Link href="/user/perfil">
                   <User className="mr-2 h-4 w-4" />
                   Perfil
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/inbox">
+              <DropdownMenuItem asChild className='hover:cursor-pointer'>
+                <Link href="/user/inbox">
                   <Mail className="mr-2 h-4 w-4" />
                   Bandeja de entrada
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild className='hover:cursor-pointer'>
+                <Link href="/user/servicios">
+                  <User className="mr-2 h-4 w-4" />
+                  Mis publicaciones
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => authClient.signOut()}>
+              <DropdownMenuItem className='hover:cursor-pointer bg-red-500 hover:bg-red-500/80! text-white hover:text-white' onClick={() => { logout(); router.push('/') }}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Cerrar Sesión
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </>
-      ) : !isPending ? (
+      ) : !loading ? (
         <>
-          <Button variant="ghost" asChild>
-            <Link href="/login">Iniciar Sesión</Link>
-          </Button>
+          <LoginDialog
+          >
+            <LoginDialog>
+              <Button variant="ghost">Iniciar Sesión</Button>
+            </LoginDialog>
+          </LoginDialog>
           <Button variant="default" asChild>
-            <Link href="/register">Registrarse</Link>
+            <Link href="/auth/register">Registrarse</Link>
           </Button>
         </>
       ) : null}

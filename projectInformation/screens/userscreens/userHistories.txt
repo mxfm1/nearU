@@ -1,0 +1,427 @@
+# Casos de Uso del Sistema
+
+## Módulo AUTH (Autenticación)
+
+---
+
+### AUTH-UH-001 — Registro de Usuario
+
+**Actor:** Usuario
+
+**Descripción**
+
+El usuario requiere registrarse en la plataforma para acceder a las funcionalidades disponibles.
+
+**Precondiciones**
+
+* No poseer una cuenta registrada.
+
+**Resultado esperado**
+
+* Se crea una nueva cuenta de usuario.
+
+---
+
+### AUTH-UH-002 — Inicio de Sesión
+
+**Actor:** Usuario
+
+**Descripción**
+
+El usuario requiere autenticarse utilizando sus credenciales para acceder a su perfil empresarial.
+
+---
+
+### AUTH-UH-003 — Recuperar Contraseña
+
+**Actor:** Usuario
+
+**Descripción**
+
+El usuario solicita restablecer su contraseña mediante correo electrónico.
+
+---
+
+### AUTH-UH-004 — Cerrar Sesión
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite finalizar la sesión activa del usuario.
+
+---
+
+# Módulo PROFILE (Perfil Empresarial)
+
+---
+
+### PROFILE-UH-001 — Crear Perfil Empresarial
+
+**Actor:** Usuario
+
+**Descripción**
+
+El usuario crea el perfil de su empresa indicando información institucional y el propósito principal dentro de la plataforma.
+
+---
+
+### PROFILE-UH-002 — Editar Perfil Empresarial
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite actualizar la información pública del perfil empresarial.
+
+---
+
+### PROFILE-UH-003 — Visualizar Perfil Empresarial
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite consultar la información pública de un perfil empresarial.
+
+---
+
+### PROFILE-UH-004 — Administrar Multimedia del Perfil
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite agregar, actualizar o eliminar el logotipo, imagen de portada y demás recursos institucionales del perfil.
+
+---
+
+### PROFILE-UH-005 — Configurar Tipo de Perfil
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite indicar si la empresa ofrece servicios, organiza eventos o realiza ambas actividades.
+
+---
+
+# Módulo SERVICE (Servicios)
+
+---
+
+### SERVICE-UH-001 — Publicar Servicio
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite registrar un nuevo servicio que será visible dentro del marketplace.
+
+---
+
+### SERVICE-UH-002 — Editar Servicio
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite modificar la información de un servicio publicado.
+
+---
+
+### SERVICE-UH-003 — Eliminar Servicio
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite desactivar o eliminar un servicio publicado.
+
+---
+
+### SERVICE-UH-004 — Visualizar Servicio
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite consultar el detalle completo de un servicio.
+
+---
+
+### SERVICE-UH-005 — Administrar Galería del Servicio
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite agregar, actualizar o eliminar imágenes asociadas al servicio.
+
+---
+
+### SERVICE-UH-006 — Registrar Caso de Éxito
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite asociar un proyecto realizado a un servicio determinado.
+
+---
+
+### SERVICE-UH-007 — Editar Caso de Éxito
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite actualizar la información de un caso de éxito.
+
+---
+
+### SERVICE-UH-008 — Eliminar Caso de Éxito
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite eliminar un caso de éxito previamente registrado.
+
+---
+
+### SERVICE-UH-009 — Administrar Multimedia del Caso de Éxito
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite administrar la galería multimedia asociada a un caso de éxito.
+
+---
+
+# Módulo EVENT (Eventos)
+
+---
+
+### EVENT-UH-001 — Publicar Evento
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite registrar un nuevo evento o requerimiento de contratación.
+
+---
+
+### EVENT-UH-002 — Editar Evento
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite modificar la información del evento.
+
+---
+
+### EVENT-UH-003 — Eliminar Evento
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite eliminar un evento publicado.
+
+---
+
+### EVENT-UH-004 — Visualizar Evento
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite consultar el detalle completo del evento.
+
+---
+
+### EVENT-UH-005 — Asociar Categorías de Servicios Requeridos
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite indicar las categorías de servicios requeridas para el evento.
+
+---
+
+### EVENT-UH-006 — Administrar Multimedia del Evento
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite administrar la galería multimedia asociada al evento.
+
+---
+
+# Módulo MARKETPLACE
+
+---
+
+### MARKET-UH-001 — Buscar Servicios
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite buscar servicios publicados mediante palabras clave.
+
+---
+
+### MARKET-UH-002 — Filtrar Servicios
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite aplicar filtros como categoría, región o empresa.
+
+---
+
+### MARKET-UH-003 — Buscar Eventos
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite consultar eventos publicados por otras empresas.
+
+---
+
+### MARKET-UH-004 — Filtrar Eventos
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite aplicar filtros según categoría de evento, región o empresa organizadora.
+
+---
+
+### MARKET-UH-005 — Visualizar Perfil desde el Marketplace
+
+**Actor:** Usuario
+
+**Descripción**
+
+Permite acceder al perfil empresarial desde un servicio o evento publicado.
+
+---
+
+# Módulo CONTACT
+
+---
+
+### CONTACT-UH-001 — Enviar Solicitud de Contacto
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite enviar un mensaje inicial a otra empresa interesada en un servicio o evento.
+
+---
+
+### CONTACT-UH-002 — Consultar Solicitudes Enviadas
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite visualizar el historial de solicitudes enviadas.
+
+---
+
+### CONTACT-UH-003 — Consultar Solicitudes Recibidas
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite visualizar las solicitudes de contacto recibidas.
+
+---
+
+### CONTACT-UH-004 — Revisar Solicitud de Contacto
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite visualizar el detalle de una solicitud recibida.
+
+---
+
+### CONTACT-UH-005 — Cambiar Estado de Solicitud
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite actualizar el estado de una solicitud de contacto.
+
+Estados posibles:
+
+* Pendiente
+* Aceptada
+* Rechazada
+
+---
+
+# Módulo MEDIA
+
+---
+
+### MEDIA-UH-001 — Subir Archivo Multimedia
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite cargar un archivo multimedia al sistema.
+
+---
+
+### MEDIA-UH-002 — Eliminar Archivo Multimedia
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite eliminar un archivo previamente cargado.
+
+---
+
+### MEDIA-UH-003 — Reordenar Galería Multimedia
+
+**Actor:** Empresa
+
+**Descripción**
+
+Permite modificar el orden de visualización de los archivos asociados a una entidad.
+
+---
+
+# Resumen
+
+| Módulo      |        Casos de uso |
+| ----------- | ------------------: |
+| AUTH        |                   4 |
+| PROFILE     |                   5 |
+| SERVICE     |                   9 |
+| EVENT       |                   6 |
+| MARKETPLACE |                   5 |
+| CONTACT     |                   5 |
+| MEDIA       |                   3 |
+| **Total**   | **37 Casos de Uso** |
+

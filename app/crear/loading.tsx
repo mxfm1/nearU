@@ -1,4 +1,4 @@
-import { CrearSkeleton } from '@/components/crear/crear-skeleton'
+import { CrearSkeleton } from './_components/crear-skeleton'
 
 export default function CrearLoading() {
   return <CrearSkeleton />

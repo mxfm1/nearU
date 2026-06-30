@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { QueryProvider } from '@/lib/query-provider'
 import { AuthProvider } from '@/hooks/use-auth'
-import { AppShell } from '@/components/layout/app-shell'
+import { LayoutWrapper } from '@/components/layout/layout-wrapper'
 
 export const metadata: Metadata = {
   title: 'NearU',
@@ -19,9 +19,9 @@ export default function RootLayout({
       <body className="bg-background text-foreground antialiased">
         <QueryProvider>
           <AuthProvider>
-            <AppShell>
+            <LayoutWrapper>
               {children}
-            </AppShell>
+            </LayoutWrapper>
           </AuthProvider>
         </QueryProvider>
       </body>

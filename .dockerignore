@@ -1,0 +1,31 @@
+# Archivos de control de versiones y entornos
+.git
+.gitignore
+.env
+docker-compose.yml
+Dockerfile
+
+# Dependencias (se deben reinstalar dentro del contenedor)
+node_modules/
+vendor/
+venv/
+env/
+
+# Archivos de compilación y caché
+dist/
+build/
+out/
+.next/
+.cache/
+npm-debug.log
+yarn-error.log
+
+# Archivos y carpetas del sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Documentación
+README.md
+docs/

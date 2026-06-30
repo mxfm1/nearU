@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { ServicePageContent } from '@/components/servicios/service-page-content'
-import { LoadingSkeleton } from '@/components/servicios/loading-skeleton'
+import { ServicePageContent } from '../_components/service-page-content'
+import { LoadingSkeleton } from '../_components/loading-skeleton'
 
 interface PageProps {
   params: Promise<{ id: string }>
