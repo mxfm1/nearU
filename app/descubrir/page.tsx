@@ -7,27 +7,46 @@ import { HorizontalScroll } from '@/components/cards/horizontal-scroll'
 import { ProviderCard } from '@/components/cards/provider-card'
 import { EventCard } from '@/components/cards/event-card'
 import { HorizontalSearchBar } from '@/app/search/_components/horizontal-search-bar'
-import { mockEvents } from '@/components/cards/mock-data'
 import { serviciosApi } from '@/lib/servicios-api'
-import { Loader2 } from 'lucide-react'
+import { eventosApi } from '@/lib/eventos-api'
+import { AlertTriangle, Loader2 } from 'lucide-react'
 
 export default function DescubrirPage() {
   const router = useRouter()
 
   const {
     data: serviciosRes,
-    isLoading,
-    isError,
+    isLoading: serviciosLoading,
+    isError: serviciosError,
   } = useQuery({
     queryKey: ['servicios'],
     queryFn: () => serviciosApi.list(),
   })
 
+  const {
+    data: eventosRes,
+    isLoading: eventosLoading,
+    isError: eventosError,
+  } = useQuery({
+    queryKey: ['eventos'],
+    queryFn: () => eventosApi.list(),
+  })
+
+  console.log("eventos publicados", eventosRes)
+
   function handleSearch(query: string) {
     router.push(`/search?q=${encodeURIComponent(query)}`)
   }
 
-  console.log("servicios", serviciosRes?.data)
+  const serviciosPublicados = (serviciosRes?.data ?? []).filter(
+    (s) => s.status.slug === 'published'
+  )
+
+  const eventosPublicados = (eventosRes?.data ?? []).filter(
+    (e) => e.status.slug === 'published'
+  )
+
+  console.log("eventos publicaos", eventosPublicados)
 
   return (
     <div className="bg-background min-h-screen">
@@ -52,20 +71,24 @@ export default function DescubrirPage() {
             title="Proveedores Destacados"
             seeAllHref="/search?type=proveedores"
           >
-            {isLoading ? (
+            {serviciosLoading ? (
               <div className="flex items-center gap-2 text-muted-foreground py-8">
                 <Loader2 className="h-5 w-5 animate-spin" />
                 <span>Cargando proveedores...</span>
               </div>
-            ) : isError ? (
+            ) : serviciosError ? (
               <p className="text-destructive py-8">
                 Error al cargar proveedores. Intenta de nuevo más tarde.
               </p>
+            ) : serviciosPublicados.length === 0 ? (
+              <p className="text-muted-foreground py-8">
+                No hay proveedores disponibles por el momento.
+              </p>
             ) : (
-              serviciosRes?.data?.map((s) => (
+              serviciosPublicados.map((s) => (
                 <ProviderCard
                   key={s.id}
-                  name={s.marca}
+                  name={s.marca || s.title}
                   category={s.category?.name ?? 'Sin categoría'}
                   verified={false}
                   location={s.location?.name ?? 'Ubicación no disponible'}
@@ -84,17 +107,36 @@ export default function DescubrirPage() {
             title="Próximos Eventos"
             seeAllHref="/search?type=eventos"
           >
-            {mockEvents.map((event) => (
-              <EventCard
-                key={event.slug}
-                title={event.title}
-                description={event.description}
-                date={event.date}
-                location={event.location}
-                thumbnail={event.thumbnail}
-                slug={event.slug}
-              />
-            ))}
+            {eventosLoading ? (
+              <div className="flex items-center gap-2 text-muted-foreground py-8">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>Cargando eventos...</span>
+              </div>
+            ) : eventosError ? (
+              <p className="text-destructive py-8">
+                Error al cargar eventos. Intenta de nuevo más tarde.
+              </p>
+            ) : eventosPublicados.length === 0 ? (
+              <p className="text-muted-foreground py-8">
+                No hay eventos disponibles por el momento.
+              </p>
+            ) : (
+              eventosPublicados.map((e) => (
+                <EventCard
+                  key={e.id}
+                  title={e.title}
+                  description={e.description}
+                  date={new Date(e.startAt).toLocaleDateString('es-ES', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                  location={e.location?.name ?? 'Ubicación no disponible'}
+                  thumbnail={e.thumbnailUrl ?? 'https://placehold.co/400x250?text=Sin+imagen'}
+                  slug={e.slug}
+                />
+              ))
+            )}
           </HorizontalScroll>
         </div>
       </section>

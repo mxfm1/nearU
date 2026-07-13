@@ -1,3 +1,5 @@
+import { ApiError, type BackendErrorCodes } from "./api/errors";
+
 const BASE_URL = ''; // Next.js rewrite lo resuelve
 
 export type User = {
@@ -22,26 +24,55 @@ export type ApiResponse<T> = {
   message?: string
 }
 
+export type APISuccess<T> = {
+  success: true
+  data: T
+}
+
+export type APIError = {
+  success: false
+  errorCode: BackendErrorCodes
+}
+
+export type APIResponse<T> = APISuccess<T> | APIError
+
+
+
 export async function apiFetch<T>(
   path: string,
   options?: RequestInit
 ): Promise<T> {
-  const res = await fetch(`${BASE_URL}/api${path}`, {
-    ...options,
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/api${path}`, {
+      ...options,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
+    })
 
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: res.statusText }))
-    throw new Error(error.message ?? `HTTP ${res.status}`)
+    if (res.status === 204) {
+      return undefined as T
+    }
+
+    const body = await res.json()
+
+    if (!res.ok) {
+      throw new ApiError(
+        body.error?.code ?? body.code ?? body.errorCode ?? 'INTERNAL_SERVER_ERROR',
+        body.error?.message ?? body.message
+      )
+    }
+
+    return body
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err
+    }
+
+    throw new ApiError('INTERNAL_SERVER_ERROR')
   }
-
-  if (res.status === 204) return undefined as T
-  return res.json()
 }
 
 export const authApi = {
@@ -59,7 +90,7 @@ export const authApi = {
     }),
 
   signUp: (name: string, email: string, password: string) =>
-    apiFetch<{ user: User; session: Session }>('/auth/sign-up/email', {
+    apiFetch<{ success: boolean; data: User }>('/users', {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
     }),

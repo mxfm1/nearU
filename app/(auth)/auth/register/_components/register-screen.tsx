@@ -95,7 +95,7 @@ export function RegisterScreen() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden w-1/2 flex-col justify-between bg-brand p-12 text-brand-foreground lg:flex">
+      <div className="hidden md:w-1/2 justify-between bg-brand p-12 text-brand-foreground lg:flex">
         <div>
           <p className="mb-16 text-sm font-medium uppercase tracking-wider text-white/80">
             🎉 Regístrate
@@ -104,7 +104,7 @@ export function RegisterScreen() {
           <h1 className="mb-4 text-4xl font-bold leading-tight">
             Curando lo Excepcional
           </h1>
-          <p className="mb-12 max-w-md text-base text-white/80">
+          <p className="mb-12 text-base text-white/80">
             Únete a un directorio exclusivo de profesionales de eventos y
             creadores visionarios que redefinen las experiencias de luxe.
           </p>
@@ -147,7 +147,7 @@ export function RegisterScreen() {
           <div className="mb-8 text-center lg:text-left">
             <h2 className="text-2xl font-bold">Únete a la Comunidad</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Ingresa tus datos para crear tu perfil profesional.
+              Ingresa tus datos para crear el perfil de tu empresa.
             </p>
           </div>
 
@@ -307,7 +307,7 @@ export function RegisterScreen() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs uppercase tracking-wide text-muted-foreground">
-                      Categoría Profesional
+                      Categoría de la Empresa
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -315,7 +315,7 @@ export function RegisterScreen() {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecciona tu rubro profesional" />
+                          <SelectValue placeholder="Selecciona el rubro de tu empresa" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

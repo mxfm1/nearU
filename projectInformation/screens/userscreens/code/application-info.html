@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "background": "#f9f9ff",
+                            "outline": "#707973",
+                            "on-error": "#ffffff",
+                            "tertiary-container": "#5f4600",
+                            "surface-dim": "#d3daef",
+                            "on-secondary-fixed": "#181c1b",
+                            "on-error-container": "#93000a",
+                            "secondary-container": "#dde0de",
+                            "outline-variant": "#c0c9c2",
+                            "on-tertiary-fixed-variant": "#5b4300",
+                            "on-tertiary-container": "#eab100",
+                            "tertiary": "#433000",
+                            "error-container": "#ffdad6",
+                            "surface-container-low": "#f1f3ff",
+                            "on-background": "#141b2b",
+                            "surface-tint": "#326852",
+                            "surface": "#f9f9ff",
+                            "primary": "#003b29",
+                            "on-secondary-container": "#5f6362",
+                            "on-secondary": "#ffffff",
+                            "on-primary": "#ffffff",
+                            "error": "#ba1a1a",
+                            "on-tertiary-fixed": "#261a00",
+                            "on-surface": "#141b2b",
+                            "surface-container": "#e9edff",
+                            "on-tertiary": "#ffffff",
+                            "surface-bright": "#f9f9ff",
+                            "on-primary-container": "#8cc5aa",
+                            "tertiary-fixed-dim": "#fabd00",
+                            "on-primary-fixed-variant": "#16503b",
+                            "surface-variant": "#dce2f7",
+                            "secondary-fixed": "#e0e3e1",
+                            "on-surface-variant": "#404944",
+                            "surface-container-highest": "#dce2f7",
+                            "secondary-fixed-dim": "#c4c7c5",
+                            "primary-container": "#1a533e",
+                            "surface-container-lowest": "#ffffff",
+                            "primary-fixed-dim": "#99d3b7",
+                            "inverse-surface": "#293040",
+                            "on-secondary-fixed-variant": "#434846",
+                            "secondary": "#5b5f5e",
+                            "primary-fixed": "#b5efd3",
+                            "on-primary-fixed": "#002115",
+                            "inverse-on-surface": "#edf0ff",
+                            "tertiary-fixed": "#ffdf9e",
+                            "surface-container-high": "#e1e8fd",
+                            "inverse-primary": "#99d3b7"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                        },
+                        "spacing": {
+                            "container-max": "1280px",
+                            "section-gap": "80px",
+                            "stack-sm": "8px",
+                            "stack-md": "16px",
+                            "stack-lg": "48px",
+                            "gutter": "24px",
+                            "margin-x": "32px"
+                        },
+                        "fontFamily": {
+                            "display-lg-mobile": ["Plus Jakarta Sans"],
+                            "headline-md": ["Plus Jakarta Sans"],
+                            "display-lg": ["Plus Jakarta Sans"],
+                            "headline-sm": ["Plus Jakarta Sans"],
+                            "label-sm": ["Plus Jakarta Sans"],
+                            "body-md": ["Plus Jakarta Sans"],
+                            "label-md": ["Plus Jakarta Sans"],
+                            "body-lg": ["Plus Jakarta Sans"]
+                        },
+                        "fontSize": {
+                            "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                            "headline-md": ["30px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                            "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                            "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                            "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                            "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                            "label-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                        }
+                    }
+                }
+            }
+        } catch (_e) { }</script>
+    <meta charset="utf-8">
+</head>
+
+<body class="bg-background text-on-background min-h-screen">
+    <!-- TopNavBar -->
+    <header class="docked full-width top-0 z-50 bg-surface-container-lowest shadow-sm h-16">
+        <div class="flex justify-between items-center px-margin-x w-full h-full max-w-container-max mx-auto">
+            <div class="flex items-center gap-stack-md">
+                <span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary">NearU</span>
+            </div>
+            <nav class="hidden md:flex items-center gap-gutter">
+                <a href="#"
+                    class="text-secondary hover:text-primary-container transition-colors font-label-md text-label-md">Explorar</a>
+                <a href="#"
+                    class="text-primary font-bold border-b-2 border-primary font-label-md text-label-md">Proveedores</a>
+                <a href="#"
+                    class="text-secondary hover:text-primary-container transition-colors font-label-md text-label-md">Eventos</a>
+                <a href="#"
+                    class="text-secondary hover:text-primary-container transition-colors font-label-md text-label-md">Recursos</a>
+                <a href="#"
+                    class="text-secondary hover:text-primary-container transition-colors font-label-md text-label-md">Sobre
+                    NearU</a>
+            </nav>
+            <div class="flex items-center gap-stack-md">
+                <button class="text-primary font-label-md text-label-md hover:opacity-80">Volver al Inicio</button>
+                <div
+                    class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
+                    JD</div>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-container-max mx-auto px-margin-x py-10 pb-32">
+        <!-- Back Navigation -->
+        <div class="mb-8">
+            <button class="flex items-center gap-2 text-primary font-label-md text-label-md hover:gap-3 transition-all">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Volver al listado de postulaciones
+            </button>
+        </div>
+        <div class="flex flex-col lg:flex-row gap-gutter">
+            <!-- Main Content Area -->
+            <div class="flex-grow space-y-gutter">
+                <h1 class="font-display-lg-mobile text-display-lg-mobile text-primary mb-2">Detalle de la Postulación
+                </h1>
+                <!-- Applicant Company Summary Card -->
+                <div
+                    class="bg-surface-container-lowest rounded-xl p-6 custom-shadow flex flex-col md:flex-row items-center gap-6">
+                    <div
+                        class="w-24 h-24 rounded-lg bg-surface-container overflow-hidden border border-outline-variant shrink-0">
+                        <img class="w-full h-full object-cover"
+                            data-alt="A clean, modern corporate logo of an audiovisual production company featuring sleek geometric shapes in deep green and white, set against a soft gray professional studio background. High-end minimalist design with a premium feel."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxeKTyLl1yX272aHz3r5l5-Pc9nVMk9CjfHIlHEPUxvluIzK_XuXkzB-lfZ-O-KwBq0nFKAG9QokdThKtiGdBSIQh4M7M-Q_jcDa1kp6WA-pgGF-U5q_DiEx7GX1Xtx9BMtelCGcu6Nmy1VMcJc9LH0fTuD39QTfDHxeMDtjM5yijrshvbCj-znw6w9fu7rORlNz5zs4WePl1rv2nXTGCMI18Zb9Ii4rtrUAGUrJ43yB6OoYqCubWA">
+                    </div>
+                    <div class="flex-grow text-center md:text-left">
+                        <div class="flex flex-col md:flex-row md:items-center gap-2 mb-1">
+                            <h2 class="font-headline-md text-headline-md text-on-surface">Lumina Event Pro</h2>
+                            <span
+                                class="inline-flex px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full font-label-sm text-label-sm w-fit mx-auto md:mx-0">Empresa
+                                Premium</span>
+                        </div>
+                        <div
+                            class="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1 text-secondary font-body-md text-body-md">
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">category</span>
+                                Audiovisuales &amp; Sonido
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                Región Metropolitana, CL
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="px-6 py-3 border-2 border-primary text-primary rounded-lg font-label-md text-label-md hover:bg-primary-fixed transition-colors">
+                        Ver Perfil de la Empresa
+                    </button>
+                </div>
+                <!-- Detailed Information Section -->
+                <div class="bg-surface-container-lowest rounded-xl p-8 custom-shadow">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings: 'FILL' 1;">info</span>
+                            Información de la postulación
+                        </h3>
+                        <span class="text-outline font-label-sm text-label-sm">Recibido el 12 de Oct, 2024</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-1">
+                            <p class="text-outline font-label-sm text-label-sm uppercase tracking-wider">Años de
+                                experiencia</p>
+                            <p class="font-body-lg text-body-lg text-on-surface">12 años en el sector corporativo</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-outline font-label-sm text-label-sm uppercase tracking-wider">Región de
+                                operación</p>
+                            <p class="font-body-lg text-body-lg text-on-surface">Metropolitana, Valparaíso y O'Higgins
+                            </p>
+                        </div>
+                        <div class="md:col-span-2 space-y-1">
+                            <p class="text-outline font-label-sm text-label-sm uppercase tracking-wider">Sitio Web</p>
+                            <a class="font-body-lg text-body-lg text-primary hover:underline flex items-center gap-1"
+                                href="#">
+                                www.luminaeventpro.cl
+                                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                            </a>
+                        </div>
+                        <div class="md:col-span-2 space-y-1 pt-4">
+                            <p class="text-outline font-label-sm text-label-sm uppercase tracking-wider">Descripción de
+                                la Empresa</p>
+                            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                                Especialistas en la creación de experiencias inmersivas para eventos corporativos de
+                                gran escala. Contamos con tecnología de punta en iluminación LED, sonido lineal y
+                                pantallas de alta resolución. Nuestro equipo está compuesto por 45 profesionales
+                                certificados en gestión de eventos y seguridad técnica, garantizando ejecuciones
+                                impecables en cada proyecto.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div
+                    class="mt-8 bg-surface-container-lowest rounded-xl p-6 custom-shadow border border-outline-variant">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="hidden md:flex flex-col">
+                            <p class="font-label-sm text-label-sm text-outline">Evaluando postulación de:</p>
+                            <p class="font-headline-sm text-headline-sm text-on-surface leading-tight">Lumina Event Pro
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-4 w-full sm:w-auto">
+                            <button
+                                class="flex-1 sm:flex-none px-8 py-3 rounded-lg border-2 border-outline text-secondary font-label-md text-label-md hover:bg-surface-container transition-all active:scale-95">
+                                Rechazar Postulación
+                            </button>
+                            <button
+                                class="flex-1 sm:flex-none px-12 py-3 rounded-lg bg-primary-container text-white font-label-md text-label-md hover:opacity-90 shadow-md transition-all active:scale-95">
+                                Aceptar Postulación
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scoring Sidebar -->
+            <aside class="w-full lg:w-80 shrink-0 space-y-gutter">
+                <div class="bg-surface-container-highest rounded-xl p-6 custom-shadow border border-primary/10">
+                    <h3 class="font-headline-sm text-headline-sm text-primary mb-6">Puntuación NearU</h3>
+                    <div class="flex flex-col items-center mb-8">
+                        <div class="relative flex items-center justify-center">
+                            <svg class="w-32 h-32 transform -rotate-90">
+                                <circle class="text-surface-container" cx="64" cy="64" fill="transparent" r="58"
+                                    stroke="currentColor" stroke-width="8"></circle>
+                                <circle class="text-primary-container" cx="64" cy="64" fill="transparent" r="58"
+                                    stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="36.4"
+                                    stroke-width="8"></circle>
+                            </svg>
+                            <div class="absolute flex flex-col items-center">
+                                <span
+                                    class="font-display-lg-mobile text-display-lg-mobile text-primary leading-none">9.2</span>
+                                <span class="font-label-sm text-label-sm text-secondary">de 10</span>
+                            </div>
+                        </div>
+                        <p
+                            class="mt-4 font-label-md text-label-md text-primary-container bg-primary-fixed px-3 py-1 rounded-full italic">
+                            "Altamente Recomendado"</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">Experiencia
+                                    Técnica</span>
+                                <span class="font-label-md text-label-md text-primary">9.5</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-container rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">Solvencia
+                                    Documental</span>
+                                <span class="font-label-md text-label-md text-primary">8.8</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-container rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">Capacidad
+                                    Logística</span>
+                                <span class="font-label-md text-label-md text-primary">9.0</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-container rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        <p class="font-label-sm text-label-sm text-primary mb-1 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+                            Nota del Sistema
+                        </p>
+                        <p class="text-[12px] leading-snug text-on-surface-variant italic">
+                            La postulación cumple con el 100% de los requisitos técnicos exigidos para eventos de
+                            Categoría A.
+                        </p>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+    <!-- Fixed Action Bar -->
+
+    <!-- Footer -->
+
+    <script>
+        // Simple interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (this.innerText.includes('Aceptar')) {
+                    alert('Postulación aceptada con éxito. Se notificará a Lumina Event Pro.');
+                } else if (this.innerText.includes('Rechazar')) {
+                    const confirmReject = confirm('¿Está seguro de rechazar esta postulación? Esta acción no se puede deshacer.');
+                    if (confirmReject) alert('Postulación rechazada.');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

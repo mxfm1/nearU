@@ -26,7 +26,9 @@ export type Profile = {
   updatedAt: string
 }
 
-export type UpdateProfileData = Partial<Omit<Profile, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>
+export type UpdateProfileData = Partial<
+  Omit<Profile, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'location'>
+> & { locationId?: string }
 
 export const profileApi = {
   getByUserId: (userId: string) =>

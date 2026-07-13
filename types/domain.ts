@@ -104,7 +104,7 @@ export interface EventPortfolio {
   updatedAt: string
 }
 
-export type ContactRequestStatus = 'pending' | 'accepted' | 'rejected'
+export type ContactRequestStatus = 'pendiente' | 'leido' | 'respondido' | 'archivado'
 
 export interface ContactRequest {
   id: string

@@ -25,8 +25,8 @@ export type ContactInfo = {
 
 export type PortfolioImage = {
   url: string
-  title: string
-  description: string
+  title?: string
+  description?: string
 }
 
 export type ServicioResumen = {
@@ -34,21 +34,21 @@ export type ServicioResumen = {
   profileId: string
   slug: string
   title: string
-  marca: string
-  description: string
-  category: Category | null
-  location: Location | null
-  serviceStatus: string
-  availability: string | null
+  marca: string | null
+  description: string | null
   yearsExperience: number | null
   priceMin: number | null
   priceMax: number | null
+  availability: string | null
   bannerUrl: string | null
   logoUrl: string | null
   thumbnailUrl: string | null
-  contactInfo: ContactInfo[]
+  contacts: (ContactInfo & { id?: string; readAt?: string | null; respondedAt?: string | null })[] | null
   portfolio: PortfolioImage[]
-  profile: ProfileRef
+  location: { id: string; name: string } | null
+  category: { id: string; name: string } | null
+  profile: { id: string; name: string; slug: string }
+  status: { id: string; name: string; slug: string }
   createdAt: string
   updatedAt: string
 }
@@ -66,19 +66,41 @@ export type CreateServicioPayload = {
   priceMin?: number | null
   priceMax?: number | null
   availability?: string | null
-  contactInfo?: ContactInfo[]
+  contacts?: ContactInfo[]
   bannerUrl?: string | null
   logoUrl?: string | null
   thumbnailUrl?: string | null
   locationId?: string | null
   categoryId?: string | null
-  serviceStatus?: 'draft' | 'published' | 'paused' | 'archived'
+  status?: 'draft' | 'published' | 'paused' | 'archived'
   portfolio?: PortfolioImage[]
 }
 
+export type UpdateServicioPayload = Partial<{
+  slug: string
+  title: string
+  marca: string | null
+  description: string | null
+  yearsExperience: number | null
+  priceMin: number | null
+  priceMax: number | null
+  availability: string | null
+  contacts: ContactInfo[]
+  bannerUrl: string | null
+  logoUrl: string | null
+  thumbnailUrl: string | null
+  locationId: string | null
+  categoryId: string | null
+  status: 'draft' | 'published' | 'paused' | 'archived'
+  portfolio: PortfolioImage[]
+}>
+
 export const serviciosApi = {
+  misServicios: () =>
+    apiFetch<{ success: boolean; data: ServicioResumen[] }>('/mis-servicios'),
+
   list: () =>
-    apiFetch<{ success: boolean; data: ServicioResumen[] }>('/servicios'),
+    apiFetch<ServicioResumen[]>('/servicios'),
 
   getById: (id: string) =>
     apiFetch<{ success: boolean; data: ServicioDetalle }>(`/servicios/${id}`),
@@ -86,6 +108,12 @@ export const serviciosApi = {
   create: (payload: CreateServicioPayload) =>
     apiFetch<{ success: boolean; data: ServicioDetalle }>('/servicios', {
       method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  update: (id: string, payload: UpdateServicioPayload) =>
+    apiFetch<{ success: boolean; data: ServicioDetalle }>(`/servicios/${id}`, {
+      method: 'PATCH',
       body: JSON.stringify(payload),
     }),
 }
