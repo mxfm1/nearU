@@ -1,7 +1,8 @@
 import { Suspense } from 'react'
 import { ResetPasswordForm } from './_components/reset-password-form'
+import { getAuthBaseUrl } from '@/lib/env'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BETTER_AUTH_URL ?? 'http://localhost:3000'
+const BASE_URL = getAuthBaseUrl()
 
 interface Props {
   searchParams: Promise<{ token?: string }>

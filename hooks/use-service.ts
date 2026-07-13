@@ -1,5 +1,4 @@
 'use client'
-
 import { useQuery } from '@tanstack/react-query'
 import { serviciosApi, type ServicioDetalle } from '@/lib/servicios-api'
 
@@ -31,5 +30,19 @@ export function useService(id: string): UseServiceResult {
     service: data?.data ?? null,
     isLoading,
     error: error ? mapHttpError(error instanceof Error ? error : new Error(String(error))) : null,
+  }
+}
+
+
+export const useServicesList = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['servicios'],
+    queryFn: () => serviciosApi.list(),
+  })
+
+  return {
+    services: data?.success ? data.data : [],
+    isLoading,
+    error: error?.errorCode
   }
 }

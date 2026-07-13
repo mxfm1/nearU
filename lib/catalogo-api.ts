@@ -28,6 +28,8 @@ export type Ubicacion = {
   }
 }
 
+export type Intencion = string
+
 // --- API Client ---
 
 export const catalogoApi = {
@@ -44,4 +46,8 @@ export const catalogoApi = {
   /** GET /api/ubicaciones — plano, cada una incluye su región */
   ubicaciones: () =>
     apiFetch<{ success: boolean; data: Ubicacion[] }>('/ubicaciones'),
+
+  /** GET /api/contactos/intenciones */
+  intenciones: () =>
+    apiFetch<{ success: boolean; data: string[] }>('/contactos/intenciones'),
 }

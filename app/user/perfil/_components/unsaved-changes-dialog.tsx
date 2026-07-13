@@ -25,7 +25,7 @@ const FIELD_LABELS: Record<string, string> = {
   industry: 'Rubro / Industria',
   description: 'Descripción',
   tags: 'Etiquetas / Keywords',
-  location: 'Ubicación',
+  locationId: 'Ubicación',
   founded: 'Año de fundación',
   employees: 'Tamaño de la empresa',
   website: 'Sitio web',

@@ -23,6 +23,7 @@ export function NavbarActions() {
 
   return (
     <>
+      {/* Logged in: Create button */}
       {!loading && user && (
         <Button variant="default" asChild>
           <Link href="/crear">
@@ -32,6 +33,7 @@ export function NavbarActions() {
         </Button>
       )}
 
+      {/* Logged in: Avatar + notifications */}
       {!loading && user ? (
         <>
           <NotificationDropdown />
@@ -76,13 +78,19 @@ export function NavbarActions() {
         </>
       ) : !loading ? (
         <>
-          <LoginDialog
-          >
-            <LoginDialog>
-              <Button variant="ghost">Iniciar Sesión</Button>
-            </LoginDialog>
+          {/* Logged out: Iniciar sesión (outlined) + Registrarse (filled) */}
+          <LoginDialog>
+            <Button 
+              variant="outline" 
+              className="border-border text-text-primary hover:bg-muted font-medium"
+            >
+              Iniciar sesión
+            </Button>
           </LoginDialog>
-          <Button variant="default" asChild>
+          <Button 
+            asChild
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-brand"
+          >
             <Link href="/auth/register">Registrarse</Link>
           </Button>
         </>

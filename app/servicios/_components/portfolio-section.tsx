@@ -120,7 +120,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
             >
               <Image
                 src={image.url}
-                alt={image.title}
+                alt={image.title ?? `Imagen ${index + 1}`}
                 width={420}
                 height={240}
                 className={cn(

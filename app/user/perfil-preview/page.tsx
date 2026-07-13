@@ -66,7 +66,7 @@ export default function ProfilePreviewPage() {
       <header className="sticky top-0 z-50 bg-background border-b border-border">
         <div className="max-w-5xl mx-auto px-4 h-12 flex items-center">
           <Link
-            href="/"
+            href="/user/perfil"
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <FaArrowLeft className="h-4 w-4" />

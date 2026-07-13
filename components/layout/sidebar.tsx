@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -18,6 +18,8 @@ import {
   User,
   Settings,
   LogOut,
+  FolderOpen,
+  MessageCircle,
 } from 'lucide-react'
 
 const navItems = [
@@ -25,6 +27,8 @@ const navItems = [
   { label: 'Publicar', icon: PlusCircle, href: '/crear' },
   { label: 'Notificaciones', icon: Bell, href: '/user/notificaciones' },
   { label: 'Inbox', icon: Mail, href: '/user/inbox' },
+  { label: 'Mensajes', icon: MessageCircle, href: '/user/mensajes' },
+  { label: 'Mis publicaciones', icon: FolderOpen, href: "/user/publicaciones" }
 ]
 
 const bottomItems = [
@@ -32,14 +36,39 @@ const bottomItems = [
   { label: 'Configuración', icon: Settings, href: '/user/configuracion' },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  defaultCollapsed?: boolean
+  hideToggle?: boolean
+}
+
+export function Sidebar({ defaultCollapsed, hideToggle }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [pendingHref, setPendingHref] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const { user, loading, logout } = useAuth()
   const { isDirty, dirtyFields, clearDirty } = useDirtyGuard()
   const isLoggedIn = !loading && !!user
+
+  // Handle responsive state
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      if (mobile) {
+        setCollapsed(true)
+      } else if (defaultCollapsed !== undefined) {
+        setCollapsed(defaultCollapsed)
+      } else {
+        setCollapsed(false)
+      }
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [defaultCollapsed])
 
   if (!isLoggedIn) return null
 
@@ -58,6 +87,9 @@ export function Sidebar() {
     setPendingHref(null)
   }
 
+  // On mobile, always collapsed and hide toggle
+  const showToggle = !isMobile && !hideToggle
+
   return (
     <aside
       className={cn(
@@ -65,20 +97,22 @@ export function Sidebar() {
         collapsed ? 'w-16' : 'w-64',
       )}
     >
-      <div className="flex items-center justify-end p-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setCollapsed(!collapsed)}
-          className="h-8 w-8"
-          aria-label={collapsed ? 'Expandir sidebar' : 'Colapsar sidebar'}
-        >
-          {collapsed
-            ? <PanelLeft className="h-4 w-4" />
-            : <PanelLeftClose className="h-4 w-4" />
-          }
-        </Button>
-      </div>
+      {showToggle && (
+        <div className="flex items-center justify-end p-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(!collapsed)}
+            className="h-8 w-8"
+            aria-label={collapsed ? 'Expandir sidebar' : 'Colapsar sidebar'}
+          >
+            {collapsed
+              ? <PanelLeft className="h-4 w-4" />
+              : <PanelLeftClose className="h-4 w-4" />
+            }
+          </Button>
+        </div>
+      )}
 
       {!collapsed && (
         <div className="px-4 pb-4">
@@ -116,15 +150,6 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto flex flex-col gap-1 px-2 pb-4">
-        {/* {!collapsed && (
-          <Button className="w-full bg-brand hover:bg-brand/90 text-white" asChild>
-            <Link href="/crear">
-              <Plus className="h-4 w-4" />
-              Nueva Publicación
-            </Link>
-          </Button>
-        )} */}
-
         {bottomItems.map((item) => {
           const isActive = pathname.startsWith(item.href)
 

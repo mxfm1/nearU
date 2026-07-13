@@ -22,6 +22,7 @@ export function ServicePageContent({ id }: ServicePageContentProps) {
     return <ErrorState error={error ?? 'NOT_FOUND'} />
   }
 
+
   return (
     <div className="w-full">
       <div className="relative">
@@ -44,7 +45,9 @@ export function ServicePageContent({ id }: ServicePageContentProps) {
           <div className="lg:col-span-4">
             <div className="sticky top-24">
               <ContactSection
-                contactInformation={service.contactInfo}
+                contactInformation={service.contacts ?? []}
+                profileId={service.profileId}
+                slug={service.slug}
               />
             </div>
           </div>

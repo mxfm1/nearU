@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Toaster } from 'react-hot-toast'
 import './globals.css'
 import { QueryProvider } from '@/lib/query-provider'
 import { AuthProvider } from '@/hooks/use-auth'
@@ -22,6 +23,7 @@ export default function RootLayout({
             <LayoutWrapper>
               {children}
             </LayoutWrapper>
+            <Toaster position="bottom-right" />
           </AuthProvider>
         </QueryProvider>
       </body>

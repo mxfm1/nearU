@@ -10,14 +10,19 @@ import {
   X,
   MessageCircle,
 } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 
 import { Button } from '@/components/ui/button'
 import type { ContactInfo } from '@/lib/servicios-api'
+import { profileApi } from '@/lib/profile-api'
+import { useAuth } from '@/hooks/use-auth'
 import ApplyFormSection from './apply-form-section'
 import { LoginDialog } from '@/app/(auth)/auth/login/_components/login-dialog'
 
 interface ContactSectionProps {
   contactInformation: ContactInfo[]
+  profileId: string
+  slug: string
 }
 
 const contactIcons: Record<ContactInfo['type'], typeof Mail> = {
@@ -42,7 +47,20 @@ const labels: Record<ContactInfo['type'], string> = {
 
 export function ContactSection({
   contactInformation,
+  profileId,
+  slug,
 }: ContactSectionProps) {
+  const { user } = useAuth()
+
+  const { data: myProfile } = useQuery({
+    queryKey: ['my-profile', user?.id],
+    queryFn: () => profileApi.getByUserId(user!.id),
+    enabled: !!user?.id,
+    select: (res) => res.data,
+  })
+
+  const isOwnContent = !!myProfile && myProfile.id === profileId
+
   return (
     <motion.aside
       initial={{ opacity: 0, y: 12 }}
@@ -68,7 +86,7 @@ export function ContactSection({
         </h4> */}
 
         <div className="space-y-4">
-          {contactInformation.map((contact, index) => {
+          {(contactInformation ?? []).map((contact, index) => {
             const Icon = contactIcons[contact.type]
 
             return (
@@ -94,13 +112,27 @@ export function ContactSection({
           })}
         </div>
 
-        <ApplyFormSection>
+        {user ? (
+          <ApplyFormSection slug={slug}>
+            <Button
+              className="w-full mt-6 hover:cursor-pointer"
+              size="lg"
+              disabled={isOwnContent}
+              title={isOwnContent ? 'No podés contactarte a vos mismo' : 'Solicitar cotización'}
+            >
+              {isOwnContent ? 'Tu propia publicación' : 'Solicitar cotización'}
+            </Button>
+          </ApplyFormSection>
+        ) : (
           <LoginDialog>
-            <Button className="w-full mt-6 hover:cursor-pointer" size="lg">
+            <Button
+              className="w-full mt-6 hover:cursor-pointer"
+              size="lg"
+            >
               Solicitar cotización
             </Button>
           </LoginDialog>
-        </ApplyFormSection>
+        )}
       </div>
     </motion.aside>
   )

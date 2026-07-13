@@ -3,35 +3,55 @@
 import { useEffect, useMemo, useCallback, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Eye, Loader2, AlertTriangle } from 'lucide-react'
+import { Eye, Loader2, AlertTriangle, MapPin } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/hooks/use-auth'
 import { useDirtyGuard } from '@/hooks/use-dirty-guard'
 import { profileApi, type Profile, type UpdateProfileData } from '@/lib/profile-api'
+import { catalogoApi, type Ubicacion } from '@/lib/catalogo-api'
 import { ProfileBanner } from './_components/profile-banner'
 import { ProfileLogo } from './_components/profile-logo'
 import { GeneralInfo } from './_components/general-info'
 import { ProfileDetails } from './_components/profile-details'
 import { DigitalPresence } from './_components/digital-presence'
 
-interface Draft extends Omit<Profile, 'id' | 'userId' | 'createdAt' | 'updatedAt'> {
+// Zod schema for profile validation - locationId is required
+const profileUpdateSchema = z.object({
+  locationId: z.string().min(1, 'La ubicación de la empresa es obligatoria'),
+})
+
+interface Draft extends Omit<Profile, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'location'> {
+  locationId: string
   verified?: boolean
 }
 
-const ALL_FIELDS: (keyof Draft)[] = [
+type DraftKey = keyof Draft
+
+const ALL_FIELDS: DraftKey[] = [
   'bannerUrl', 'logoUrl', 'name', 'industry', 'description', 'tags',
-  'location', 'founded', 'employees', 'website', 'whatsapp', 'socialLinks',
+  'locationId', 'founded', 'employees', 'website', 'whatsapp', 'socialLinks',
 ]
 
-function computeDirtyFields(draft: Draft | null, original: Profile | null): string[] {
-  if (!draft || !original) return []
+function computeDirtyFields(draft: Draft | null, snapshot: Draft | null): string[] {
+  if (!draft || !snapshot) return []
   return ALL_FIELDS.filter((field) => {
-    const a = draft[field]
-    const b = original[field as keyof Profile]
-    return JSON.stringify(a) !== JSON.stringify(b)
+    return JSON.stringify(draft[field]) !== JSON.stringify(snapshot[field])
   })
+}
+
+const normalizeTag = (t: unknown): string =>
+  typeof t === 'string' ? t : (t as { name?: string })?.name ?? String(t)
+
+const normalizeField = (v: unknown): string =>
+  typeof v === 'string' ? v : (v as { name?: string })?.name ?? String(v)
+
+const toId = (v: unknown): string => {
+  if (typeof v === 'string') return v
+  if (v && typeof v === 'object' && 'id' in v) return (v as { id: string }).id
+  return ''
 }
 
 export default function ProfileEditPage() {
@@ -46,36 +66,45 @@ export default function ProfileEditPage() {
     enabled: !!user,
   })
 
-  console.log("profile Data", data)
-
   const profile: Profile | null = data?.data ?? null
 
-  const [draft, setDraft] = useState<Draft | null>(null)
+  const { data: ubicacionesData } = useQuery({
+    queryKey: ['ubicaciones'],
+    queryFn: () => catalogoApi.ubicaciones(),
+  })
 
-  // Initialize draft when profile loads
+  const ubicaciones: Ubicacion[] = ubicacionesData?.data ?? []
+
+  const [draft, setDraft] = useState<Draft | null>(null)
+  const [initialDraft, setInitialDraft] = useState<Draft | null>(null)
+  const [locationError, setLocationError] = useState<string | null>(null)
+
+  // Initialize draft and snapshot when profile loads
   useEffect(() => {
     if (profile) {
-      setDraft({
+      const initial: Draft = {
         bannerUrl: profile.bannerUrl,
         logoUrl: profile.logoUrl,
         name: profile.name,
-        industry: profile.industry,
+        industry: normalizeField(profile.industry),
         description: profile.description,
-        tags: profile.tags,
-        location: profile.location,
+        tags: (profile.tags ?? []).map(normalizeTag),
+        locationId: toId(profile.location),
         founded: profile.founded,
         employees: profile.employees,
         website: profile.website,
         whatsapp: profile.whatsapp,
         socialLinks: profile.socialLinks,
-      })
+      }
+      setDraft(initial)
+      setInitialDraft(structuredClone(initial))
     }
   }, [profile])
 
   // Compute dirty fields and notify the dirty guard
   const dirtyFields = useMemo(
-    () => computeDirtyFields(draft, profile),
-    [draft, profile],
+    () => computeDirtyFields(draft, initialDraft),
+    [draft, initialDraft],
   )
 
   useEffect(() => {
@@ -102,6 +131,10 @@ export default function ProfileEditPage() {
 
   const handleChange = useCallback((field: string, value: unknown) => {
     setDraft((prev) => (prev ? { ...prev, [field]: value } : prev))
+    // Clear location error when user selects a location
+    if (field === 'locationId' && value) {
+      setLocationError(null)
+    }
   }, [])
 
   const handleBannerChange = useCallback((url: string | null) => {
@@ -114,6 +147,20 @@ export default function ProfileEditPage() {
 
   const handleSave = async () => {
     if (!draft) return
+
+    // Clear previous error
+    setLocationError(null)
+
+    // Validate with Zod
+    const result = profileUpdateSchema.safeParse(draft)
+    if (!result.success) {
+      const errorMessage = result.error.errors[0]?.message || 'Validation failed'
+      if (errorMessage.includes('ubicación')) {
+        setLocationError(errorMessage)
+      }
+      return
+    }
+
     saveMutation.mutate(draft)
   }
 
@@ -237,10 +284,12 @@ export default function ProfileEditPage() {
           <div>
             {draft && (
               <ProfileDetails
-                location={draft.location}
+                locationId={draft.locationId}
                 founded={draft.founded}
                 employees={draft.employees}
+                ubicaciones={ubicaciones}
                 onChange={handleChange}
+                locationError={locationError}
               />
             )}
           </div>
@@ -269,6 +318,12 @@ export default function ProfileEditPage() {
                 Error al guardar: {saveMutation.error instanceof Error ? saveMutation.error.message : 'Error desconocido'}
               </span>
             )}
+            {locationError && (
+              <span className="text-destructive ml-4 flex items-center gap-1">
+                <MapPin className="h-3 w-3" />
+                {locationError}
+              </span>
+            )}
             {saveMutation.isSuccess && (
               <span className="text-emerald-600 ml-4">✓ Cambios guardados</span>
             )}
@@ -279,7 +334,7 @@ export default function ProfileEditPage() {
             </Button>
             <Button
               className="bg-brand hover:bg-brand/90 text-white"
-              disabled={dirtyFields.length === 0 || isSaving}
+              disabled={dirtyFields.length === 0 && !locationError || isSaving}
               onClick={handleSave}
             >
               {isSaving ? (

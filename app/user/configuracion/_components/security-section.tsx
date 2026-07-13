@@ -21,6 +21,7 @@ export function SecuritySection() {
 
     setIsLoading(true)
     try {
+      if (!user?.email) throw new Error('No se encontró tu correo electrónico')
       await authApi.forgotPassword(user.email)
       toast.success('Se ha enviado un enlace a tu correo electrónico.')
       setIsEmailSent(true)

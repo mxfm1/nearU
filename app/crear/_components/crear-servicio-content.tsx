@@ -255,27 +255,21 @@ function MultiImageUpload({ images, onChange, max = 4 }: MultiImageUploadProps) 
 export function CrearServicioContent() {
   const router = useRouter()
   const [activeStep, setActiveStep] = useState('brand-essentials')
-  const [selectedRegionId, setSelectedRegionId] = useState('')
 
   // ── Queries ──
 
-  const { data: categoriasRes, isLoading: catsLoading } = useQuery({
+  const { data: categoriasRes, isLoading: catsLoading, isError: catsError, error: catsErrorObj } = useQuery({
     queryKey: ['categorias', 'service'],
     queryFn: () => catalogoApi.categorias('service'),
   })
 
-  const { data: regionesRes, isLoading: regionesLoading } = useQuery({
-    queryKey: ['regiones'],
-    queryFn: () => catalogoApi.regiones(),
+  const { data: ubicacionesRes, isLoading: ubicacionesLoading, isError: ubicacionesError, error: ubicacionesErrorObj } = useQuery({
+    queryKey: ['ubicaciones'],
+    queryFn: () => catalogoApi.ubicaciones(),
   })
 
   const categorias = categoriasRes?.data ?? []
-  const regiones = regionesRes?.data ?? []
-
-  const selectedRegion = useMemo(
-    () => regiones.find((r) => r.id === selectedRegionId),
-    [regiones, selectedRegionId],
-  )
+  const ubicaciones = ubicacionesRes?.data ?? []
 
   // ── Form ──
 
@@ -290,13 +284,13 @@ export function CrearServicioContent() {
       priceMin: '',
       priceMax: '',
       availability: '',
-      contactInfo: [{ type: 'email', value: '' }],
+      contacts: [{ type: 'email', value: '' }],
       categoryId: '',
       locationId: '',
       bannerUrl: '',
       thumbnailUrl: '',
       serviceImages: [],
-      serviceStatus: 'draft',
+      status: 'draft',
     },
   })
 
@@ -312,7 +306,7 @@ export function CrearServicioContent() {
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'contactInfo',
+    name: 'contacts',
   })
 
   // ── Mutation ──
@@ -326,6 +320,10 @@ export function CrearServicioContent() {
       }
     },
   })
+
+  if (mutation.isError) {
+    console.log("mutation error", mutation.error)
+  }
 
   // ── Handlers ──
 
@@ -351,23 +349,23 @@ export function CrearServicioContent() {
       priceMin: data.priceMin ? Number(data.priceMin) : null,
       priceMax: data.priceMax ? Number(data.priceMax) : null,
       availability: data.availability || null,
-      contactInfo: data.contactInfo?.filter((c) => c.value.trim()) ?? [],
+      contacts: data.contacts?.filter((c) => c.value.trim()) ?? [],
       categoryId: data.categoryId || null,
       locationId: data.locationId || null,
       bannerUrl: data.bannerUrl || null,
       thumbnailUrl: data.thumbnailUrl || null,
       portfolio: portfolioImages,
-      serviceStatus: data.serviceStatus,
+      status: data.status,
     }
   }
 
   function handleFormSubmit(data: CrearServicioFormValues) {
-    mutation.mutate(buildPayload(data))
+    mutation.mutate({ ...buildPayload(data), status: 'published' })
   }
 
   function handleSaveDraft() {
     const data = form.getValues()
-    mutation.mutate({ ...buildPayload(data), serviceStatus: 'draft' })
+    mutation.mutate({ ...buildPayload(data), status: 'draft' })
   }
 
   const contactTypes = [
@@ -380,8 +378,8 @@ export function CrearServicioContent() {
     { value: 'twitter', label: 'X' },
   ] as const
 
-  const bannerUrl = form.watch('bannerUrl')
-  const thumbnailUrl = form.watch('thumbnailUrl')
+  const bannerUrl = form.watch('bannerUrl') ?? ''
+  const thumbnailUrl = form.watch('thumbnailUrl') ?? ''
   const serviceImages = form.watch('serviceImages') ?? []
 
   return (
@@ -402,6 +400,20 @@ export function CrearServicioContent() {
               <div className="flex items-center gap-2 p-4 mb-6 rounded-md bg-destructive/10 text-destructive text-sm">
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
                 <span>{mutation.error instanceof Error ? mutation.error.message : 'Error al crear el servicio.'}</span>
+              </div>
+            )}
+
+            {catsError && (
+              <div className="flex items-center gap-2 p-3 mb-4 rounded-md bg-destructive/10 text-destructive text-sm">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                <span>Error al cargar categorías: {catsErrorObj instanceof Error ? catsErrorObj.message : 'Error desconocido'}</span>
+              </div>
+            )}
+
+            {ubicacionesError && (
+              <div className="flex items-center gap-2 p-3 mb-4 rounded-md bg-destructive/10 text-destructive text-sm">
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                <span>Error al cargar ubicaciones: {ubicacionesErrorObj instanceof Error ? ubicacionesErrorObj.message : 'Error desconocido'}</span>
               </div>
             )}
 
@@ -496,52 +508,31 @@ export function CrearServicioContent() {
                     />
                   </div>
 
-                  {/* Región + Ubicación */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium leading-none">Región</label>
-                      <Select
-                        onValueChange={(value) => {
-                          setSelectedRegionId(value)
-                          form.setValue('locationId', '')
-                        }}
-                        value={selectedRegionId}
-                        disabled={regionesLoading}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder={regionesLoading ? 'Cargando...' : 'Seleccioná una región'} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {regiones.map((r) => (
-                            <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <FormField
-                      control={form.control}
-                      name="locationId"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Ubicación</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value} disabled={!selectedRegionId}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder={!selectedRegionId ? 'Primero elegí región' : 'Seleccioná una ubicación'} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {selectedRegion?.locations.map((loc) => (
-                                <SelectItem key={loc.id} value={loc.id}>{loc.name}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  {/* Ubicación */}
+                  <FormField
+                    control={form.control}
+                    name="locationId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Ubicación</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Seleccioná una ubicación" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {ubicaciones.map((ubicacion) => (
+                              <SelectItem key={ubicacion.id} value={ubicacion.id}>
+                                {ubicacion.region.name} — {ubicacion.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 {/* ── Section 02: Detalles + Imágenes ── */}
@@ -634,7 +625,7 @@ export function CrearServicioContent() {
                       <div key={field.id} className="flex items-start gap-3">
                         <FormField
                           control={form.control}
-                          name={`contactInfo.${index}.type`}
+                          name={`contacts.${index}.type`}
                           render={({ field: tf }) => (
                             <FormItem className="w-[140px] flex-shrink-0">
                               <Select onValueChange={tf.onChange} defaultValue={tf.value}>
@@ -654,17 +645,17 @@ export function CrearServicioContent() {
 
                         <FormField
                           control={form.control}
-                          name={`contactInfo.${index}.value`}
+                          name={`contacts.${index}.value`}
                           render={({ field: vf }) => (
                             <FormItem className="flex-1">
                               <FormControl>
                                 <Input
                                   placeholder={
-                                    form.watch(`contactInfo.${index}.type`) === 'email'
+                                    form.watch(`contacts.${index}.type`) === 'email'
                                       ? 'correo@ejemplo.cl'
-                                      : form.watch(`contactInfo.${index}.type`) === 'whatsapp'
+                                      : form.watch(`contacts.${index}.type`) === 'whatsapp'
                                         ? '+56912345678'
-                                        : form.watch(`contactInfo.${index}.type`) === 'website'
+                                        : form.watch(`contacts.${index}.type`) === 'website'
                                           ? 'https://ejemplo.cl'
                                           : 'Valor'
                                   }
