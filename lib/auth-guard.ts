@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const API_BASE = process.env.API_URL
+const API_BASE = process.env.NEXT_PUBLIC_API_RAW_URL || process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || ''
 
 export async function requireAuth(): Promise<void> {
   const cookieStore = await cookies()
