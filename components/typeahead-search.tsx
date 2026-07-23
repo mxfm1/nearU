@@ -127,12 +127,12 @@ export function TypeaheadSearch({
   })
 
   const serviciosPublicados = useMemo(
-    () => (serviciosRes?.data ?? []).filter((s) => s.status.slug === 'published'),
+    () => (serviciosRes?.data ?? []).filter((s) => s.status?.slug === 'published'),
     [serviciosRes],
   )
 
   const eventosPublicados = useMemo(
-    () => (eventosRes?.data ?? []).filter((e) => e.eventStatus === 'published'),
+    () => (eventosRes?.data ?? []).filter((e) => (e as any).eventStatus === 'published'),
     [eventosRes],
   )
 
@@ -147,34 +147,36 @@ export function TypeaheadSearch({
     // Empresas (agrupadas por marca única)
     const seenEmpresas = new Set<string>()
     serviciosPublicados.forEach((s) => {
-      const name = s.marca || s.title
+      const name = s.marca || s.title || ''
       if (!normalize(name).includes(normalizedQuery)) return
       if (seenEmpresas.has(name)) return
       seenEmpresas.add(name)
       results.push({
-        id: `empresa-${s.slug}`,
+        id: `empresa-${s.slug ?? ''}`,
         label: name,
         description: s.category?.name ?? 'Proveedor',
         type: 'empresa',
-        href: `/servicios/${s.slug}`,
+        href: `/servicios/${s.slug ?? ''}`,
       })
     })
 
     // Servicios
     serviciosPublicados.forEach((s) => {
-      if (!normalize(s.title).includes(normalizedQuery)) return
+      const title = s.title || ''
+      if (!normalize(title).includes(normalizedQuery)) return
       results.push({
-        id: `servicio-${s.id}`,
-        label: s.title,
+        id: `servicio-${s.id ?? ''}`,
+        label: title,
         description: s.marca || s.category?.name || 'Servicio',
         type: 'servicio',
-        href: `/servicios/${s.slug}`,
+        href: `/servicios/${s.slug ?? ''}`,
       })
     })
 
     // Eventos
     eventosPublicados.forEach((e) => {
-      if (!normalize(e.title).includes(normalizedQuery)) return
+      const title = e.title || ''
+      if (!normalize(title).includes(normalizedQuery)) return
       const dateStr = e.startAt
         ? new Date(e.startAt).toLocaleDateString('es-ES', {
             day: 'numeric',
@@ -183,11 +185,11 @@ export function TypeaheadSearch({
           })
         : ''
       results.push({
-        id: `evento-${e.id}`,
-        label: e.title,
+        id: `evento-${e.id ?? ''}`,
+        label: title,
         description: dateStr || e.location?.name || 'Evento',
         type: 'evento',
-        href: `/search?q=${encodeURIComponent(e.title)}&type=eventos`,
+        href: `/search?q=${encodeURIComponent(e.title ?? '')}&type=eventos`,
       })
     })
 

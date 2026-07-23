@@ -1,3 +1,5 @@
 allowBuilds:
+  '@sentry/cli': true
+  esbuild: false
   msgpackr-extract: false
   sharp: false

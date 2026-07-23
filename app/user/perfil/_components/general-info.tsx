@@ -8,32 +8,15 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
-const INDUSTRIES = [
-  'Agricultura Orgánica',
-  'Arquitectura',
-  'Consultoría',
-  'Energía',
-  'Educación',
-  'Tecnología',
-]
 
 interface GeneralInfoProps {
   name: string
-  industry: string
   description: string
   tags: string[]
   onChange: (field: string, value: unknown) => void
 }
 
-export function GeneralInfo({ name, industry, description, tags, onChange }: GeneralInfoProps) {
+export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoProps) {
   const [newTag, setNewTag] = useState('')
 
   const handleAddTag = () => {
@@ -56,33 +39,14 @@ export function GeneralInfo({ name, industry, description, tags, onChange }: Gen
           <h2 className="text-lg font-semibold text-foreground">Información General</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
-              Nombre de la Empresa
-            </Label>
-            <Input
-              value={name}
-              onChange={(e) => onChange('name', e.target.value)}
-            />
-          </div>
-          <div>
-            <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
-              Rubro / Industria
-            </Label>
-            <Select value={industry} onValueChange={(v) => onChange('industry', v)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {INDUSTRIES.map((ind) => (
-                  <SelectItem key={ind} value={ind}>
-                    {ind}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="mb-4">
+          <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
+            Nombre de la Empresa
+          </Label>
+          <Input
+            value={name}
+            onChange={(e) => onChange('name', e.target.value)}
+          />
         </div>
 
         <div className="mb-4">

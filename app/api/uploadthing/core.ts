@@ -105,7 +105,7 @@ export const ourFileRouter = {
     }),
 
   messageFile: f({
-    blob: { maxFileSize: '10MB', maxFileCount: 5 },
+    blob: { maxFileSize: '8MB', maxFileCount: 5 },
   })
     .middleware(async () => {
       return { userId: 'anonymous' }

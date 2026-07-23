@@ -17,7 +17,7 @@ function filterProviders(
   region: string,
 ): ServicioResumen[] {
   return providers.filter((p) => {
-    const name = normalize(p.marca)
+    const name = normalize(p.marca ?? '')
     const catName = normalize(p.category?.name ?? '')
     const locName = normalize(p.location?.name ?? '')
     const query = normalize(q)
@@ -55,7 +55,7 @@ function filterEvents(
   dateTo: string,
 ): EventoResumen[] {
   return events.filter((e) => {
-    const title = normalize(e.title)
+    const title = normalize(e.title ?? '')
     const description = normalize(e.description ?? '')
     const query = normalize(q)
     const catNorm = normalize(category)
@@ -77,7 +77,7 @@ function filterEvents(
       }
     }
     if (dateFrom || dateTo) {
-      const eventDate = parseISO(e.startAt)
+      const eventDate = parseISO(e.startAt ?? '')
       if (eventDate) {
         if (dateFrom) {
           const fromDate = new Date(dateFrom)

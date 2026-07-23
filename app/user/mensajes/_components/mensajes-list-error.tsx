@@ -2,12 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: 'easeOut' },
-}
+import { fadeInUp } from './constants'
 
 interface MensajesListErrorProps {
   error: Error

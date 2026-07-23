@@ -13,7 +13,6 @@ const HIDDEN_ROUTE_PREFIXES = [
 
 const HIDDEN_ROUTE_EXACT = [
   '/',
-
 ]
 
 function shouldHideSidebar(pathname: string): boolean {
@@ -21,18 +20,10 @@ function shouldHideSidebar(pathname: string): boolean {
   return HIDDEN_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix))
 }
 
-const HIDDEN_FOOTER_ROUTE_PREFIXES = [
-  '/auth',
-  '/reset-password',
-  '/verify-email',
-  '/user',
-]
-
-const HIDDEN_FOOTER_ROUTE_EXACT = []
+const SHOW_FOOTER_ROUTES = ['/']
 
 function shouldHideFooter(pathname: string): boolean {
-  if (HIDDEN_FOOTER_ROUTE_EXACT.includes(pathname)) return true
-  return HIDDEN_FOOTER_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix))
+  return !SHOW_FOOTER_ROUTES.includes(pathname)
 }
 
 function getSidebarConfig(pathname: string) {

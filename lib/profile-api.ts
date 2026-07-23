@@ -1,41 +1,40 @@
 import { apiFetch } from './api-client'
+import type { paths } from '@/types/contracts/api-contracts-types'
 
-export type SocialLink = {
-  id?: string
-  platform: string
-  url: string
-  orden?: number
-}
+// --- Types from OpenAPI Contract ---
 
-export type Profile = {
-  id: string
-  userId: string
-  bannerUrl: string | null
-  logoUrl: string | null
-  name: string
-  industry: string
-  description: string
-  tags: string[]
-  location: string
-  founded: string
-  employees: string
-  website: string
-  whatsapp: string
-  socialLinks: SocialLink[]
-  createdAt: string
-  updatedAt: string
-}
+type ProfileResponse = NonNullable<
+  paths['/api/profiles/{userId}']['get']['responses']['200']['content']['application/json']['data']
+>
 
-export type UpdateProfileData = Partial<
-  Omit<Profile, 'id' | 'userId' | 'createdAt' | 'updatedAt' | 'location'>
-> & { locationId?: string }
+type UpdateProfileResponse = NonNullable<
+  paths['/api/profiles/me']['patch']['responses']['200']['content']['application/json']['data']
+>
+
+// --- Re-export ---
+
+export type Profile = ProfileResponse
+
+export type SocialLink = NonNullable<ProfileResponse['socialLinks']>[number]
+
+export type UpdateProfileData = NonNullable<
+  paths['/api/profiles/me']['patch']['requestBody']
+>['content']['application/json']
+
+// --- API Functions ---
 
 export const profileApi = {
   getByUserId: (userId: string) =>
     apiFetch<{ success: boolean; data: Profile }>(`/profiles/${userId}`),
 
+  getById: (profileId: string) =>
+    apiFetch<{ success: boolean; data: Profile }>(`/profiles/id/${profileId}`),
+
+  getMyProfile: (userId: string) =>
+    apiFetch<{ success: boolean; data: Profile }>(`/profiles/${userId}`),
+
   updateMine: (data: UpdateProfileData) =>
-    apiFetch<{ success: boolean; data: Profile }>('/profiles/me', {
+    apiFetch<{ success: boolean; data: UpdateProfileResponse }>('/profiles/me', {
       method: 'PATCH',
       body: JSON.stringify(data),
     }),

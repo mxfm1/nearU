@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/use-auth'
@@ -23,13 +23,13 @@ const privateLinks = [
   { label: 'Bandeja', href: '/user/inbox' },
 ]
 
-const menuVariants = {
+const menuVariants: Variants = {
   closed: {
     opacity: 0,
     height: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeInOut',
+      ease: 'easeInOut' as const,
     },
   },
   open: {
@@ -37,12 +37,12 @@ const menuVariants = {
     height: 'auto',
     transition: {
       duration: 0.3,
-      ease: 'easeInOut',
+      ease: 'easeInOut' as const,
     },
   },
 }
 
-const linkVariants = {
+const linkVariants: Variants = {
   closed: { opacity: 0, x: -20 },
   open: (i: number) => ({
     opacity: 1,
@@ -50,7 +50,7 @@ const linkVariants = {
     transition: {
       delay: i * 0.05,
       duration: 0.3,
-      ease: 'easeOut',
+      ease: 'easeOut' as const,
     },
   }),
 }

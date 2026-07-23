@@ -1,41 +1,50 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { Search, SlidersHorizontal, RefreshCw } from 'lucide-react'
-import { mensajesApi, type ConversationListItem } from '@/lib/mensajes-api'
+import { Search } from 'lucide-react'
+import type { ConversationListItem } from '@/lib/mensajes-api'
+import { fadeInUp, type FilterType } from './constants'
+import { MensajesListCard } from './mensajes-list-card'
 import { MensajesListError } from './mensajes-list-error'
 import { MensajesListEmpty } from './mensajes-list-empty'
-import { MensajesListCard } from './mensajes-list-card'
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: 'easeOut' },
+interface MensajesListContentProps {
+  conversations: ConversationListItem[]
+  isLoading?: boolean
+  isError?: boolean
+  error?: Error | null
+  onRetry?: () => void
 }
 
-type FilterType = 'all' | 'unread' | 'events'
-
-export function MensajesListContent() {
+export function MensajesListContent({
+  conversations,
+  isLoading,
+  isError,
+  error,
+  onRetry,
+}: MensajesListContentProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const currentFilter = (searchParams.get('filter') as FilterType) || 'all'
   const searchQuery = searchParams.get('q') || ''
 
-  const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['threads'],
-    queryFn: () => mensajesApi.getConversations(),
-  })
-
-  // Log del error al inicio del componente
-  if (isError) {
-    console.error('[MensajesListContent] Error fetching threads:', error)
+  if (isLoading) {
+    return null
   }
 
-  console.log("thread list",data)
+  if (isError) {
+    return (
+      <MensajesListError
+        error={error instanceof Error ? error : new Error('Error desconocido')}
+        onRetry={onRetry ?? (() => {})}
+      />
+    )
+  }
 
-  const conversations: ConversationListItem[] = data || []
+  if (conversations.length === 0) {
+    return <MensajesListEmpty />
+  }
 
   // Filtrar conversaciones
   const filteredConversations = conversations.filter((conv) => {
@@ -53,7 +62,6 @@ export function MensajesListContent() {
     if (currentFilter === 'unread' && conv.unreadCount === 0) {
       return false
     }
-    // 'events' filter would need event-specific logic
     return true
   })
 
@@ -78,23 +86,6 @@ export function MensajesListContent() {
     router.replace(`/user/mensajes?${params.toString()}`)
   }
 
-  if (isLoading) {
-    return null
-  }
-
-  if (isError) {
-    return (
-      <MensajesListError
-        error={error instanceof Error ? error : new Error('Error desconocido')}
-        onRetry={() => refetch()}
-      />
-    )
-  }
-
-  if (conversations.length === 0) {
-    return <MensajesListEmpty />
-  }
-
   return (
     <motion.div {...fadeInUp} className="flex flex-col h-full">
       {/* Header */}
@@ -105,17 +96,6 @@ export function MensajesListContent() {
             <p className="text-sm text-muted-foreground mt-1">
               Gestiona tus comunicaciones con proveedores y socios.
             </p>
-          </div>
-          <div className="flex gap-2">
-            {/* <button className="p-2 border border-border rounded-lg hover:bg-muted transition-colors">
-              <SlidersHorizontal className="w-5 h-5 text-muted-foreground" />
-            </button>
-            <button 
-              onClick={() => refetch()}
-              className="p-2 border border-border rounded-lg hover:bg-muted transition-colors"
-            >
-              <RefreshCw className="w-5 h-5 text-muted-foreground" />
-            </button> */}
           </div>
         </div>
 

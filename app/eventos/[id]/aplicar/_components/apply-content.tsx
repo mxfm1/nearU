@@ -76,7 +76,7 @@ export function ApplyContent({ eventId }: ApplyContentProps) {
   return (
     <ApplyForm
       eventId={eventId}
-      eventTitle={event.title}
+      eventTitle={event.title ?? ''}
     />
   )
 }

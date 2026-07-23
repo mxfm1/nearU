@@ -1,106 +1,24 @@
 import { apiFetch } from './api-client'
+import type { ServicioListItem, ServicioDetalle, CreateServicioPayload, UpdateServicioPayload } from '@/types/contracts/services'
 
-// --- Tipos públicos ---
+// Re-export contract types for consumers
+export type { ServicioListItem as ServicioResumen, ServicioDetalle, CreateServicioPayload, UpdateServicioPayload }
 
-export type Category = {
-  id: string
-  name: string
-}
-
-export type Location = {
-  id: string
-  name: string
-}
-
-export type ProfileRef = {
-  id: string
-  name: string
-  slug: string
-}
-
-export type ContactInfo = {
-  type: 'email' | 'telefono' | 'whatsapp' | 'website' | 'instagram' | 'facebook' | 'twitter'
-  value: string
-}
-
-export type PortfolioImage = {
-  url: string
-  title?: string
-  description?: string
-}
-
-export type ServicioResumen = {
-  id: string
-  profileId: string
-  slug: string
-  title: string
-  marca: string | null
-  description: string | null
-  yearsExperience: number | null
-  priceMin: number | null
-  priceMax: number | null
-  availability: string | null
-  bannerUrl: string | null
-  logoUrl: string | null
-  thumbnailUrl: string | null
-  contacts: (ContactInfo & { id?: string; readAt?: string | null; respondedAt?: string | null })[] | null
-  portfolio: PortfolioImage[]
-  location: { id: string; name: string } | null
-  category: { id: string; name: string } | null
-  profile: { id: string; name: string; slug: string }
-  status: { id: string; name: string; slug: string }
-  createdAt: string
-  updatedAt: string
-}
-
-export type ServicioDetalle = ServicioResumen
+// Legacy aliases for backward compatibility
+export type Category = { id: string; name: string }
+export type Location = { id: string; name: string }
+export type ProfileRef = { id: string; name: string; slug: string }
+export type ContactInfo = { type: string; value: string; id?: string; readAt?: string | null; respondedAt?: string | null }
+export type PortfolioImage = { id?: string; url: string; title?: string | null; description?: string | null; orden?: number }
 
 // --- API Client ---
 
-export type CreateServicioPayload = {
-  slug: string
-  title: string
-  marca?: string | null
-  description?: string | null
-  yearsExperience?: number | null
-  priceMin?: number | null
-  priceMax?: number | null
-  availability?: string | null
-  contacts?: ContactInfo[]
-  bannerUrl?: string | null
-  logoUrl?: string | null
-  thumbnailUrl?: string | null
-  locationId?: string | null
-  categoryId?: string | null
-  status?: 'draft' | 'published' | 'paused' | 'archived'
-  portfolio?: PortfolioImage[]
-}
-
-export type UpdateServicioPayload = Partial<{
-  slug: string
-  title: string
-  marca: string | null
-  description: string | null
-  yearsExperience: number | null
-  priceMin: number | null
-  priceMax: number | null
-  availability: string | null
-  contacts: ContactInfo[]
-  bannerUrl: string | null
-  logoUrl: string | null
-  thumbnailUrl: string | null
-  locationId: string | null
-  categoryId: string | null
-  status: 'draft' | 'published' | 'paused' | 'archived'
-  portfolio: PortfolioImage[]
-}>
-
 export const serviciosApi = {
   misServicios: () =>
-    apiFetch<{ success: boolean; data: ServicioResumen[] }>('/mis-servicios'),
+    apiFetch<{ success: boolean; data: ServicioListItem[] }>('/mis-servicios'),
 
   list: () =>
-    apiFetch<ServicioResumen[]>('/servicios'),
+    apiFetch<{ success: boolean; data: ServicioListItem[] }>('/servicios'),
 
   getById: (id: string) =>
     apiFetch<{ success: boolean; data: ServicioDetalle }>(`/servicios/${id}`),

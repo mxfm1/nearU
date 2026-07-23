@@ -16,6 +16,12 @@ interface UserApplicationDetailContentProps {
   applicationId: string
 }
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: 'easeOut' as const },
+}
+
 function getStatusConfig(status: ApplicationStatus) {
   switch (status) {
     case 'pending':
@@ -29,12 +35,6 @@ function getStatusConfig(status: ApplicationStatus) {
     default:
       return { label: status, bg: 'bg-muted', text: 'text-muted-foreground', border: 'border-border', icon: Clock }
   }
-}
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: 'easeOut' },
 }
 
 function ScoreCircle({ score, maxScore }: { score: number; maxScore: number }) {
@@ -83,7 +83,7 @@ export function UserApplicationDetailContent({ eventId, applicationId }: UserApp
 
   const event = eventRes?.data
   const application = applicationRes?.data
-  const statusConfig = application ? getStatusConfig(application.status) : null
+  const statusConfig = application?.status ? getStatusConfig(application.status as ApplicationStatus) : null
 
   if (isLoading) {
     return (
@@ -185,7 +185,7 @@ export function UserApplicationDetailContent({ eventId, applicationId }: UserApp
                   Información de la postulación
                 </h3>
                 <span className="text-sm text-muted-foreground">
-                  Recibido el {new Date(application.createdAt).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  Recibido el {application.createdAt ? new Date(application.createdAt).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Fecha no disponible'}
                 </span>
               </div>
 

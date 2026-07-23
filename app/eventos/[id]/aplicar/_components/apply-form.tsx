@@ -33,6 +33,7 @@ import { Button } from '@/components/ui/button'
 
 import { ApplicationFormSchema, type ApplicationFormValues } from '@/components/forms/schemas'
 import { applicationsApi } from '@/lib/applications-api'
+import type { RuleFieldConfig } from '@/lib/domain/application-rules'
 
 import { ApplyStepper } from './apply-stepper'
 import { ApplyPending } from './apply-pending'
@@ -47,7 +48,7 @@ interface ApplyFormProps {
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.4, ease: 'easeOut' },
+  transition: { duration: 0.4 },
 }
 
 export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
@@ -68,8 +69,8 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
   // If application exists, set step based on status
   useEffect(() => {
     if (existingApplication) {
-      setApplicationId(existingApplication.id)
-      setApplicationStatus(existingApplication.status)
+      setApplicationId(existingApplication.id ?? null)
+      setApplicationStatus((existingApplication.status as ApplicationStatus) ?? null)
       if (existingApplication.status === 'pending') {
         setCurrentStep(1)
       } else if (existingApplication.status === 'reviewing') {
@@ -94,11 +95,11 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
     mutationFn: (payload: ApplicationFormValues) =>
       applicationsApi.create({
         eventId,
-        coverLetter: payload.coverLetter || null,
+        coverLetter: payload.coverLetter || undefined,
       }),
     onSuccess: (res) => {
       setSubmitError(null)
-      setApplicationId(res.data.id)
+      setApplicationId(res.data.id ?? null)
       toast.success('¡Postulación enviada con éxito!', {
         duration: 3000,
         icon: '🎉',
@@ -352,12 +353,14 @@ interface RuleFieldProps {
 }
 
 function RuleField({ rule, form }: RuleFieldProps) {
+  const fieldName = `scoringFieldValues.${rule.ruleType}` as keyof ApplicationFormValues
+
   switch (rule.inputType) {
     case 'toggle':
       return (
         <FormField
           control={form.control}
-          name={`scoringFieldValues.${rule.ruleType}`}
+          name={fieldName}
           render={({ field }) => (
             <FormItem className="flex items-center justify-between rounded-lg border border-border p-4">
               <div className="space-y-0.5">
@@ -383,7 +386,7 @@ function RuleField({ rule, form }: RuleFieldProps) {
       return (
         <FormField
           control={form.control}
-          name={`scoringFieldValues.${rule.ruleType}`}
+          name={fieldName}
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium text-foreground">
@@ -394,15 +397,15 @@ function RuleField({ rule, form }: RuleFieldProps) {
                   type="text"
                   inputMode="numeric"
                   placeholder={rule.placeholder}
-                  value={field.value === '' || field.value === 0 ? '' : String(field.value)}
+                  value={!field.value ? '' : String(field.value)}
                   onChange={(e) => {
                     const val = e.target.value
                     if (val === '') {
-                      field.onChange('')
+                      field.onChange('' as never)
                     } else {
                       const num = Number(val)
                       if (!isNaN(num)) {
-                        field.onChange(num)
+                        field.onChange(num as never)
                       }
                     }
                   }}
@@ -419,7 +422,7 @@ function RuleField({ rule, form }: RuleFieldProps) {
       return (
         <FormField
           control={form.control}
-          name={`scoringFieldValues.${rule.ruleType}`}
+          name={fieldName}
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-medium text-foreground">

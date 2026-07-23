@@ -92,6 +92,11 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
     return () => clearInterval(interval)
   }, [isVisible, threadId, queryClient])
 
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messagesQuery.data])
+
   // Log del error al inicio del componente
   if (threadQuery.isError) {
     console.error('[MensajesContent] Error fetching thread:', threadQuery.error)
@@ -116,7 +121,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
   }
 
   // El endpoint devuelve directamente el objeto sin wrapper
-  const conversation: Conversation = threadQuery.data as Conversation
+  const conversation: Conversation | undefined = threadQuery.data?.data
 
   if (!conversation) {
     return (
@@ -129,7 +134,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
 
   // Obtener los mensajes y agregar la propiedad isFromCurrentUser
   // El endpoint de mensajes también devuelve directamente el array
-  const rawMessages: Mensaje[] = messagesQuery.data?.data || messagesQuery.data || []
+  const rawMessages = messagesQuery.data?.data ?? []
   
   // Extraer mensajes SYSTEM para el banner (derived state, no effect needed)
   const systemMessages = rawMessages.filter(
@@ -146,13 +151,6 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
     senderAvatar: msg.senderLogoUrl,
     isRead: !!msg.readAt,
   }))
-
-  // Auto-scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [mensajes])
-
-  // Determinar quién es "el otro" usuario
   // Si el usuario actual es el applicant, el otro es el organizer
   // Si el usuario actual es el organizer, el otro es el applicant
   const isApplicant = user?.id === conversation.applicantUserId

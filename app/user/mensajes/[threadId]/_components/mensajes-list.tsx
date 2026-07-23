@@ -5,6 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Download, FileText, CheckCheck, X, Image as ImageIcon } from 'lucide-react'
 import type { Mensaje } from '@/lib/mensajes-api'
 
+interface ExtendedMensaje extends Mensaje {
+  timestamp: string
+  senderAvatar: string | null
+  isFromCurrentUser: boolean
+  isRead: boolean
+}
+
 const container = {
   animate: { transition: { staggerChildren: 0.1 } },
 }
@@ -15,7 +22,7 @@ const item = {
 }
 
 interface MensajesListProps {
-  mensajes: Mensaje[]
+  mensajes: ExtendedMensaje[]
 }
 
 function formatTime(isoString: string): string {
@@ -86,7 +93,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const sortedMensajes = [...mensajes].sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   )
 
   return (
@@ -107,7 +114,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
               <SystemMessage
                 key={mensaje.id}
                 content={mensaje.content || 'Mensaje del sistema'}
-                timestamp={mensaje.timestamp}
+                timestamp={mensaje.createdAt}
               />
             )
           }
@@ -115,9 +122,9 @@ export function MensajesList({ mensajes }: MensajesListProps) {
           const showDateDivider =
             index === 0 ||
             sortedMensajes[index - 1].messageType === 'SYSTEM' ||
-            !isToday(mensaje.timestamp) ||
-            isToday(sortedMensajes[index - 1].timestamp) !==
-              isToday(mensaje.timestamp)
+            !isToday(mensaje.createdAt) ||
+            isToday(sortedMensajes[index - 1].createdAt) !==
+              isToday(mensaje.createdAt)
 
           return (
             <motion.div key={mensaje.id} variants={item}>

@@ -1,6 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { serviciosApi, type ServicioDetalle } from '@/lib/servicios-api'
+import { ServicesQueryOptions } from '@/queries/service.queries'
 
 export interface UseServiceResult {
   service: ServicioDetalle | null
@@ -33,16 +34,10 @@ export function useService(id: string): UseServiceResult {
   }
 }
 
-
-export const useServicesList = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['servicios'],
-    queryFn: () => serviciosApi.list(),
-  })
-
-  return {
-    services: data?.success ? data.data : [],
-    isLoading,
-    error: error?.errorCode
+export const useServices = () => {
+  return useQuery({
+    ...ServicesQueryOptions(),
+    select: (res) => res?.data
   }
+  )
 }

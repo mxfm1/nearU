@@ -90,10 +90,10 @@ export function DigitalPresence({ website, whatsapp, socialLinks, onChange }: Di
                 {socialLinks.map((link, index) => (
                   <div key={link.id ?? index} className="flex items-center gap-2">
                     <div className="flex items-center justify-center w-8 h-8 rounded-md bg-muted shrink-0">
-                      {getSocialIcon(link.platform, 'h-4 w-4 text-muted-foreground')}
+                      {getSocialIcon(link.platform || '', 'h-4 w-4 text-muted-foreground')}
                     </div>
                     <span className="text-xs font-medium text-muted-foreground w-20 truncate uppercase shrink-0">
-                      {link.platform}
+                      {link.platform || ''}
                     </span>
                     <Input
                       placeholder={`URL de ${link.platform}`}

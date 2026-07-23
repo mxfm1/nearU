@@ -26,7 +26,7 @@ export function ServicePageContent({ id }: ServicePageContentProps) {
   return (
     <div className="w-full">
       <div className="relative">
-        <BannerSection src={service.bannerUrl ?? undefined} alt={service.marca} />
+        <BannerSection src={service.bannerUrl ?? undefined} alt={service.marca ?? ''} />
       </div>
 
       <div className="relative z-10 -mt-16 sm:-mt-20 px-4 sm:px-6 sm:pr-4">
@@ -34,10 +34,10 @@ export function ServicePageContent({ id }: ServicePageContentProps) {
           <div className="lg:col-span-8">
 
             <ServiceDetail
-              title={service.title}
-              description={service.description}
+              title={service.title ?? ''}
+              description={service.description ?? ''}
               categoryName={service.category?.name ?? 'Sin categoría'}
-              companyName={service.marca}
+              companyName={service.marca ?? ''}
               location={service.location?.name ?? 'Ubicación no disponible'}
             />
           </div>
@@ -45,9 +45,9 @@ export function ServicePageContent({ id }: ServicePageContentProps) {
           <div className="lg:col-span-4">
             <div className="sticky top-24">
               <ContactSection
-                contactInformation={service.contacts ?? []}
-                profileId={service.profileId}
-                slug={service.slug}
+                contactInformation={service.contacts as never}
+                profileId={service.profileId ?? ''}
+                slug={service.slug ?? ''}
               />
             </div>
           </div>
@@ -57,7 +57,7 @@ export function ServicePageContent({ id }: ServicePageContentProps) {
       <div className="px-4 sm:px-6 mt-8">
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-12">
-            <PortfolioSection portfolio={service.portfolio} />
+            <PortfolioSection portfolio={service.portfolio as never} />
           </div>
         </div>
       </div>

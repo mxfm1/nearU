@@ -42,22 +42,22 @@ export function SearchResults({
           item.type === 'provider' ? (
             <ProviderCard
               key={item.data.id}
-              name={item.data.marca}
+              name={item.data.marca ?? ''}
               category={item.data.category?.name ?? 'Sin categoría'}
               verified={false}
               location={item.data.location?.name ?? 'Ubicación no disponible'}
               thumbnail={item.data.thumbnailUrl ?? 'https://placehold.co/400x300?text=Sin+imagen'}
-              slug={item.data.slug}
+              slug={item.data.slug ?? ''}
             />
           ) : (
             <EventCard
               key={item.data.id}
-              title={item.data.title}
-              description={item.data.description}
-              date={formatEventDate(item.data.startAt)}
+              title={item.data.title ?? ''}
+              description={item.data.description ?? ''}
+              date={formatEventDate(item.data.startAt ?? '')}
               location={item.data.location?.name ?? 'Ubicación no disponible'}
               thumbnail={item.data.thumbnailUrl ?? 'https://placehold.co/400x250?text=Sin+imagen'}
-              slug={item.data.slug}
+              slug={item.data.slug ?? ''}
             />
           ),
         )}

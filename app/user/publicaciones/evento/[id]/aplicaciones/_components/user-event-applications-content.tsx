@@ -47,7 +47,6 @@ function getStatusBadge(status: ApplicationStatus) {
 }
 
 function ApplicationCard({ application }: { application: EventApplication }) {
-  console.log("aplication structure", application)
   const router = useRouter()
   const appAny = application as any
   const maxScore = appAny.score?.maxPossible || appAny.maxScore || 100

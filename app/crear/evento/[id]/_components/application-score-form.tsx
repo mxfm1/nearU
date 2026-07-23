@@ -180,7 +180,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
             {event.thumbnailUrl ? (
               <Image
                 src={event.thumbnailUrl}
-                alt={event.title}
+                alt={event.title ?? ""}
                 fill
                 className="object-cover"
                 sizes="64px"
@@ -384,11 +384,10 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
 
               {/* Total Weight Info */}
               {fields.length > 0 && (
-                <div className={`flex items-start gap-3 p-4 rounded-lg border ${
-                  totalWeight === 100
+                <div className={`flex items-start gap-3 p-4 rounded-lg border ${totalWeight === 100
                     ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
                     : 'bg-amber-50 border-amber-200 text-amber-700'
-                }`}>
+                  }`}>
                   <Info className="h-5 w-5 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
                     <p>

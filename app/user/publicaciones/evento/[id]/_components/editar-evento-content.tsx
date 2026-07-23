@@ -247,8 +247,8 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
     const locId = form.watch('locationId')
     if (locId) {
       for (const reg of regiones) {
-        if (reg.locations.some(l => l.id === locId)) {
-          setSelectedRegionId(reg.id)
+        if (reg.locations?.some(l => l.id === locId)) {
+          setSelectedRegionId(reg.id ?? '')
           return
         }
       }
@@ -283,7 +283,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
   }
 
   function handleSubmit(data: EditarEventoFormValues) {
-    mutation.mutate(buildPayload(data))
+    mutation.mutate(buildPayload(data) as never)
   }
 
   const thumbnailUrl = form.watch('thumbnailUrl') ?? ''
@@ -460,7 +460,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                         </FormControl>
                         <SelectContent>
                           {categorias.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                            <SelectItem key={cat.id} value={cat.id ?? ''}>{cat.name}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -484,7 +484,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                       </SelectTrigger>
                       <SelectContent>
                         {regiones.map((r) => (
-                          <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>
+                          <SelectItem key={r.id} value={r.id ?? ''}>{r.name}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -503,8 +503,8 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {selectedRegion?.locations.map((loc) => (
-                              <SelectItem key={loc.id} value={loc.id}>{loc.name}</SelectItem>
+                            {selectedRegion?.locations?.map((loc) => (
+                              <SelectItem key={loc.id} value={loc.id ?? ''}>{loc.name}</SelectItem>
                             ))}
                           </SelectContent>
                         </Select>

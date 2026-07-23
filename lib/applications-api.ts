@@ -1,84 +1,66 @@
 import { apiFetch } from './api-client'
+import type { paths } from '@/types/contracts/api-contracts-types'
 
-// --- Types ---
+// --- Types from OpenAPI Contract ---
+
+type ApplicationContractResponse = NonNullable<
+  paths['/api/applications/{id}']['get']['responses']['200']['content']['application/json']['data']
+>
+
+type ApplicationListContractResponse = NonNullable<
+  paths['/api/mis-aplicaciones']['get']['responses']['200']['content']['application/json']['data']
+>
+
+type EventApplicationListContractResponse = NonNullable<
+  paths['/api/events/{eventId}/applications']['get']['responses']['200']['content']['application/json']['data']
+>
+
+type CreateApplicationResponse = NonNullable<
+  paths['/api/applications']['post']['responses']['201']['content']['application/json']['data']
+>
+
+type UpdateStatusResponse = NonNullable<
+  paths['/api/applications/{id}/status']['patch']['responses']['200']['content']['application/json']['data']
+>
+
+// --- Extend with additional fields from backend ---
+
+interface ApplicantProfile {
+  name: string | null
+  logoUrl?: string | null
+  categories?: string[]
+  region?: string | null
+  isVerified?: boolean
+  rating?: number | null
+}
+
+type Application = ApplicationContractResponse & {
+  applicantProfile?: ApplicantProfile
+}
+
+type ApplicationListItem = ApplicationListContractResponse[number] & {
+  applicantProfile?: ApplicantProfile
+}
+
+type EventApplication = EventApplicationListContractResponse[number] & {
+  applicantProfile?: ApplicantProfile
+}
+
+// --- Re-export ---
 
 export type ApplicationStatus = 'pending' | 'reviewing' | 'accepted' | 'rejected'
 
-export type Application = {
-  id: string
-  eventId: string
-  applicantProfileId: string
-  coverLetter: string | null
-  portfolioUrls: string[]
-  scoringFieldValues: Record<string, unknown>
-  status: ApplicationStatus
-  score: {
-    totalScore: number
-    maxPossible: number
-    computedAt: string
-    breakdown: Array<{
-      ruleType: string
-      pointsEarned: number
-      pointsPossible: number
-      reason: string
-    }>
-  } | null
-  createdAt: string
-  updatedAt: string
-}
+export type { Application, ApplicationListItem, EventApplication }
 
-export type ApplicationListItem = {
-  id: string
-  eventId: string
-  status: ApplicationStatus
-  event: {
-    title: string
-    startAt: string | null
-  }
-  applicantProfile: {
-    name: string | null
-  }
-  createdAt: string
-}
-
-export type EventApplication = {
-  id: string
-  eventId: string
-  status: ApplicationStatus
-  score: {
-    totalScore: number
-    maxPossible: number
-  } | null
-  coverLetter: string | null
-  portfolioUrls: string[]
-  scoringFieldValues: Record<string, unknown>
-  createdAt: string
-  updatedAt: string
-  applicantProfile: {
-    id: string
-    name: string | null
-    imageUrl: string | null
-    categories: string[]
-    region: string | null
-    isVerified: boolean
-    rating: number | null
-  }
-}
-
-// --- Payloads ---
-
-export type CreateApplicationPayload = {
-  eventId: string
-  coverLetter?: string | null
-  portfolioUrls?: string[]
-  scoringFieldValues: Record<string, unknown>
-}
+export type CreateApplicationPayload = NonNullable<
+  paths['/api/applications']['post']['requestBody']
+>['content']['application/json']
 
 // --- API Functions ---
 
 export const applicationsApi = {
   async create(payload: CreateApplicationPayload) {
-    return apiFetch<{ success: boolean; data: Application }>(
+    return apiFetch<{ success: boolean; data: CreateApplicationResponse }>(
       '/applications',
       {
         method: 'POST',
@@ -95,7 +77,6 @@ export const applicationsApi = {
 
   async getById(id: string) {
     return apiFetch<{ success: boolean; data: Application }>(
-      // `/applications/${id}`
       `/applications/${id}`
     )
   },
@@ -135,7 +116,7 @@ export const applicationsApi = {
     applicationId: string,
     status: ApplicationStatus
   ) {
-    return apiFetch<{ success: boolean; data: Application }>(
+    return apiFetch<{ success: boolean; data: UpdateStatusResponse }>(
       `/applications/${applicationId}/status`,
       {
         method: 'PATCH',
@@ -144,6 +125,3 @@ export const applicationsApi = {
     )
   },
 }
-
-// /api/applications/:id
-// /api/events/{eventId}/my-application

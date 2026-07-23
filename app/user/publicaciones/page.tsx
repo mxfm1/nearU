@@ -32,7 +32,7 @@ function ServicioCard({ servicio }: { servicio: ServicioResumen }) {
                     <div className="space-y-1">
                         <div className="flex items-start justify-between gap-2">
                             <h3 className="font-semibold text-foreground truncate">{servicio.title}</h3>
-                            <ServiceStatusBadge status={servicio.status.slug} className="flex-shrink-0" />
+                            <ServiceStatusBadge status={servicio.status?.slug ?? 'draft'} className="flex-shrink-0" />
                         </div>
                         <p className="text-sm text-muted-foreground line-clamp-2">{servicio.description}</p>
                     </div>
@@ -83,7 +83,7 @@ function EventoCard({ evento }: { evento: EventoResumen }) {
                     <div className="space-y-1">
                         <div className="flex items-start justify-between gap-2">
                             <h3 className="font-semibold text-foreground truncate">{evento.title}</h3>
-                            <ServiceStatusBadge status={(evento as any).status?.slug ?? evento.eventStatus} className="flex-shrink-0" />
+                            <ServiceStatusBadge status={((evento as any).status?.slug ?? (evento as any).eventStatus) ?? 'draft'} className="flex-shrink-0" />
                         </div>
                         <p className="text-sm text-muted-foreground line-clamp-2">{evento.description}</p>
                     </div>

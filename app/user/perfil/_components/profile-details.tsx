@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { AlertCircle } from 'lucide-react'
-import { type Ubicacion } from '@/lib/catalogo-api'
+import { type Region } from '@/lib/catalogo-api'
 
 const EMPLOYEE_SIZES = [
   '1-10',
@@ -23,15 +23,15 @@ const EMPLOYEE_SIZES = [
 ]
 
 interface ProfileDetailsProps {
-  locationId: string
+  regionId: string
   founded: string
   employees: string
-  ubicaciones: Ubicacion[]
+  regiones: Region[]
   onChange: (field: string, value: unknown) => void
   locationError?: string | null
 }
 
-export function ProfileDetails({ locationId, founded, employees, ubicaciones, onChange, locationError }: ProfileDetailsProps) {
+export function ProfileDetails({ regionId, founded, employees, regiones, onChange, locationError }: ProfileDetailsProps) {
   return (
     <Card className="h-full">
       <CardContent className="p-6">
@@ -40,16 +40,16 @@ export function ProfileDetails({ locationId, founded, employees, ubicaciones, on
         <div className="space-y-4">
           <div>
             <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
-              Ubicación <span className="text-destructive">*</span>
+              Región <span className="text-destructive">*</span>
             </Label>
-            <Select value={locationId} onValueChange={(v) => onChange('locationId', v)}>
+            <Select value={regionId} onValueChange={(v) => onChange('regionId', v)}>
               <SelectTrigger className={locationError ? 'border-destructive focus:ring-destructive/20' : ''}>
-                <SelectValue placeholder="Seleccionar ubicación" />
+                <SelectValue placeholder="Seleccionar región" />
               </SelectTrigger>
               <SelectContent>
-                {ubicaciones.map((ubicacion) => (
-                  <SelectItem key={ubicacion.id} value={ubicacion.id}>
-                    {ubicacion.name}
+                {regiones.map((region) => (
+                  <SelectItem key={region.id} value={region.id ?? ''}>
+                    {region.name}
                   </SelectItem>
                 ))}
               </SelectContent>
