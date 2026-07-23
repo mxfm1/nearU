@@ -132,7 +132,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
   }
 
   const rawMessages = messagesQuery.data ?? []
-  
+
   // Extraer mensajes SYSTEM para el banner (derived state, no effect needed)
   const systemMessages = rawMessages.filter(
     (msg) => msg.messageType === 'SYSTEM' && !dismissedSystemMessages.has(msg.id)
@@ -153,15 +153,15 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
   const isApplicant = user?.id === conversation.applicantUserId
   const otherParty = isApplicant
     ? {
-        id: conversation.organizerProfileId,
-        name: conversation.organizerName,
-        logoUrl: conversation.organizerLogoUrl,
-      }
+      id: conversation.organizerProfileId,
+      name: conversation.organizerName,
+      logoUrl: conversation.organizerLogoUrl,
+    }
     : {
-        id: conversation.applicantProfileId,
-        name: conversation.applicantName,
-        logoUrl: conversation.applicantLogoUrl,
-      }
+      id: conversation.applicantProfileId,
+      name: conversation.applicantName,
+      logoUrl: conversation.applicantLogoUrl,
+    }
 
   const handleDismissSystemMessage = (messageId: string) => {
     setDismissedSystemMessages((prev) => new Set(prev).add(messageId))
