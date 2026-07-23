@@ -6,11 +6,13 @@ import { SearchSkeleton } from './search-skeleton'
 import { SearchResults } from './search-results'
 import { PaginationBar } from './pagination-bar'
 import { SearchEmptyState } from './search-empty-state'
+import { SearchErrorState } from './search-error-state'
 
 export function SearchPageContent() {
   const {
     q,
     isLoading,
+    isError,
     results,
     totalPages,
     currentPage,
@@ -32,7 +34,9 @@ export function SearchPageContent() {
           <HorizontalSearchBar />
 
           <div className="mt-8">
-            {results.length > 0 ? (
+            {isError ? (
+              <SearchErrorState />
+            ) : results.length > 0 ? (
               <>
                 <SearchResults
                   results={paginatedResults}

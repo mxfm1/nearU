@@ -29,11 +29,10 @@ export function CrearPageContent() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-[40px] font-semibold leading-[1.2] text-foreground mb-4 md:text-[52px] md:leading-[1.15]">
-            Choose Your Path
+            Que quieres publicar?
           </h1>
           <p className="text-[18px] leading-[1.7] text-muted-foreground max-w-2xl mx-auto md:text-[20px]">
-            Identify your objective to begin the journey. Select whether you are
-            curating an experience or offering a service to our community.
+            Publica tu servicio o evento en nuestra plataforma, permitiendote conectar con otras personas
           </p>
         </div>
 
@@ -58,13 +57,13 @@ export function CrearPageContent() {
               </div>
             </div>
             <h2 className="text-2xl font-semibold text-foreground mb-3">
-              Create Event
+              Crear un Evento
             </h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              Curate a new luxury experience for your guests.
+              Define toda la información relevante de tu evento
             </p>
             <div className="flex items-center gap-2 text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-              GET STARTED
+              Siguiente
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </div>
           </motion.button>
@@ -88,27 +87,27 @@ export function CrearPageContent() {
               </div>
             </div>
             <h2 className="text-2xl font-semibold text-foreground mb-3">
-              Create Service
+              Crear Servicio
             </h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
-              Promote your brand and join our elite network of providers.
+              Define toda la información relevante de tu negocio para conectar con otras personas
             </p>
             <div className="flex items-center gap-2 text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-              JOIN NETWORK
+              Siguiente
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </div>
           </motion.button>
         </div>
 
         {/* Bottom Guidance */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <p className="text-sm text-muted-foreground">
             NEED GUIDANCE?{' '}
             <button className="text-foreground font-medium hover:underline transition-colors">
               Review the Creator Handbook
             </button>
           </p>
-        </div>
+        </div> */}
       </div>
     </section>
   )

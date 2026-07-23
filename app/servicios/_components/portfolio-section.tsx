@@ -3,17 +3,17 @@
 import { useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ImageOff } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import type { MockPortfolioImage } from '@/lib/service-mock-data'
+import type { PortfolioImage } from '@/lib/servicios-api'
 
 interface PortfolioSectionProps {
-  portfolio: MockPortfolioImage[]
+  portfolio: PortfolioImage[]
 }
 
-function usePortfolioImages(images: MockPortfolioImage[]) {
+function usePortfolioImages(images: PortfolioImage[]) {
   return useQuery({
     queryKey: ['portfolio-images'],
     queryFn: async () => {
@@ -49,24 +49,26 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
           Trabajos Realizados
         </h2>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => scroll('left')}
-            aria-label="Anterior"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => scroll('right')}
-            aria-label="Siguiente"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+        {portfolio.length > 0 && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll('left')}
+              aria-label="Anterior"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => scroll('right')}
+              aria-label="Siguiente"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {isLoading ? (
@@ -81,6 +83,20 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
             />
           ))}
         </div>
+      ) : !images || images.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="flex flex-col items-center justify-center py-16 text-center"
+        >
+          <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
+            <ImageOff className="h-7 w-7 text-muted-foreground/60" />
+          </div>
+          <p className="text-muted-foreground text-base max-w-sm">
+            Este servicio no tiene imágenes subidas de casos de uso.
+          </p>
+        </motion.div>
       ) : (
         <div
           ref={scrollRef}
@@ -104,7 +120,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
             >
               <Image
                 src={image.url}
-                alt={image.title}
+                alt={image.title ?? `Imagen ${index + 1}`}
                 width={420}
                 height={240}
                 className={cn(

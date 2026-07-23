@@ -1,41 +1,61 @@
 'use client'
 
-import {
-  createContext,
-  useContext,
-  type ReactNode,
-} from 'react'
-import { authClient } from '@/lib/auth-client'
-import type { User, Session } from 'better-auth'
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { authApi, type User } from '@/lib/api-client'
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null
-  session: Session | null
-  isPending: boolean
+  loading: boolean
+  login: (email: string, password: string) => Promise<void>
+  register: (name: string, email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+  refresh: () => Promise<void>
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  session: null,
-  isPending: true,
-})
+const AuthContext = createContext<AuthContextType>(null!)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const { data, isPending } = authClient.useSession()
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const refresh = async () => {
+    try {
+      const res = await authApi.getMe()
+      setUser(res.data!)
+    } catch {
+      setUser(null)
+    }
+  }
+
+  useEffect(() => {
+    refresh().finally(() => setLoading(false))
+  }, [])
+
+  const login = async (email: string, password: string) => {
+    const res = await authApi.signIn(email, password)
+    if (res?.user) {
+      setUser(res.user)
+    } else {
+      await refresh()
+    }
+  }
+
+  const register = async (name: string, email: string, password: string) => {
+    await authApi.signUp(name, email, password)
+    const res = await authApi.signIn(email, password)
+    setUser(res.user)
+  }
+
+  const logout = async () => {
+    await authApi.signOut()
+    setUser(null)
+  }
 
   return (
-    <AuthContext.Provider
-      value={{
-        user: data?.user ?? null,
-        session: data?.session ?? null,
-        isPending,
-      }}
-    >
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-export function useAuth() {
-  return useContext(AuthContext)
-}
+export const useAuth = () => useContext(AuthContext)

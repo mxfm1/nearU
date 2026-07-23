@@ -1,104 +1,154 @@
-type RequestOptions = {
-  headers?: Record<string, string>
-  cache?: RequestCache
-  next?: { revalidate?: number; tags?: string[] }
-}
+import { ApiError, type BackendErrorCodes } from "./api/errors";
 
-type ApiResponse<T> = {
-  data: T | null
-  error: ApiError | null
-  status: number
-}
-
-type ApiError = {
-  message: string
-  code: string
-  details?: unknown
-}
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '/api'
-
-function getAuthToken(): string | null {
-  if (typeof window === 'undefined') return null
-  try {
-    return localStorage.getItem('auth_token')
-  } catch {
-    return null
+const BASE_URL = (() => {
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_URL || ''
   }
+  return ''
+})()
+
+export type User = {
+  id: string
+  name: string
+  email: string
+  emailVerified: boolean
+  image: string | null
+  createdAt: string
+  updatedAt: string
 }
 
-async function request<TResponse, TBody = unknown>(
-  method: string,
+type Session = {
+  id: string
+  userId: string
+  expiresAt: string
+}
+
+export type ApiResponse<T> = {
+  success: boolean
+  data?: T
+  message?: string
+}
+
+export type APISuccess<T> = {
+  success: true
+  data: T
+}
+
+export type APIError = {
+  success: false
+  errorCode: BackendErrorCodes
+}
+
+export type APIResponse<T> = APISuccess<T> | APIError
+
+
+
+export async function apiFetch<T>(
   path: string,
-  body?: TBody,
-  options: RequestOptions = {},
-): Promise<ApiResponse<TResponse>> {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-  }
-
-  const token = getAuthToken()
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`
-  }
-
+  options?: RequestInit
+): Promise<T> {
   try {
-    const res = await fetch(`${BASE_URL}${path}`, {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-      cache: options.cache,
-      next: options.next,
+    const res = await fetch(`${BASE_URL}/api${path}`, {
+      ...options,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
     })
 
-    const status = res.status
+    if (res.status === 204) {
+      return undefined as T
+    }
+
+    const body = await res.json()
 
     if (!res.ok) {
-      const errorBody = await res.json().catch(() => ({}))
-      return {
-        data: null,
-        error: {
-          message: errorBody.message ?? res.statusText,
-          code: errorBody.code ?? `HTTP_${res.status}`,
-          details: errorBody.details,
-        },
-        status,
-      }
+      console.log("response", res)
+      throw new ApiError(
+        body.error?.code ?? body.code ?? body.errorCode ?? 'INTERNAL_SERVER_ERROR',
+        body.error?.message ?? body.message
+      )
     }
 
-    const data = await res.json()
-    return { data: data as TResponse, error: null, status }
+    return body
   } catch (err) {
-    return {
-      data: null,
-      error: {
-        message: err instanceof Error ? err.message : 'Network error',
-        code: 'NETWORK_ERROR',
-      },
-      status: 0,
+    if (err instanceof ApiError) {
+      console.log(err.message)
+      throw err
     }
+
+    console.log(err)
+
+    throw new ApiError('INTERNAL_SERVER_ERROR')
   }
 }
 
-export const api = {
-  get<TResponse>(path: string, options?: RequestOptions) {
-    return request<TResponse>('GET', path, undefined, options)
-  },
+export const authApi = {
 
-  post<TResponse, TBody = unknown>(path: string, body?: TBody, options?: RequestOptions) {
-    return request<TResponse, TBody>('POST', path, body, options)
-  },
+  sendVerificationEmail: (email: string, callbackURL?: string) =>
+    apiFetch<{ success: boolean }>('/auth/send-verification-email', {
+      method: 'POST',
+      body: JSON.stringify({ email, ...(callbackURL && { callbackURL }) }),
+    }),
 
-  put<TResponse, TBody = unknown>(path: string, body?: TBody, options?: RequestOptions) {
-    return request<TResponse, TBody>('PUT', path, body, options)
-  },
+  signIn: (email: string, password: string) =>
+    apiFetch<{ user: User; session: Session }>('/auth/sign-in/email', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    }),
 
-  patch<TResponse, TBody = unknown>(path: string, body?: TBody, options?: RequestOptions) {
-    return request<TResponse, TBody>('PATCH', path, body, options)
-  },
+  signUp: (name: string, email: string, password: string) =>
+    apiFetch<{ success: boolean; data: User }>('/users', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+    }),
 
-  delete<TResponse>(path: string, options?: RequestOptions) {
-    return request<TResponse>('DELETE', path, undefined, options)
-  },
+  signOut: () =>
+    apiFetch<void>('/auth/sign-out', { method: 'POST' }),
+
+  getMe: () =>
+    apiFetch<{ success: boolean; data: User }>('/auth/me'),
+
+  updateMe: (data: { name?: string; image?: string }) =>
+    apiFetch<{ success: boolean; data: User }>('/users/me', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  changePassword: (currentPassword: string, newPassword: string) =>
+    apiFetch<{ success: boolean }>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }),
+
+  changeEmail: (newEmail: string) =>
+    apiFetch<{ success: boolean }>('/auth/change-email', {
+      method: 'POST',
+      body: JSON.stringify({ newEmail }),
+    }),
+
+  deleteUser: (userId: string) =>
+    apiFetch<void>(`/users/${userId}`, { method: 'DELETE' }),
+
+  forgotPassword: (email: string) =>
+    apiFetch<{ success: boolean }>('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    }),
+
+  resetPassword: (token: string, newPassword: string) =>
+    apiFetch<{ success: boolean; status: boolean }>('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword }),
+    }),
+
+  getUser: (id: string) =>
+    apiFetch<{ success: boolean; data: User }>(`/users/${id}`),
+
+  verifyEmail: (token: string) =>
+    apiFetch<{ success: boolean }>('/auth/verify-email', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    }),
 }

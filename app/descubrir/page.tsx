@@ -2,14 +2,16 @@
 
 import { Suspense } from 'react'
 import { useRouter } from 'next/navigation'
-import { HorizontalScroll } from '@/components/cards/horizontal-scroll'
-import { ProviderCard } from '@/components/cards/provider-card'
-import { EventCard } from '@/components/cards/event-card'
 import { HorizontalSearchBar } from '@/app/search/_components/horizontal-search-bar'
-import { mockProviders, mockEvents } from '@/components/cards/mock-data'
+import { ServicesSection } from './_components/services-section'
+import { EventsSection } from './_components/events-section'
+import { useServices } from '@/hooks/use-service'
+import { useEvents } from '@/hooks/use-event'
 
 export default function DescubrirPage() {
   const router = useRouter()
+  const serviceData = useServices()
+  const eventData = useEvents()
 
   function handleSearch(query: string) {
     router.push(`/search?q=${encodeURIComponent(query)}`)
@@ -17,7 +19,7 @@ export default function DescubrirPage() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="px-4 pt-28 pb-12 md:pt-36 md:pb-16">
+      <section className="px-4 pb-12 md:pb-16 pt-4 md:pt-10">
         <div className="max-w-[1200px] mx-auto">
           <h1 className="text-[40px] font-semibold leading-[1.2] text-foreground mb-4">
             Descubre
@@ -34,43 +36,20 @@ export default function DescubrirPage() {
 
       <section className="px-4 pb-12 md:pb-20">
         <div className="max-w-[1200px] mx-auto">
-          <HorizontalScroll
-            title="Proveedores Destacados"
-            seeAllHref="/search?type=proveedores"
-          >
-            {mockProviders.map((provider) => (
-              <ProviderCard
-                key={provider.slug}
-                name={provider.name}
-                category={provider.category}
-                verified={provider.verified}
-                location={provider.location}
-                thumbnail={provider.thumbnail}
-                slug={provider.slug}
-              />
-            ))}
-          </HorizontalScroll>
+          <ServicesSection
+            query={serviceData}
+          />
         </div>
       </section>
 
       <section className="px-4 pb-20 md:pb-28">
         <div className="max-w-[1200px] mx-auto">
-          <HorizontalScroll
-            title="Próximos Eventos"
-            seeAllHref="/search?type=eventos"
-          >
-            {mockEvents.map((event) => (
-              <EventCard
-                key={event.slug}
-                title={event.title}
-                description={event.description}
-                date={event.date}
-                location={event.location}
-                thumbnail={event.thumbnail}
-                slug={event.slug}
-              />
-            ))}
-          </HorizontalScroll>
+          <EventsSection
+            data={eventData.data}
+            isPending={eventData.isLoading}
+            isError={eventData.isError}
+            onRefetch={eventData.refetch}
+          />
         </div>
       </section>
     </div>

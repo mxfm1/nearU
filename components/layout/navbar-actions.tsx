@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/use-auth'
-import { authClient } from '@/lib/auth-client'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -15,13 +15,16 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Plus, LogOut, User, Mail } from 'lucide-react'
 import { NotificationDropdown } from './notification-dropdown'
+import { LoginDialog } from '@/app/(auth)/auth/login/_components/login-dialog'
 
 export function NavbarActions() {
-  const { user, isPending } = useAuth()
+  const { user, loading, logout } = useAuth()
+  const router = useRouter()
 
   return (
     <>
-      {!isPending && user && (
+      {/* Logged in: Create button */}
+      {!loading && user && (
         <Button variant="default" asChild>
           <Link href="/crear">
             <Plus className="h-4 w-4" />
@@ -30,7 +33,8 @@ export function NavbarActions() {
         </Button>
       )}
 
-      {!isPending && user ? (
+      {/* Logged in: Avatar + notifications */}
+      {!loading && user ? (
         <>
           <NotificationDropdown />
           <DropdownMenu modal={false}>
@@ -65,20 +69,29 @@ export function NavbarActions() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className='hover:cursor-pointer bg-red-500 hover:bg-red-500/80! text-white hover:text-white' onClick={() => authClient.signOut()}>
+              <DropdownMenuItem className='hover:cursor-pointer bg-red-500 hover:bg-red-500/80! text-white hover:text-white' onClick={() => { logout(); router.push('/') }}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Cerrar Sesión
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </>
-      ) : !isPending ? (
+      ) : !loading ? (
         <>
-          <Button variant="ghost" asChild>
-            <Link href="/login">Iniciar Sesión</Link>
-          </Button>
-          <Button variant="default" asChild>
-            <Link href="/register">Registrarse</Link>
+          {/* Logged out: Iniciar sesión (outlined) + Registrarse (filled) */}
+          <LoginDialog>
+            <Button 
+              variant="outline" 
+              className="border-border text-text-primary hover:bg-muted font-medium"
+            >
+              Iniciar sesión
+            </Button>
+          </LoginDialog>
+          <Button 
+            asChild
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-brand"
+          >
+            <Link href="/auth/register">Registrarse</Link>
           </Button>
         </>
       ) : null}

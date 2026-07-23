@@ -120,8 +120,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
     )
   }
 
-  // El endpoint devuelve directamente el objeto sin wrapper
-  const conversation: Conversation = threadQuery.data as Conversation
+  const conversation: Conversation | undefined = threadQuery.data
 
   if (!conversation) {
     return (
@@ -132,10 +131,8 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
     )
   }
 
-  // Obtener los mensajes y agregar la propiedad isFromCurrentUser
-  // El endpoint de mensajes también devuelve directamente el array
-  const rawMessages: Mensaje[] = messagesQuery.data?.data || messagesQuery.data || []
-  
+  const rawMessages = messagesQuery.data ?? []
+
   // Extraer mensajes SYSTEM para el banner (derived state, no effect needed)
   const systemMessages = rawMessages.filter(
     (msg) => msg.messageType === 'SYSTEM' && !dismissedSystemMessages.has(msg.id)
@@ -156,15 +153,15 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
   const isApplicant = user?.id === conversation.applicantUserId
   const otherParty = isApplicant
     ? {
-        id: conversation.organizerProfileId,
-        name: conversation.organizerName,
-        logoUrl: conversation.organizerLogoUrl,
-      }
+      id: conversation.organizerProfileId,
+      name: conversation.organizerName,
+      logoUrl: conversation.organizerLogoUrl,
+    }
     : {
-        id: conversation.applicantProfileId,
-        name: conversation.applicantName,
-        logoUrl: conversation.applicantLogoUrl,
-      }
+      id: conversation.applicantProfileId,
+      name: conversation.applicantName,
+      logoUrl: conversation.applicantLogoUrl,
+    }
 
   const handleDismissSystemMessage = (messageId: string) => {
     setDismissedSystemMessages((prev) => new Set(prev).add(messageId))

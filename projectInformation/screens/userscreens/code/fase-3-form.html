@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NearU - Resultado de Postulación</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#fabd00",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f1f3ff",
+                        "on-secondary-fixed": "#181c1b",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#5b5f5e",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#c4c7c5",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-secondary-fixed-variant": "#434846",
+                        "primary-fixed": "#b5efd3",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#eab100",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#99d3b7",
+                        "secondary-container": "#dde0de",
+                        "on-primary-fixed-variant": "#16503b",
+                        "surface-container-highest": "#dce2f7",
+                        "on-tertiary-fixed-variant": "#5b4300",
+                        "tertiary-container": "#5f4600",
+                        "primary-container": "#1a533e",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#293040",
+                        "on-background": "#141b2b",
+                        "on-secondary-container": "#5f6362",
+                        "on-primary-container": "#8cc5aa",
+                        "on-surface-variant": "#404944",
+                        "surface-container": "#e9edff",
+                        "on-surface": "#141b2b",
+                        "on-primary-fixed": "#002115",
+                        "primary-fixed-dim": "#99d3b7",
+                        "outline-variant": "#c0c9c2",
+                        "surface-container-high": "#e1e8fd",
+                        "surface-dim": "#d3daef",
+                        "surface-tint": "#326852",
+                        "surface": "#f9f9ff",
+                        "on-primary": "#ffffff",
+                        "outline": "#707973",
+                        "surface-variant": "#dce2f7",
+                        "primary": "#003b29",
+                        "background": "#f9f9ff",
+                        "tertiary": "#433000",
+                        "secondary-fixed": "#e0e3e1",
+                        "on-tertiary-fixed": "#261a00",
+                        "tertiary-fixed": "#ffdf9e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-lg": "48px",
+                        "container-max": "1280px",
+                        "margin-x": "32px",
+                        "gutter": "24px",
+                        "stack-sm": "8px",
+                        "section-gap": "80px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-md": ["30px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f9f9ff;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .step-dashed-line {
+            background-image: linear-gradient(to right, #c0c9c2 50%, transparent 50%);
+            background-size: 8px 1px;
+            background-repeat: repeat-x;
+        }
+
+        .step-active-line {
+            background-image: linear-gradient(to right, #003b29 50%, transparent 50%);
+            background-size: 8px 1px;
+            background-repeat: repeat-x;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface">
+    <!-- TopNavBar -->
+    <header
+        class="bg-surface-container-lowest dark:bg-surface-container-low shadow-sm docked full-width top-0 sticky z-50">
+        <nav class="flex justify-between items-center px-margin-x w-full h-16 max-w-container-max mx-auto">
+            <div class="flex items-center gap-8">
+                <span
+                    class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary dark:text-primary-fixed">NearU</span>
+                <div class="hidden md:flex gap-6">
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors font-label-md text-label-md"
+                        href="#">Explorar</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors font-label-md text-label-md"
+                        href="#">Proveedores</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors font-label-md text-label-md"
+                        href="#">Eventos</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors font-label-md text-label-md"
+                        href="#">Recursos</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors font-label-md text-label-md"
+                        href="#">Sobre NearU</a>
+                </div>
+            </div>
+            <a class="font-label-md text-label-md text-primary dark:text-primary-fixed hover:opacity-80 transition-all"
+                href="#">Volver al Inicio</a>
+        </nav>
+    </header>
+    <main class="max-w-container-max mx-auto px-margin-x py-stack-lg min-h-[calc(100vh-64px-300px)]">
+        <!-- Multi-Step Indicator -->
+        <section class="max-w-3xl mx-auto mb-section-gap">
+            <div class="relative flex items-start justify-between">
+                <!-- Connectors -->
+                <div class="absolute top-6 left-0 w-full flex px-12">
+                    <div class="h-[1px] flex-1 step-active-line"></div>
+                    <div class="h-[1px] flex-1 step-active-line"></div>
+                </div>
+                <!-- Step 1: Done -->
+                <div class="relative z-10 flex flex-col items-center text-center w-32">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary mb-4 shadow-sm">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mb-1">01.
+                        Inicio</span>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Postulación</p>
+                </div>
+                <!-- Step 2: Done -->
+                <div class="relative z-10 flex flex-col items-center text-center w-32">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-primary mb-4 shadow-sm">
+                        <span class="material-symbols-outlined"
+                            style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mb-1">02.
+                        Revisión</span>
+                    <p class="font-body-md text-body-md text-on-surface-variant">En evaluación</p>
+                </div>
+                <!-- Step 3: Active - Error -->
+                <div class="relative z-10 flex flex-col items-center text-center w-32">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-error text-on-error flex items-center justify-center mb-4 shadow-md ring-4 ring-error-container">
+                        <span class="material-symbols-outlined">close</span>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-error uppercase tracking-wider mb-1">03.
+                        Resultado</span>
+                    <p class="font-body-md text-body-md text-error font-bold">No seleccionado</p>
+                </div>
+            </div>
+        </section>
+        <!-- Main Content Area: Large Card -->
+        <section class="max-w-4xl mx-auto">
+            <div
+                class="glass-card rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row items-stretch border-none">
+                <!-- Illustration Area -->
+                <div
+                    class="w-full md:w-1/2 bg-surface-container-low flex items-center justify-center p-stack-lg relative overflow-hidden">
+                    <!-- Background aesthetic circles -->
+                    <div class="absolute -top-12 -left-12 w-48 h-48 bg-error-container/30 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-12 -right-12 w-64 h-64 bg-primary-fixed/20 rounded-full blur-3xl">
+                    </div>
+                    <img alt="Postulación no seleccionada"
+                        class="relative z-10 w-full max-w-[280px] h-auto drop-shadow-xl transition-transform hover:scale-105 duration-700"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIJH1NCK4SqUh1V67Z6X8MApQx7Q8UQk5XZ1GQySFEWa2Wh2ecynghABFuSLHnOYIWzLOxyJGVR8lausCIEBJtVZoQblj0gK1q60_gQOlcfsZmiXfsB7ozfZpY6HhYi8vjrHmIrTUnqjFbgymBRQpUAeLTKAxikbN26eRMy_grxEKDnnSzSMshmibmbQ7dKKWhhFLDoXHXo0r0_nxx-AgQsw3P13u-uOCUmgqtZotIsThj44iwOjV8" />
+                </div>
+                <!-- Text Content Area -->
+                <div class="w-full md:w-1/2 p-margin-x md:p-stack-lg flex flex-col justify-center text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-error-container text-on-error-container rounded-full w-fit mb-6">
+                        <span class="material-symbols-outlined text-[16px]">info</span>
+                        <span class="font-label-sm text-label-sm">Estado Finalizado</span>
+                    </div>
+                    <h1 class="font-display-lg text-display-lg text-primary mb-6">
+                        Postulación no seleccionada
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mb-10 leading-relaxed">
+                        Gracias por tu interés en esta vacante. En esta ocasión la empresa ha decidido avanzar con otros
+                        perfiles que se alinean más estrechamente con sus necesidades actuales.
+                        <span class="block mt-4 font-semibold text-primary">¡No te rindas, hay muchas más oportunidades
+                            esperando por ti en NearU!</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a class="inline-flex items-center justify-center px-8 py-4 bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-lg hover:shadow-primary/20"
+                            href="/">
+                            Volver al Inicio
+                        </a>
+                        <button
+                            class="inline-flex items-center justify-center px-8 py-4 border-2 border-outline-variant text-primary font-label-md text-label-md rounded-xl hover:bg-surface-container-high transition-all">
+                            Ver otras vacantes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Stats/Encouragement Section (Bento lite) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-stack-lg">
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-surface-variant flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-primary-fixed/30 rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div>
+                        <p class="font-label-sm text-label-sm text-secondary uppercase">Mercado activo</p>
+                        <p class="font-headline-sm text-headline-sm text-primary">+120 Vacantes</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-surface-variant flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-tertiary-fixed/30 rounded-full flex items-center justify-center text-tertiary">
+                        <span class="material-symbols-outlined">psychology</span>
+                    </div>
+                    <div>
+                        <p class="font-label-sm text-label-sm text-secondary uppercase">Tu Perfil</p>
+                        <p class="font-headline-sm text-headline-sm text-primary">92% Match Prom.</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-surface-variant flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-secondary-fixed/30 rounded-full flex items-center justify-center text-on-secondary-container">
+                        <span class="material-symbols-outlined">schedule</span>
+                    </div>
+                    <div>
+                        <p class="font-label-sm text-label-sm text-secondary uppercase">Próximos Pasos</p>
+                        <p class="font-headline-sm text-headline-sm text-primary">Nuevas mañana</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-primary dark:bg-surface-container-lowest mt-section-gap">
+        <div
+            class="grid grid-cols-2 md:grid-cols-6 gap-gutter px-margin-x py-stack-lg max-w-container-max mx-auto text-on-primary">
+            <div class="col-span-2">
+                <span
+                    class="font-headline-md text-headline-md font-bold text-on-primary dark:text-on-surface block mb-4">NearU</span>
+                <p class="font-body-md text-body-md opacity-80 max-w-xs">Conectando el talento con los eventos más
+                    prestigiosos del sector corporativo.</p>
+            </div>
+            <div>
+                <span class="font-label-sm text-label-sm font-bold uppercase tracking-widest block mb-4">Explorar</span>
+                <ul class="space-y-2">
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Eventos</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Sedes</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Categorías</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="font-label-sm text-label-sm font-bold uppercase tracking-widest block mb-4">Recursos</span>
+                <ul class="space-y-2">
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Blog</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Guía de Uso</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Ayuda</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="font-label-sm text-label-sm font-bold uppercase tracking-widest block mb-4">Empresa</span>
+                <ul class="space-y-2">
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Sobre Nosotros</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Carreras</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Contacto</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="font-label-sm text-label-sm font-bold uppercase tracking-widest block mb-4">Legal</span>
+                <ul class="space-y-2">
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Privacidad</a></li>
+                    <li><a class="font-label-sm text-label-sm opacity-70 hover:underline hover:opacity-100 transition-all"
+                            href="#">Términos</a></li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="px-margin-x py-8 border-t border-white/10 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="font-label-sm text-label-sm opacity-60">© 2024 NearU. Todos los derechos reservados.</span>
+            <div class="flex gap-6">
+                <a class="material-symbols-outlined opacity-60 hover:opacity-100 transition-all" href="#">public</a>
+                <a class="material-symbols-outlined opacity-60 hover:opacity-100 transition-all" href="#">mail</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interaction for the card movement
+        const card = document.querySelector('.glass-card');
+        if (card) {
+            document.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 100;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 100;
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -9,6 +9,7 @@ import {
   type FormEvent,
 } from 'react'
 import { useRouter } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search,
@@ -17,11 +18,11 @@ import {
   Briefcase,
   Calendar,
   Tags,
+  Loader2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { mockProviders } from '@/components/cards/mock-data'
-import { mockEvents } from '@/components/cards/mock-data'
-import { mockServiceDetails } from '@/lib/service-mock-data'
+import { serviciosApi } from '@/lib/servicios-api'
+import { eventosApi } from '@/lib/eventos-api'
 
 /* -------------------------------------------------------------------------- */
 /*  Constants                                                                 */
@@ -114,49 +115,82 @@ export function TypeaheadSearch({
 
   const normalizedQuery = normalize(query)
 
+  // ── Queries ──
+  const { data: serviciosRes, isLoading: serviciosLoading } = useQuery({
+    queryKey: ['servicios'],
+    queryFn: () => serviciosApi.list(),
+  })
+
+  const { data: eventosRes, isLoading: eventosLoading } = useQuery({
+    queryKey: ['eventos'],
+    queryFn: () => eventosApi.list(),
+  })
+
+  const serviciosPublicados = useMemo(
+    () => (serviciosRes?.data ?? []).filter((s) => s.status?.slug === 'published'),
+    [serviciosRes],
+  )
+
+  const eventosPublicados = useMemo(
+    () => (eventosRes?.data ?? []).filter((e) => (e as any).eventStatus === 'published'),
+    [eventosRes],
+  )
+
+  const isLoading = serviciosLoading || eventosLoading
+
   /* ------ Flattened results for keyboard navigation ------ */
   const flatResults = useMemo<SearchResult[]>(() => {
     if (!normalizedQuery) return []
 
     const results: SearchResult[] = []
 
-    // Empresas
-    mockProviders.forEach((p) => {
-      if (normalize(p.name).includes(normalizedQuery)) {
-        results.push({
-          id: `empresa-${p.slug}`,
-          label: p.name,
-          description: p.category,
-          type: 'empresa',
-          href: `/servicios/${p.slug}`,
-        })
-      }
+    // Empresas (agrupadas por marca única)
+    const seenEmpresas = new Set<string>()
+    serviciosPublicados.forEach((s) => {
+      const name = s.marca || s.title || ''
+      if (!normalize(name).includes(normalizedQuery)) return
+      if (seenEmpresas.has(name)) return
+      seenEmpresas.add(name)
+      results.push({
+        id: `empresa-${s.slug ?? ''}`,
+        label: name,
+        description: s.category?.name ?? 'Proveedor',
+        type: 'empresa',
+        href: `/servicios/${s.slug ?? ''}`,
+      })
     })
 
     // Servicios
-    mockServiceDetails.forEach((s) => {
-      if (normalize(s.title).includes(normalizedQuery)) {
-        results.push({
-          id: `servicio-${s.id}`,
-          label: s.title,
-          description: s.companyName,
-          type: 'servicio',
-          href: `/servicios/${s.id}`,
-        })
-      }
+    serviciosPublicados.forEach((s) => {
+      const title = s.title || ''
+      if (!normalize(title).includes(normalizedQuery)) return
+      results.push({
+        id: `servicio-${s.id ?? ''}`,
+        label: title,
+        description: s.marca || s.category?.name || 'Servicio',
+        type: 'servicio',
+        href: `/servicios/${s.slug ?? ''}`,
+      })
     })
 
     // Eventos
-    mockEvents.forEach((e) => {
-      if (normalize(e.title).includes(normalizedQuery)) {
-        results.push({
-          id: `evento-${e.slug}`,
-          label: e.title,
-          description: e.date,
-          type: 'evento',
-          href: `/search?q=${encodeURIComponent(e.title)}&type=event`,
-        })
-      }
+    eventosPublicados.forEach((e) => {
+      const title = e.title || ''
+      if (!normalize(title).includes(normalizedQuery)) return
+      const dateStr = e.startAt
+        ? new Date(e.startAt).toLocaleDateString('es-ES', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          })
+        : ''
+      results.push({
+        id: `evento-${e.id ?? ''}`,
+        label: title,
+        description: dateStr || e.location?.name || 'Evento',
+        type: 'evento',
+        href: `/search?q=${encodeURIComponent(e.title ?? '')}&type=eventos`,
+      })
     })
 
     // Categorías de servicio
@@ -167,7 +201,7 @@ export function TypeaheadSearch({
           label: c,
           description: 'Categoría de servicio',
           type: 'categoria',
-          href: `/search?type=service&category=${encodeURIComponent(c)}`,
+          href: `/search?type=proveedores&category=${encodeURIComponent(c)}`,
         })
       }
     })
@@ -180,7 +214,7 @@ export function TypeaheadSearch({
           label: c,
           description: 'Categoría de evento',
           type: 'categoria',
-          href: `/search?type=event&category=${encodeURIComponent(c)}`,
+          href: `/search?type=eventos&category=${encodeURIComponent(c)}`,
         })
       }
     })
@@ -196,7 +230,7 @@ export function TypeaheadSearch({
     })
 
     return results.slice(0, MAX_RESULTS)
-  }, [normalizedQuery])
+  }, [normalizedQuery, serviciosPublicados, eventosPublicados])
 
   /* ------ Grouped results for display ------ */
   const groupedResults = useMemo(() => {
@@ -351,9 +385,14 @@ export function TypeaheadSearch({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15, ease: 'easeInOut' }}
-            className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50"
+            className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-[100]"
           >
-            {hasResults ? (
+            {isLoading ? (
+              <div className="flex items-center justify-center gap-2 px-4 py-6 text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span className="text-sm">Cargando...</span>
+              </div>
+            ) : hasResults ? (
               <div ref={listRef} className="max-h-80 overflow-y-auto py-2">
                 {groupedResults.map((group) => (
                   <div key={group.type}>

@@ -143,7 +143,7 @@ export function EventPageContent({ id }: EventPageContentProps) {
 
   const { data: organizerProfile } = useQuery({
     queryKey: ['profile-by-id', data?.data?.profileId],
-    queryFn: () => profileApi.getById(data!.data.profileId),
+    queryFn: () => profileApi.getById(data!.data!.profileId!),
     enabled: !!data?.data?.profileId,
     select: (res) => res.data,
   })
@@ -178,11 +178,11 @@ export function EventPageContent({ id }: EventPageContentProps) {
     )
   }
 
-  const evento: EventoDetalle | undefined = data?.data
+  const evento = data?.data as (EventoDetalle & { eventStatus?: string }) | undefined
   if (!evento) return null
 
   const isOwnEvent = !!myProfile && myProfile.id === evento.profileId
-  const isOpen = evento.eventStatus === 'published'
+  const isOpen = evento.eventStatus === 'published' || evento.eventStatus === undefined
 
   const requirements = evento.requirements
     ? evento.requirements.split('\n').filter(Boolean)
@@ -366,7 +366,7 @@ export function EventPageContent({ id }: EventPageContentProps) {
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-border">
                         <img
                           src={organizerProfile.logoUrl}
-                          alt={organizerProfile.name}
+                          alt={organizerProfile.name ?? 'Logo'}
                           className="w-full h-full object-cover"
                         />
                       </div>
