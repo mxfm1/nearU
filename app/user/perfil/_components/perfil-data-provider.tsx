@@ -8,14 +8,12 @@ const PerfilDataContext = createContext<PerfilData | null>(null)
 export function PerfilDataProvider({
   children,
   profile,
-  regiones,
 }: {
   children: ReactNode
   profile: PerfilData['profile']
-  regiones: PerfilData['regiones']
 }) {
   return (
-    <PerfilDataContext.Provider value={{ profile, regiones }}>
+    <PerfilDataContext.Provider value={{ profile }}>
       {children}
     </PerfilDataContext.Provider>
   )

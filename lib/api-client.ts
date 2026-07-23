@@ -1,6 +1,11 @@
 import { ApiError, type BackendErrorCodes } from "./api/errors";
 
-const BASE_URL = ''; // Next.js rewrite lo resuelve
+const BASE_URL = (() => {
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_URL || ''
+  }
+  return ''
+})()
 
 export type User = {
   id: string
@@ -59,6 +64,7 @@ export async function apiFetch<T>(
     const body = await res.json()
 
     if (!res.ok) {
+      console.log("response", res)
       throw new ApiError(
         body.error?.code ?? body.code ?? body.errorCode ?? 'INTERNAL_SERVER_ERROR',
         body.error?.message ?? body.message
@@ -68,8 +74,11 @@ export async function apiFetch<T>(
     return body
   } catch (err) {
     if (err instanceof ApiError) {
+      console.log(err.message)
       throw err
     }
+
+    console.log(err)
 
     throw new ApiError('INTERNAL_SERVER_ERROR')
   }

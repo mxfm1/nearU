@@ -1,57 +1,62 @@
 'use client'
 
-import { Profile } from '@/lib/profile-api'
-import { type Region } from '@/lib/catalogo-api'
+import type { Region } from '@/lib/catalogo-api'
 import { ProfileBanner } from './profile-banner'
 import { ProfileLogo } from './profile-logo'
 import { GeneralInfo } from './general-info'
 import { ProfileDetails } from './profile-details'
 import { DigitalPresence } from './digital-presence'
 
+interface Draft {
+  bannerUrl: string | null
+  logoUrl: string | null
+  name: string | null
+  description: string | null
+  tags: string[]
+  regionId: string
+  founded: string
+  employees: string
+  website: string | null
+  whatsapp: string | null
+  socialLinks: { id?: string; platform?: string; url?: string; orden?: number }[]
+}
+
 interface ProfileContentProps {
-  profile: Profile
+  data: Draft
   regiones: Region[]
   onChange: (field: string, value: unknown) => void
   locationError?: string | null
 }
 
-export function ProfileContent({
-  profile,
-  regiones,
-  onChange,
-  locationError,
-}: ProfileContentProps) {
+export function ProfileContent({ data, regiones, onChange, locationError }: ProfileContentProps) {
   return (
     <>
-      {/* Banner */}
       <ProfileBanner
-        bannerUrl={profile.bannerUrl ?? null}
+        bannerUrl={data.bannerUrl}
         onChange={(url) => onChange('bannerUrl', url)}
       />
 
-      {/* Logo + Company Name */}
       <ProfileLogo
-        logoUrl={profile.logoUrl ?? null}
-        companyName={profile.name ?? ''}
+        logoUrl={data.logoUrl}
+        companyName={data.name ?? ''}
         onChange={(url) => onChange('logoUrl', url)}
       />
 
-      {/* General Info + Details grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
           <GeneralInfo
-            name={profile.name ?? ''}
-            description={profile.description ?? ''}
-            tags={profile.tags ?? []}
+            name={data.name ?? ''}
+            description={data.description ?? ''}
+            tags={data.tags}
             onChange={onChange}
           />
         </div>
 
         <div>
           <ProfileDetails
-            regionId={profile.location ?? ''}
-            founded={profile.founded ?? ''}
-            employees={profile.employees ?? ''}
+            regionId={data.regionId}
+            founded={data.founded}
+            employees={data.employees}
             regiones={regiones}
             onChange={onChange}
             locationError={locationError}
@@ -59,11 +64,10 @@ export function ProfileContent({
         </div>
       </div>
 
-      {/* Digital Presence */}
       <DigitalPresence
-        website={profile.website ?? ''}
-        whatsapp={profile.whatsapp ?? ''}
-        socialLinks={profile.socialLinks ?? []}
+        website={data.website ?? ''}
+        whatsapp={data.whatsapp ?? ''}
+        socialLinks={data.socialLinks}
         onChange={onChange}
       />
     </>

@@ -94,7 +94,7 @@ export const mensajesApi = {
    * Obtiene los mensajes de un thread específico.
    */
   getThreadMessages: async (threadId: string) => {
-    return apiFetch<{ data: Mensaje[] }>(
+    return apiFetch<Mensaje[]>(
       `/threads/${threadId}/messages`
     )
   },
@@ -103,7 +103,7 @@ export const mensajesApi = {
    * Obtiene los detalles de un thread específico.
    */
   getThread: async (threadId: string) => {
-    return apiFetch<{ data: Conversation }>(
+    return apiFetch<Conversation>(
       `/threads/${threadId}`
     )
   },

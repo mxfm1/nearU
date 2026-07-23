@@ -120,8 +120,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
     )
   }
 
-  // El endpoint devuelve directamente el objeto sin wrapper
-  const conversation: Conversation | undefined = threadQuery.data?.data
+  const conversation: Conversation | undefined = threadQuery.data
 
   if (!conversation) {
     return (
@@ -132,9 +131,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
     )
   }
 
-  // Obtener los mensajes y agregar la propiedad isFromCurrentUser
-  // El endpoint de mensajes también devuelve directamente el array
-  const rawMessages = messagesQuery.data?.data ?? []
+  const rawMessages = messagesQuery.data ?? []
   
   // Extraer mensajes SYSTEM para el banner (derived state, no effect needed)
   const systemMessages = rawMessages.filter(

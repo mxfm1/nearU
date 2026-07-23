@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { catalogoApi, type Region } from '@/lib/catalogo-api'
 import { profileApi, type Profile } from '@/lib/profile-api'
 import type { paths } from '@/types/contracts/api-contracts-types'
 
@@ -12,36 +11,41 @@ type User = NonNullable<
 
 export interface PerfilData {
   profile: Profile
-  regiones: Region[]
 }
 
 export async function getPerfilData(): Promise<PerfilData> {
-  const cookieStore = await cookies()
-  const cookieHeader = cookieStore.toString()
+  // const cookieStore = await cookies()
+  // const cookieHeader = cookieStore.toString()
 
-  const [userRes, regionesRes] = await Promise.all([
-    fetch(`${API_URL}/api/auth/me`, {
-      headers: { Cookie: cookieHeader },
-      cache: 'no-store',
-    }),
-    catalogoApi.regiones(),
-  ])
+  // const userRes = await fetch(`${API_URL}/api/auth/me`, {
+  //   headers: { Cookie: cookieHeader },
+  //   cache: 'no-store',
+  // })
 
-  if (!userRes.ok) {
-    redirect('/')
-  }
+  // const response = await userRes.json()
 
-  const userData = await userRes.json()
-  const user: User = userData.data?.user
+  // if (!userRes.ok) {
+  //   const text = await userRes.text()
+  //   console.error('[/api/auth/me] no ok:', userRes.status, text)
+  //   redirect('/')
+  // }
 
-  if (!user?.id) {
-    redirect('/')
-  }
+  // if (!response.success) {
+  //   return redirect("/")
+  // }
 
-  const profileRes = await profileApi.getByUserId(user.id)
-  const profile: Profile = profileRes.data
+  // if (!response.data) {
+  //   return redirect("/no-user")
+  // }
 
-  const regiones: Region[] = regionesRes.data ?? []
+  // console.error('userData:', JSON.stringify(response))
+  // if (!user?.id) {
+  //   console.error('user undefined, userData:', userData)
+  //   redirect('/')
+  // }
 
-  return { profile, regiones }
+  // const profileRes = await profileApi.getByUserId(user.id)
+  // const profile: Profile = profileRes.data
+
+  return { profile: {} as Profile }
 }

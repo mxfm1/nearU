@@ -30,8 +30,11 @@ export const profileApi = {
   getById: (profileId: string) =>
     apiFetch<{ success: boolean; data: Profile }>(`/profiles/id/${profileId}`),
 
-  getMyProfile: (userId: string) =>
-    apiFetch<{ success: boolean; data: Profile }>(`/profiles/${userId}`),
+  getMyProfile: async (): Promise<Profile> => {
+    const authRes = await apiFetch<{ success: boolean; data: { id: string } }>('/auth/me')
+    const profileRes = await profileApi.getByUserId(authRes.data.id)
+    return profileRes.data
+  },
 
   updateMine: (data: UpdateProfileData) =>
     apiFetch<{ success: boolean; data: UpdateProfileResponse }>('/profiles/me', {

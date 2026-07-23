@@ -8,36 +8,32 @@ import { fadeInUp, type FilterType } from './constants'
 import { MensajesListCard } from './mensajes-list-card'
 import { MensajesListError } from './mensajes-list-error'
 import { MensajesListEmpty } from './mensajes-list-empty'
+import { type UseMensajesListResult } from '@/hooks/use-mensajes-list'
+import Loading from './loading'
 
 interface MensajesListContentProps {
-  conversations: ConversationListItem[]
-  isLoading?: boolean
-  isError?: boolean
-  error?: Error | null
-  onRetry?: () => void
+  result: UseMensajesListResult
 }
 
-export function MensajesListContent({
-  conversations,
-  isLoading,
-  isError,
-  error,
-  onRetry,
-}: MensajesListContentProps) {
+export function MensajesListContent({ result }: MensajesListContentProps) {
+  const { data, isPending, isError, error, refetch } = result
   const router = useRouter()
   const searchParams = useSearchParams()
   const currentFilter = (searchParams.get('filter') as FilterType) || 'all'
   const searchQuery = searchParams.get('q') || ''
 
-  if (isLoading) {
-    return null
+
+  const conversations = data || []
+
+  if (isPending) {
+    return <Loading />
   }
 
   if (isError) {
     return (
       <MensajesListError
         error={error instanceof Error ? error : new Error('Error desconocido')}
-        onRetry={onRetry ?? (() => {})}
+        onRetry={refetch ?? (() => { })}
       />
     )
   }
@@ -104,31 +100,28 @@ export function MensajesListContent({
           <div className="flex bg-muted/50 p-1 rounded-xl w-full md:w-auto">
             <button
               onClick={() => updateFilter('all')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                currentFilter === 'all'
-                  ? 'bg-card text-primary shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${currentFilter === 'all'
+                ? 'bg-card text-primary shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+                }`}
             >
               Todos
             </button>
             <button
               onClick={() => updateFilter('unread')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                currentFilter === 'unread'
-                  ? 'bg-card text-primary shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${currentFilter === 'unread'
+                ? 'bg-card text-primary shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+                }`}
             >
               No leídos
             </button>
             <button
               onClick={() => updateFilter('events')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-                currentFilter === 'events'
-                  ? 'bg-card text-primary shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${currentFilter === 'events'
+                ? 'bg-card text-primary shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+                }`}
             >
               Eventos
             </button>

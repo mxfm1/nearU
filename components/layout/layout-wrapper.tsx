@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 import { type ReactNode } from 'react'
 import { AppShell } from './app-shell'
 import { DirtyGuardProvider } from '@/hooks/use-dirty-guard'
