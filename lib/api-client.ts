@@ -2,7 +2,7 @@ import { ApiError, type BackendErrorCodes } from "./api/errors";
 
 const BASE_URL = (() => {
   if (typeof window !== 'undefined') {
-    return process.env.NEXT_PUBLIC_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_URL || ''
+    return process.env.NEXT_PUBLIC_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_RAW_URL || ''
   }
   return ''
 })()
