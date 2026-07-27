@@ -1,14 +1,22 @@
-import { apiFetch } from './api-client'
-import type { EventoListItem, EventoDetalle, CreateEventoPayload, UpdateEventoPayload } from '@/types/contracts/event'
+import { apiFetch } from './api-client';
+import type {
+  EventoListItem,
+  EventoDetalle,
+  CreateEventoPayload,
+  UpdateEventoPayload,
+} from '@/types/contracts/event';
 
-export type { EventoListItem as EventoResumen, EventoDetalle, CreateEventoPayload, UpdateEventoPayload }
+export type {
+  EventoListItem as EventoResumen,
+  EventoDetalle,
+  CreateEventoPayload,
+  UpdateEventoPayload,
+};
 
 export const eventosApi = {
-  list: () =>
-    apiFetch<{ success: boolean; data: EventoListItem[] }>('/eventos'),
+  list: () => apiFetch<{ success: boolean; data: EventoListItem[] }>('/eventos'),
 
-  getById: (id: string) =>
-    apiFetch<{ success: boolean; data: EventoDetalle }>(`/eventos/${id}`),
+  getById: (id: string) => apiFetch<{ success: boolean; data: EventoDetalle }>(`/eventos/${id}`),
 
   create: (payload: CreateEventoPayload) =>
     apiFetch<{ success: boolean; data: EventoDetalle }>('/eventos', {
@@ -22,9 +30,8 @@ export const eventosApi = {
       body: JSON.stringify(payload),
     }),
 
-  misEventos: () =>
-    apiFetch<{ success: boolean; data: EventoListItem[] }>('/mis-eventos'),
+  misEventos: () => apiFetch<{ success: boolean; data: EventoListItem[] }>('/mis-eventos'),
 
   getMisEvento: (id: string) =>
     apiFetch<{ success: boolean; data: EventoDetalle }>(`/mis-eventos/${id}`),
-}
+};

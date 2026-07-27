@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { ServerCrash } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { motion } from 'framer-motion';
+import { ServerCrash } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 interface ApiErrorFallbackProps {
-  reset?: () => void
+  reset?: () => void;
 }
 
 export function ApiErrorFallback({ reset }: ApiErrorFallbackProps) {
@@ -18,9 +18,7 @@ export function ApiErrorFallback({ reset }: ApiErrorFallbackProps) {
       className="flex flex-col items-center justify-center py-20 px-4 text-center"
     >
       <ServerCrash className="h-16 w-16 text-muted-foreground/40 mb-6" />
-      <h2 className="text-2xl font-semibold text-foreground mb-2">
-        Error del servidor
-      </h2>
+      <h2 className="text-2xl font-semibold text-foreground mb-2">Error del servidor</h2>
       <p className="text-muted-foreground max-w-md mb-8">
         Ocurrió un error inesperado. Por favor, intentá de nuevo más tarde.
       </p>
@@ -35,5 +33,5 @@ export function ApiErrorFallback({ reset }: ApiErrorFallbackProps) {
         </Button>
       </div>
     </motion.div>
-  )
+  );
 }

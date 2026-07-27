@@ -1,506 +1,664 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" class="light">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
-        rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">try {
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    extend: {
-                        "colors": {
-                            "outline-variant": "#c0c9c2",
-                            "surface-container-high": "#e1e8fd",
-                            "primary-fixed-dim": "#99d3b7",
-                            "tertiary-fixed": "#ffdf9e",
-                            "on-background": "#141b2b",
-                            "inverse-surface": "#293040",
-                            "inverse-primary": "#99d3b7",
-                            "on-primary-fixed": "#002115",
-                            "surface-variant": "#dce2f7",
-                            "primary-container": "#1a533e",
-                            "error-container": "#ffdad6",
-                            "secondary-container": "#dde0de",
-                            "on-tertiary-container": "#eab100",
-                            "inverse-on-surface": "#edf0ff",
-                            "error": "#ba1a1a",
-                            "surface-dim": "#d3daef",
-                            "surface-container-low": "#f1f3ff",
-                            "surface-bright": "#f9f9ff",
-                            "on-secondary": "#ffffff",
-                            "primary-fixed": "#b5efd3",
-                            "on-secondary-fixed-variant": "#434846",
-                            "outline": "#707973",
-                            "on-primary-container": "#8cc5aa",
-                            "on-tertiary-fixed-variant": "#5b4300",
-                            "on-error-container": "#93000a",
-                            "surface-container-highest": "#dce2f7",
-                            "tertiary-container": "#5f4600",
-                            "surface-container": "#e9edff",
-                            "tertiary-fixed-dim": "#fabd00",
-                            "on-surface-variant": "#404944",
-                            "on-error": "#ffffff",
-                            "secondary": "#5b5f5e",
-                            "secondary-fixed-dim": "#c4c7c5",
-                            "on-tertiary-fixed": "#261a00",
-                            "on-surface": "#141b2b",
-                            "surface": "#f9f9ff",
-                            "on-tertiary": "#ffffff",
-                            "tertiary": "#433000",
-                            "on-primary": "#ffffff",
-                            "secondary-fixed": "#e0e3e1",
-                            "surface-tint": "#326852",
-                            "primary": "#003b29",
-                            "on-secondary-fixed": "#181c1b",
-                            "surface-container-lowest": "#ffffff",
-                            "on-primary-fixed-variant": "#16503b",
-                            "background": "#f9f9ff",
-                            "on-secondary-container": "#5f6362"
-                        },
-                        "borderRadius": {
-                            "DEFAULT": "0.25rem",
-                            "lg": "0.5rem",
-                            "xl": "0.75rem",
-                            "full": "9999px"
-                        },
-                        "spacing": {
-                            "stack-sm": "8px",
-                            "stack-md": "16px",
-                            "stack-lg": "48px",
-                            "margin-x": "32px",
-                            "section-gap": "80px",
-                            "gutter": "24px",
-                            "container-max": "1280px"
-                        },
-                        "fontFamily": {
-                            "label-md": ["Plus Jakarta Sans"],
-                            "body-md": ["Plus Jakarta Sans"],
-                            "display-lg": ["Plus Jakarta Sans"],
-                            "label-sm": ["Plus Jakarta Sans"],
-                            "headline-sm": ["Plus Jakarta Sans"],
-                            "headline-md": ["Plus Jakarta Sans"],
-                            "display-lg-mobile": ["Plus Jakarta Sans"],
-                            "body-lg": ["Plus Jakarta Sans"]
-                        },
-                        "fontSize": {
-                            "label-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
-                            "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
-                            "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                            "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
-                            "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
-                            "headline-md": ["30px", { "lineHeight": "1.3", "fontWeight": "700" }],
-                            "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
-                            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
-                        }
-                    },
-                },
-            }
-        } catch (_e) { }</script>
-    <meta charset="utf-8">
-</head>
+    <script id="tailwind-config">
+      try {
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                'outline-variant': '#c0c9c2',
+                'surface-container-high': '#e1e8fd',
+                'primary-fixed-dim': '#99d3b7',
+                'tertiary-fixed': '#ffdf9e',
+                'on-background': '#141b2b',
+                'inverse-surface': '#293040',
+                'inverse-primary': '#99d3b7',
+                'on-primary-fixed': '#002115',
+                'surface-variant': '#dce2f7',
+                'primary-container': '#1a533e',
+                'error-container': '#ffdad6',
+                'secondary-container': '#dde0de',
+                'on-tertiary-container': '#eab100',
+                'inverse-on-surface': '#edf0ff',
+                error: '#ba1a1a',
+                'surface-dim': '#d3daef',
+                'surface-container-low': '#f1f3ff',
+                'surface-bright': '#f9f9ff',
+                'on-secondary': '#ffffff',
+                'primary-fixed': '#b5efd3',
+                'on-secondary-fixed-variant': '#434846',
+                outline: '#707973',
+                'on-primary-container': '#8cc5aa',
+                'on-tertiary-fixed-variant': '#5b4300',
+                'on-error-container': '#93000a',
+                'surface-container-highest': '#dce2f7',
+                'tertiary-container': '#5f4600',
+                'surface-container': '#e9edff',
+                'tertiary-fixed-dim': '#fabd00',
+                'on-surface-variant': '#404944',
+                'on-error': '#ffffff',
+                secondary: '#5b5f5e',
+                'secondary-fixed-dim': '#c4c7c5',
+                'on-tertiary-fixed': '#261a00',
+                'on-surface': '#141b2b',
+                surface: '#f9f9ff',
+                'on-tertiary': '#ffffff',
+                tertiary: '#433000',
+                'on-primary': '#ffffff',
+                'secondary-fixed': '#e0e3e1',
+                'surface-tint': '#326852',
+                primary: '#003b29',
+                'on-secondary-fixed': '#181c1b',
+                'surface-container-lowest': '#ffffff',
+                'on-primary-fixed-variant': '#16503b',
+                background: '#f9f9ff',
+                'on-secondary-container': '#5f6362',
+              },
+              borderRadius: {
+                DEFAULT: '0.25rem',
+                lg: '0.5rem',
+                xl: '0.75rem',
+                full: '9999px',
+              },
+              spacing: {
+                'stack-sm': '8px',
+                'stack-md': '16px',
+                'stack-lg': '48px',
+                'margin-x': '32px',
+                'section-gap': '80px',
+                gutter: '24px',
+                'container-max': '1280px',
+              },
+              fontFamily: {
+                'label-md': ['Plus Jakarta Sans'],
+                'body-md': ['Plus Jakarta Sans'],
+                'display-lg': ['Plus Jakarta Sans'],
+                'label-sm': ['Plus Jakarta Sans'],
+                'headline-sm': ['Plus Jakarta Sans'],
+                'headline-md': ['Plus Jakarta Sans'],
+                'display-lg-mobile': ['Plus Jakarta Sans'],
+                'body-lg': ['Plus Jakarta Sans'],
+              },
+              fontSize: {
+                'label-md': ['14px', { lineHeight: '1.2', fontWeight: '500' }],
+                'body-md': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+                'display-lg': [
+                  '48px',
+                  { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' },
+                ],
+                'label-sm': [
+                  '12px',
+                  { lineHeight: '1', letterSpacing: '0.05em', fontWeight: '600' },
+                ],
+                'headline-sm': ['20px', { lineHeight: '1.4', fontWeight: '600' }],
+                'headline-md': ['30px', { lineHeight: '1.3', fontWeight: '700' }],
+                'display-lg-mobile': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+                'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
+              },
+            },
+          },
+        };
+      } catch (_e) {}
+    </script>
+    <meta charset="utf-8" />
+  </head>
 
-<body class="text-on-surface">
+  <body class="text-on-surface">
     <!-- TopNavBar -->
     <header class="bg-surface-container-lowest shadow-sm fixed top-0 w-full z-50">
-        <div class="flex justify-between items-center px-margin-x w-full h-16 max-w-container-max mx-auto">
-            <div class="flex items-center gap-gutter">
-                <span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary">NearU</span>
-                <nav class="hidden md:flex items-center gap-6 ml-8">
-                    <a href="#"
-                        class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors">Explorar</a>
-                    <a href="#"
-                        class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors">Proveedores</a>
-                    <a href="#"
-                        class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors">Eventos</a>
-                    <a href="#"
-                        class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary">Recursos</a>
-                    <a href="#"
-                        class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors">Sobre
-                        NearU</a>
-                </nav>
-            </div>
-            <div class="flex items-center gap-4">
-                <button
-                    class="flex items-center gap-2 px-4 py-2 text-secondary hover:text-primary transition-all font-label-md">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                    Volver al Inicio
-                </button>
-                <div
-                    class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-label-sm">
-                    F</div>
-            </div>
+      <div
+        class="flex justify-between items-center px-margin-x w-full h-16 max-w-container-max mx-auto"
+      >
+        <div class="flex items-center gap-gutter">
+          <span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary"
+            >NearU</span
+          >
+          <nav class="hidden md:flex items-center gap-6 ml-8">
+            <a
+              href="#"
+              class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors"
+              >Explorar</a
+            >
+            <a
+              href="#"
+              class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors"
+              >Proveedores</a
+            >
+            <a
+              href="#"
+              class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors"
+              >Eventos</a
+            >
+            <a
+              href="#"
+              class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary"
+              >Recursos</a
+            >
+            <a
+              href="#"
+              class="font-label-md text-label-md text-secondary hover:text-primary-container transition-colors"
+              >Sobre NearU</a
+            >
+          </nav>
         </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="flex items-center gap-2 px-4 py-2 text-secondary hover:text-primary transition-all font-label-md"
+          >
+            <span class="material-symbols-outlined">arrow_back</span>
+            Volver al Inicio
+          </button>
+          <div
+            class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-label-sm"
+          >
+            F
+          </div>
+        </div>
+      </div>
     </header>
     <main class="pt-24 pb-stack-lg max-w-container-max mx-auto px-margin-x">
-        <!-- Breadcrumb / Back Button -->
-        <div class="mb-stack-md">
-            <button class="flex items-center gap-2 text-secondary hover:text-primary transition-all group">
-                <span
-                    class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
-                <span class="font-label-md text-label-md">Volver a mis publicaciones</span>
+      <!-- Breadcrumb / Back Button -->
+      <div class="mb-stack-md">
+        <button
+          class="flex items-center gap-2 text-secondary hover:text-primary transition-all group"
+        >
+          <span
+            class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform"
+            >arrow_back</span
+          >
+          <span class="font-label-md text-label-md">Volver a mis publicaciones</span>
+        </button>
+      </div>
+      <!-- Event Overview Card -->
+      <section
+        class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden mb-stack-lg border border-outline-variant/30"
+      >
+        <div class="flex flex-col md:flex-row items-center p-6 gap-6">
+          <div class="w-full md:w-32 h-24 rounded-lg overflow-hidden shrink-0">
+            <img
+              class="w-full h-full object-cover"
+              data-alt="A professional aerial photograph of a vibrant food festival setup with white marquees, elegant catering stations, and warm ambient lighting. The atmosphere is high-end and sophisticated, reflecting a premium B2B event environment. Deep green and soft mint tones dominate the palette, consistent with a modern corporate aesthetic."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqaPT2k6HWFo-FVwyVvKd4-cwnNDjEO-leVuCXM9Y5YkMy-wMmTaFMtJLP8Ia3kcCqTRbpU9uZ1ySybcYUH7MOV8KY7eHilOAqwh1hSkmG8rFt8EeCkDPud_pfz1q60kbW47Rfn5ByuB-PnOEhAjbBd5cLBt5FMh4r6oa3YWjhk0Bz6BL2Gqi1rd5XyLVYrSSdeEvSLGBpKv_RGa2HAwSqrqUkH3B2gUyAvQV6oguuQY5UhpaCuq"
+            />
+          </div>
+          <div class="flex-grow text-center md:text-left">
+            <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-1">
+              <h1 class="font-headline-md text-headline-md text-primary">
+                Festival Gastronómico 2024
+              </h1>
+              <span
+                class="px-3 py-1 bg-primary/10 text-primary rounded-full text-label-sm font-semibold flex items-center gap-1"
+              >
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Activo
+              </span>
+            </div>
+            <p
+              class="text-secondary font-body-md flex items-center justify-center md:justify-start gap-4"
+            >
+              <span class="flex items-center gap-1"
+                ><span class="material-symbols-outlined text-[18px]">calendar_today</span> 15 Nov -
+                18 Nov, 2024</span
+              >
+              <span class="flex items-center gap-1"
+                ><span class="material-symbols-outlined text-[18px]">location_on</span> Santiago,
+                Chile</span
+              >
+            </p>
+          </div>
+          <div class="flex gap-3">
+            <button
+              class="bg-surface-container-high text-primary px-4 py-2 rounded-lg font-label-md hover:bg-surface-variant transition-all"
+            >
+              Editar Evento
             </button>
+          </div>
         </div>
-        <!-- Event Overview Card -->
-        <section
-            class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden mb-stack-lg border border-outline-variant/30">
-            <div class="flex flex-col md:flex-row items-center p-6 gap-6">
-                <div class="w-full md:w-32 h-24 rounded-lg overflow-hidden shrink-0">
-                    <img class="w-full h-full object-cover"
-                        data-alt="A professional aerial photograph of a vibrant food festival setup with white marquees, elegant catering stations, and warm ambient lighting. The atmosphere is high-end and sophisticated, reflecting a premium B2B event environment. Deep green and soft mint tones dominate the palette, consistent with a modern corporate aesthetic."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbGqaPT2k6HWFo-FVwyVvKd4-cwnNDjEO-leVuCXM9Y5YkMy-wMmTaFMtJLP8Ia3kcCqTRbpU9uZ1ySybcYUH7MOV8KY7eHilOAqwh1hSkmG8rFt8EeCkDPud_pfz1q60kbW47Rfn5ByuB-PnOEhAjbBd5cLBt5FMh4r6oa3YWjhk0Bz6BL2Gqi1rd5XyLVYrSSdeEvSLGBpKv_RGa2HAwSqrqUkH3B2gUyAvQV6oguuQY5UhpaCuq">
-                </div>
-                <div class="flex-grow text-center md:text-left">
-                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-1">
-                        <h1 class="font-headline-md text-headline-md text-primary">Festival Gastronómico 2024</h1>
-                        <span
-                            class="px-3 py-1 bg-primary/10 text-primary rounded-full text-label-sm font-semibold flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                            Activo
-                        </span>
-                    </div>
-                    <p class="text-secondary font-body-md flex items-center justify-center md:justify-start gap-4">
-                        <span class="flex items-center gap-1"><span
-                                class="material-symbols-outlined text-[18px]">calendar_today</span> 15 Nov - 18 Nov,
-                            2024</span>
-                        <span class="flex items-center gap-1"><span
-                                class="material-symbols-outlined text-[18px]">location_on</span> Santiago, Chile</span>
-                    </p>
-                </div>
-                <div class="flex gap-3">
-                    <button
-                        class="bg-surface-container-high text-primary px-4 py-2 rounded-lg font-label-md hover:bg-surface-variant transition-all">Editar
-                        Evento</button>
-
-                </div>
-            </div>
-        </section>
-        <!-- Main Content Header -->
-        <div class="flex flex-col md:flex-row justify-between items-end mb-stack-md gap-4">
-            <div>
-                <h2 class="font-headline-md text-headline-md text-on-surface">Aplicaciones del Evento</h2>
-                <p class="text-secondary font-body-md">Listado de proveedores postulados ordenados por calificación de
-                    confianza.</p>
-            </div>
-            <div
-                class="flex items-center gap-4 bg-surface-container-low p-2 rounded-xl border border-outline-variant/20">
-                <div class="flex items-center gap-2 px-3 border-r border-outline-variant">
-                    <span class="material-symbols-outlined text-secondary">filter_alt</span>
-                    <span class="font-label-md text-secondary">Filtrar:</span>
-                    <select
-                        class="bg-transparent border-none focus:ring-0 font-bold text-primary p-0 pr-6 text-label-md">
-                        <option>Todos</option>
-                        <option>Pendiente</option>
-                        <option>En revisión</option>
-                        <option>Rechazado</option>
-                    </select>
-                </div>
-                <div class="px-3">
-                    <span class="text-secondary font-label-md"><strong class="text-primary">45</strong>
-                        Aplicaciones</span>
-                </div>
-            </div>
+      </section>
+      <!-- Main Content Header -->
+      <div class="flex flex-col md:flex-row justify-between items-end mb-stack-md gap-4">
+        <div>
+          <h2 class="font-headline-md text-headline-md text-on-surface">Aplicaciones del Evento</h2>
+          <p class="text-secondary font-body-md">
+            Listado de proveedores postulados ordenados por calificación de confianza.
+          </p>
         </div>
-        <!-- Application List - Bento Style Grid / List Hybrid -->
-        <div class="grid grid-cols-1 gap-gutter">
-            <!-- Applicant Card 1 (Top Rated) -->
-            <div
-                class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6">
-                <div
-                    class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0">
-                    <img class="w-full h-full object-cover"
-                        data-alt="A minimalist logo for a premium catering company named Banquetes Premium, featuring elegant clean lines and a sophisticated icon of a silver tray. The design uses a deep forest green and gold palette, shot in high-key studio lighting to emphasize quality and professionalism for a B2B audience."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOrXh8XkuE5d4Qqc2-9MylGmIjjzHGLlDqAkFwBdk2KQjwR_E7yPR2MzvFRT8VqatZbMqoJ-1qFtcNceG1J-hJkxKRNNlfOdoIwZ9e-QW75CwmbrxwYRculhgKZGQ277EBgdokIe8xjDm5G4QHyXnrq9yu0I6Vfm28YrtOyXrtmS5vY9U4rjv_qk6adJfVF7OQKzk-lsI-kRIGjbupmAsugK8sI260PJzSlbCMaA1LdfjINhWLb09z">
-                </div>
-                <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="font-headline-sm text-headline-sm text-on-surface">Banquetes Premium</h3>
-                            <span class="material-symbols-outlined text-primary fill-icon text-[20px]"
-                                title="Verificado">verified</span>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">restaurant</span> Catering
-                            </span>
-                            <span
-                                class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">map</span> Metropolitana
-                            </span>
-                        </div>
-                    </div>
-                    <div
-                        class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto">
-                        <div class="text-center">
-                            <span
-                                class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Puntuación</span>
-                            <div
-                                class="flex items-center justify-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-lg font-bold">
-                                <span class="material-symbols-outlined text-[18px] fill-icon">star</span>
-                                95 pts
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Estado</span>
-                            <span
-                                class="px-4 py-1.5 rounded-full bg-surface-container text-secondary-fixed-dim font-bold text-label-sm border border-outline-variant/20">En
-                                revisión</span>
-                        </div>
-                        <div class="flex items-center">
-                            <button
-                                class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm">Gestionar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Applicant Card 2 -->
-            <div
-                class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6">
-                <div
-                    class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0">
-                    <img class="w-full h-full object-cover"
-                        data-alt="A modern, energetic logo for Logística Express, a logistics and transport company. The visual features bold geometric arrows and a stylized truck silhouette in slate gray and vibrant emerald green. Clean, white-space heavy background in a professional business context."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvwTBe36S2sa4qQM1IlaRdMAeqhpKUuF77YqU2lL3TD-x10LrCT1ssKpnL_jCNExuGEemo9FZrVpRjTWGSioZlt-cOlOKL7voQf7g8QgPdxNZFuhjG-DsPPf4w5USLb8B3LiXdY1EAfsDutF4lW4mYQY9Cxl44TL2NDmeGPddXiGxkNSDUTN2XQ6fuH-QwZ0w4Gz6KwQvjQ-9YNy5Aq1JncBIIYcYrUwfMxS3sFExidGA4-2a1F5kn">
-                </div>
-                <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="font-headline-sm text-headline-sm text-on-surface">Logística Express</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">local_shipping</span> Transporte
-                            </span>
-                            <span
-                                class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">map</span> Valparaíso
-                            </span>
-                        </div>
-                    </div>
-                    <div
-                        class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto">
-                        <div class="text-center">
-                            <span
-                                class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Puntuación</span>
-                            <div
-                                class="flex items-center justify-center gap-1 bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg font-bold">
-                                <span class="material-symbols-outlined text-[18px]">star</span>
-                                82 pts
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Estado</span>
-                            <span
-                                class="px-4 py-1.5 rounded-full bg-surface-container-low text-secondary font-bold text-label-sm border border-outline-variant/10">Pendiente</span>
-                        </div>
-                        <div class="flex items-center">
-                            <button
-                                class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm">Gestionar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Applicant Card 3 -->
-            <div
-                class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6">
-                <div
-                    class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0">
-                    <img class="w-full h-full object-cover"
-                        data-alt="Corporate branding for 'SoundWave Productions', specializing in event audio-visuals. The logo shows stylized sound waves forming a mountain peak, rendered in professional charcoal and light mint green. High-end, crisp minimalist design suitable for a B2B marketplace."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV_sQ6UIHWScwQUv-aOJJfQ0UzYxVZY8SgQP6latUPjwWfcGjY0ED_8SlJ8UcU8SFZVpQRCvt5o8QpTMMbW2P4bUledV8l-fShfmq25W7Wuk8P6FhZeMezD0P0E0RK8fxtLuvfo1dgJXajokfLPm8blPKWuKLxYx9_W20Yk03ChGsTVTAHdS3J77-jZY95smAxvSYAzj78nZtASjHeROjIexWN7gF_k8zutAosjMTYNymTGOcqIZXj">
-                </div>
-                <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="font-headline-sm text-headline-sm text-on-surface">SoundWave Pro</h3>
-                            <span class="material-symbols-outlined text-primary fill-icon text-[20px]"
-                                title="Verificado">verified</span>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">volume_up</span> Sonido
-                            </span>
-                            <span
-                                class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">map</span> Metropolitana
-                            </span>
-                        </div>
-                    </div>
-                    <div
-                        class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto">
-                        <div class="text-center">
-                            <span
-                                class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Puntuación</span>
-                            <div
-                                class="flex items-center justify-center gap-1 bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg font-bold">
-                                <span class="material-symbols-outlined text-[18px]">star</span>
-                                79 pts
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Estado</span>
-                            <span
-                                class="px-4 py-1.5 rounded-full bg-error-container/20 text-error font-bold text-label-sm border border-error/10">Rechazado</span>
-                        </div>
-                        <div class="flex items-center">
-                            <button
-                                class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm">Gestionar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Applicant Card 4 -->
-            <div
-                class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6">
-                <div
-                    class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0">
-                    <img class="w-full h-full object-cover"
-                        data-alt="A minimalist B2B service logo for 'Decor Events', featuring a simple branch icon in deep emerald green and soft gray. The design is elegant and clean, set against a bright, professional light-mode background. It communicates reliability and high-end aesthetic service."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgFPUnSxVkHMbC4z2Q9iVyK7M3_oocWfokY81rzaaOywDVxh05iacFsvAtT82OOyAOeWrGr-hF3ReNbkF3YzJgzDRcY9nkYflKviim9C3ZkW3XEU6z2Uk8YgT7x11FC3ie8G3RMCYBHNh2Ne2HmCjHJJGipY7c5EvD9IskZpB_cJb6sW7U_dfZ6SjuUK4XZXZFikbuKZzL83DSvmGhodDasGXJ3LqbSLOk8kTpQxrCtDC9tvrEv9aa">
-                </div>
-                <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="font-headline-sm text-headline-sm text-on-surface">Decor Events Co.</h3>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">palette</span> Decoración
-                            </span>
-                            <span
-                                class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">map</span> Bío Bío
-                            </span>
-                        </div>
-                    </div>
-                    <div
-                        class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto">
-                        <div class="text-center">
-                            <span
-                                class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Puntuación</span>
-                            <div
-                                class="flex items-center justify-center gap-1 bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg font-bold">
-                                <span class="material-symbols-outlined text-[18px]">star</span>
-                                75 pts
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1">Estado</span>
-                            <span
-                                class="px-4 py-1.5 rounded-full bg-surface-container-low text-secondary font-bold text-label-sm border border-outline-variant/10">Pendiente</span>
-                        </div>
-                        <div class="flex items-center">
-                            <button
-                                class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm">Gestionar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Pagination -->
         <div
-            class="mt-stack-lg flex flex-col md:flex-row items-center justify-between bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm">
-            <span class="text-secondary font-label-md mb-4 md:mb-0">Mostrando <strong>1-10</strong> de
-                <strong>45</strong> aplicaciones</span>
-            <div class="flex items-center gap-2">
-                <button
-                    class="w-10 h-10 rounded-lg flex items-center justify-center border border-outline-variant text-secondary hover:bg-surface-container-high transition-all">
-                    <span class="material-symbols-outlined">chevron_left</span>
-                </button>
-                <button
-                    class="w-10 h-10 rounded-lg flex items-center justify-center bg-primary text-white font-bold">1</button>
-                <button
-                    class="w-10 h-10 rounded-lg flex items-center justify-center text-secondary hover:bg-surface-container-high transition-all">2</button>
-                <button
-                    class="w-10 h-10 rounded-lg flex items-center justify-center text-secondary hover:bg-surface-container-high transition-all">3</button>
-                <span class="text-secondary px-2">...</span>
-                <button
-                    class="w-10 h-10 rounded-lg flex items-center justify-center text-secondary hover:bg-surface-container-high transition-all">5</button>
-                <button
-                    class="w-10 h-10 rounded-lg flex items-center justify-center border border-outline-variant text-secondary hover:bg-surface-container-high transition-all">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
-            </div>
+          class="flex items-center gap-4 bg-surface-container-low p-2 rounded-xl border border-outline-variant/20"
+        >
+          <div class="flex items-center gap-2 px-3 border-r border-outline-variant">
+            <span class="material-symbols-outlined text-secondary">filter_alt</span>
+            <span class="font-label-md text-secondary">Filtrar:</span>
+            <select
+              class="bg-transparent border-none focus:ring-0 font-bold text-primary p-0 pr-6 text-label-md"
+            >
+              <option>Todos</option>
+              <option>Pendiente</option>
+              <option>En revisión</option>
+              <option>Rechazado</option>
+            </select>
+          </div>
+          <div class="px-3">
+            <span class="text-secondary font-label-md"
+              ><strong class="text-primary">45</strong> Aplicaciones</span
+            >
+          </div>
         </div>
+      </div>
+      <!-- Application List - Bento Style Grid / List Hybrid -->
+      <div class="grid grid-cols-1 gap-gutter">
+        <!-- Applicant Card 1 (Top Rated) -->
+        <div
+          class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6"
+        >
+          <div
+            class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0"
+          >
+            <img
+              class="w-full h-full object-cover"
+              data-alt="A minimalist logo for a premium catering company named Banquetes Premium, featuring elegant clean lines and a sophisticated icon of a silver tray. The design uses a deep forest green and gold palette, shot in high-key studio lighting to emphasize quality and professionalism for a B2B audience."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOrXh8XkuE5d4Qqc2-9MylGmIjjzHGLlDqAkFwBdk2KQjwR_E7yPR2MzvFRT8VqatZbMqoJ-1qFtcNceG1J-hJkxKRNNlfOdoIwZ9e-QW75CwmbrxwYRculhgKZGQ277EBgdokIe8xjDm5G4QHyXnrq9yu0I6Vfm28YrtOyXrtmS5vY9U4rjv_qk6adJfVF7OQKzk-lsI-kRIGjbupmAsugK8sI260PJzSlbCMaA1LdfjINhWLb09z"
+            />
+          </div>
+          <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
+            <div class="flex-grow">
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="font-headline-sm text-headline-sm text-on-surface">Banquetes Premium</h3>
+                <span
+                  class="material-symbols-outlined text-primary fill-icon text-[20px]"
+                  title="Verificado"
+                  >verified</span
+                >
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">restaurant</span> Catering
+                </span>
+                <span
+                  class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">map</span> Metropolitana
+                </span>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto"
+            >
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Puntuación</span
+                >
+                <div
+                  class="flex items-center justify-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-lg font-bold"
+                >
+                  <span class="material-symbols-outlined text-[18px] fill-icon">star</span>
+                  95 pts
+                </div>
+              </div>
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Estado</span
+                >
+                <span
+                  class="px-4 py-1.5 rounded-full bg-surface-container text-secondary-fixed-dim font-bold text-label-sm border border-outline-variant/20"
+                  >En revisión</span
+                >
+              </div>
+              <div class="flex items-center">
+                <button
+                  class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm"
+                >
+                  Gestionar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Applicant Card 2 -->
+        <div
+          class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6"
+        >
+          <div
+            class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0"
+          >
+            <img
+              class="w-full h-full object-cover"
+              data-alt="A modern, energetic logo for Logística Express, a logistics and transport company. The visual features bold geometric arrows and a stylized truck silhouette in slate gray and vibrant emerald green. Clean, white-space heavy background in a professional business context."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvwTBe36S2sa4qQM1IlaRdMAeqhpKUuF77YqU2lL3TD-x10LrCT1ssKpnL_jCNExuGEemo9FZrVpRjTWGSioZlt-cOlOKL7voQf7g8QgPdxNZFuhjG-DsPPf4w5USLb8B3LiXdY1EAfsDutF4lW4mYQY9Cxl44TL2NDmeGPddXiGxkNSDUTN2XQ6fuH-QwZ0w4Gz6KwQvjQ-9YNy5Aq1JncBIIYcYrUwfMxS3sFExidGA4-2a1F5kn"
+            />
+          </div>
+          <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
+            <div class="flex-grow">
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="font-headline-sm text-headline-sm text-on-surface">Logística Express</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">local_shipping</span>
+                  Transporte
+                </span>
+                <span
+                  class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">map</span> Valparaíso
+                </span>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto"
+            >
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Puntuación</span
+                >
+                <div
+                  class="flex items-center justify-center gap-1 bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg font-bold"
+                >
+                  <span class="material-symbols-outlined text-[18px]">star</span>
+                  82 pts
+                </div>
+              </div>
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Estado</span
+                >
+                <span
+                  class="px-4 py-1.5 rounded-full bg-surface-container-low text-secondary font-bold text-label-sm border border-outline-variant/10"
+                  >Pendiente</span
+                >
+              </div>
+              <div class="flex items-center">
+                <button
+                  class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm"
+                >
+                  Gestionar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Applicant Card 3 -->
+        <div
+          class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6"
+        >
+          <div
+            class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0"
+          >
+            <img
+              class="w-full h-full object-cover"
+              data-alt="Corporate branding for 'SoundWave Productions', specializing in event audio-visuals. The logo shows stylized sound waves forming a mountain peak, rendered in professional charcoal and light mint green. High-end, crisp minimalist design suitable for a B2B marketplace."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV_sQ6UIHWScwQUv-aOJJfQ0UzYxVZY8SgQP6latUPjwWfcGjY0ED_8SlJ8UcU8SFZVpQRCvt5o8QpTMMbW2P4bUledV8l-fShfmq25W7Wuk8P6FhZeMezD0P0E0RK8fxtLuvfo1dgJXajokfLPm8blPKWuKLxYx9_W20Yk03ChGsTVTAHdS3J77-jZY95smAxvSYAzj78nZtASjHeROjIexWN7gF_k8zutAosjMTYNymTGOcqIZXj"
+            />
+          </div>
+          <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
+            <div class="flex-grow">
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="font-headline-sm text-headline-sm text-on-surface">SoundWave Pro</h3>
+                <span
+                  class="material-symbols-outlined text-primary fill-icon text-[20px]"
+                  title="Verificado"
+                  >verified</span
+                >
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">volume_up</span> Sonido
+                </span>
+                <span
+                  class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">map</span> Metropolitana
+                </span>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto"
+            >
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Puntuación</span
+                >
+                <div
+                  class="flex items-center justify-center gap-1 bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg font-bold"
+                >
+                  <span class="material-symbols-outlined text-[18px]">star</span>
+                  79 pts
+                </div>
+              </div>
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Estado</span
+                >
+                <span
+                  class="px-4 py-1.5 rounded-full bg-error-container/20 text-error font-bold text-label-sm border border-error/10"
+                  >Rechazado</span
+                >
+              </div>
+              <div class="flex items-center">
+                <button
+                  class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm"
+                >
+                  Gestionar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Applicant Card 4 -->
+        <div
+          class="group bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all border border-outline-variant/30 flex flex-col md:flex-row items-center p-5 gap-6"
+        >
+          <div
+            class="relative w-20 h-20 rounded-xl bg-surface-container overflow-hidden border border-outline-variant/20 shrink-0"
+          >
+            <img
+              class="w-full h-full object-cover"
+              data-alt="A minimalist B2B service logo for 'Decor Events', featuring a simple branch icon in deep emerald green and soft gray. The design is elegant and clean, set against a bright, professional light-mode background. It communicates reliability and high-end aesthetic service."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgFPUnSxVkHMbC4z2Q9iVyK7M3_oocWfokY81rzaaOywDVxh05iacFsvAtT82OOyAOeWrGr-hF3ReNbkF3YzJgzDRcY9nkYflKviim9C3ZkW3XEU6z2Uk8YgT7x11FC3ie8G3RMCYBHNh2Ne2HmCjHJJGipY7c5EvD9IskZpB_cJb6sW7U_dfZ6SjuUK4XZXZFikbuKZzL83DSvmGhodDasGXJ3LqbSLOk8kTpQxrCtDC9tvrEv9aa"
+            />
+          </div>
+          <div class="flex-grow flex flex-col md:flex-row md:items-center gap-6 w-full">
+            <div class="flex-grow">
+              <div class="flex items-center gap-2 mb-1">
+                <h3 class="font-headline-sm text-headline-sm text-on-surface">Decor Events Co.</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="bg-surface-container-high px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">palette</span> Decoración
+                </span>
+                <span
+                  class="bg-surface-container-low px-3 py-0.5 rounded-full text-label-sm text-secondary flex items-center gap-1"
+                >
+                  <span class="material-symbols-outlined text-[14px]">map</span> Bío Bío
+                </span>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-12 md:gap-8 justify-between md:justify-end shrink-0 w-full md:w-auto"
+            >
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Puntuación</span
+                >
+                <div
+                  class="flex items-center justify-center gap-1 bg-surface-container text-on-surface-variant px-3 py-1 rounded-lg font-bold"
+                >
+                  <span class="material-symbols-outlined text-[18px]">star</span>
+                  75 pts
+                </div>
+              </div>
+              <div class="text-center">
+                <span class="block font-label-sm text-secondary uppercase tracking-wider mb-1"
+                  >Estado</span
+                >
+                <span
+                  class="px-4 py-1.5 rounded-full bg-surface-container-low text-secondary font-bold text-label-sm border border-outline-variant/10"
+                  >Pendiente</span
+                >
+              </div>
+              <div class="flex items-center">
+                <button
+                  class="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-all shadow-sm"
+                >
+                  Gestionar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pagination -->
+      <div
+        class="mt-stack-lg flex flex-col md:flex-row items-center justify-between bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20 shadow-sm"
+      >
+        <span class="text-secondary font-label-md mb-4 md:mb-0"
+          >Mostrando <strong>1-10</strong> de <strong>45</strong> aplicaciones</span
+        >
+        <div class="flex items-center gap-2">
+          <button
+            class="w-10 h-10 rounded-lg flex items-center justify-center border border-outline-variant text-secondary hover:bg-surface-container-high transition-all"
+          >
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <button
+            class="w-10 h-10 rounded-lg flex items-center justify-center bg-primary text-white font-bold"
+          >
+            1
+          </button>
+          <button
+            class="w-10 h-10 rounded-lg flex items-center justify-center text-secondary hover:bg-surface-container-high transition-all"
+          >
+            2
+          </button>
+          <button
+            class="w-10 h-10 rounded-lg flex items-center justify-center text-secondary hover:bg-surface-container-high transition-all"
+          >
+            3
+          </button>
+          <span class="text-secondary px-2">...</span>
+          <button
+            class="w-10 h-10 rounded-lg flex items-center justify-center text-secondary hover:bg-surface-container-high transition-all"
+          >
+            5
+          </button>
+          <button
+            class="w-10 h-10 rounded-lg flex items-center justify-center border border-outline-variant text-secondary hover:bg-surface-container-high transition-all"
+          >
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+      </div>
     </main>
     <!-- Footer -->
     <footer class="bg-primary text-on-primary mt-section-gap">
-        <div class="grid grid-cols-2 md:grid-cols-6 gap-gutter px-margin-x py-stack-lg max-w-container-max mx-auto">
-            <div class="col-span-2">
-                <span class="font-headline-md text-headline-md font-bold block mb-4">NearU</span>
-                <p class="font-body-md text-primary-fixed opacity-80 mb-6 max-w-xs">La plataforma líder para la
-                    organización de eventos corporativos en Chile.</p>
-                <div class="flex gap-4">
-                    <a class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
-                        href="#"><span class="material-symbols-outlined text-[18px]">public</span></a>
-                    <a class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
-                        href="#"><span class="material-symbols-outlined text-[18px]">mail</span></a>
-                </div>
-            </div>
-            <div>
-                <h4 class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4">Explorar
-                </h4>
-                <ul class="space-y-2 font-label-md text-label-md opacity-70">
-                    <li class=""><a class="hover:underline transition-all" href="#">Proveedores</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Categorías</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Eventos</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Regiones</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4">Recursos
-                </h4>
-                <ul class="space-y-2 font-label-md text-label-md opacity-70">
-                    <li class=""><a class="hover:underline transition-all" href="#">Centro de Ayuda</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Blog</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Casos de Éxito</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4">Empresa
-                </h4>
-                <ul class="space-y-2 font-label-md text-label-md opacity-70">
-                    <li class=""><a class="hover:underline transition-all" href="#">Sobre Nosotros</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Carreras</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Contacto</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4">Legal</h4>
-                <ul class="space-y-2 font-label-md text-label-md opacity-70">
-                    <li class=""><a class="hover:underline transition-all" href="#">Términos</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Privacidad</a></li>
-                    <li class=""><a class="hover:underline transition-all" href="#">Cookies</a></li>
-                </ul>
-            </div>
+      <div
+        class="grid grid-cols-2 md:grid-cols-6 gap-gutter px-margin-x py-stack-lg max-w-container-max mx-auto"
+      >
+        <div class="col-span-2">
+          <span class="font-headline-md text-headline-md font-bold block mb-4">NearU</span>
+          <p class="font-body-md text-primary-fixed opacity-80 mb-6 max-w-xs">
+            La plataforma líder para la organización de eventos corporativos en Chile.
+          </p>
+          <div class="flex gap-4">
+            <a
+              class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+              href="#"
+              ><span class="material-symbols-outlined text-[18px]">public</span></a
+            >
+            <a
+              class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+              href="#"
+              ><span class="material-symbols-outlined text-[18px]">mail</span></a
+            >
+          </div>
         </div>
-        <div
-            class="border-t border-white/10 py-6 text-center font-label-sm text-label-sm text-primary-fixed opacity-60">
-            © 2024 NearU. Todos los derechos reservados.
+        <div>
+          <h4
+            class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4"
+          >
+            Explorar
+          </h4>
+          <ul class="space-y-2 font-label-md text-label-md opacity-70">
+            <li class=""><a class="hover:underline transition-all" href="#">Proveedores</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Categorías</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Eventos</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Regiones</a></li>
+          </ul>
         </div>
+        <div>
+          <h4
+            class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4"
+          >
+            Recursos
+          </h4>
+          <ul class="space-y-2 font-label-md text-label-md opacity-70">
+            <li class=""><a class="hover:underline transition-all" href="#">Centro de Ayuda</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Blog</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Casos de Éxito</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4
+            class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4"
+          >
+            Empresa
+          </h4>
+          <ul class="space-y-2 font-label-md text-label-md opacity-70">
+            <li class=""><a class="hover:underline transition-all" href="#">Sobre Nosotros</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Carreras</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4
+            class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed-dim mb-4"
+          >
+            Legal
+          </h4>
+          <ul class="space-y-2 font-label-md text-label-md opacity-70">
+            <li class=""><a class="hover:underline transition-all" href="#">Términos</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Privacidad</a></li>
+            <li class=""><a class="hover:underline transition-all" href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="border-t border-white/10 py-6 text-center font-label-sm text-label-sm text-primary-fixed opacity-60"
+      >
+        © 2024 NearU. Todos los derechos reservados.
+      </div>
     </footer>
     <!-- Simple Hover Interactivity -->
     <script>
-        document.querySelectorAll('.group').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-2px)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-            });
+      document.querySelectorAll('.group').forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-2px)';
         });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+        });
+      });
     </script>
-
-</body>
-
+  </body>
 </html>

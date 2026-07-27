@@ -1,5 +1,5 @@
-import type { Profile } from '@/lib/profile-api'
+import type { Profile } from '@/lib/profile-api';
 
 export interface PerfilData {
-  profile: Profile
+  profile: Profile;
 }

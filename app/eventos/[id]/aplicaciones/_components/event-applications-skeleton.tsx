@@ -63,5 +63,5 @@ export function EventApplicationsSkeleton() {
         </div>
       </main>
     </div>
-  )
+  );
 }

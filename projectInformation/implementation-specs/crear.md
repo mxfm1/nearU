@@ -7,12 +7,11 @@
 - Crear
 - /crear
 - TBD
-- Roles: Aquellos usuarios que hayan logeado 
+- Roles: Aquellos usuarios que hayan logeado
 
 # 2. Finalidad
 
     Generar un espacio para que los usuarios puedan publicar servicios o eventos
-    
 
 # 3. UI Reference
 
@@ -35,6 +34,7 @@
 
     <EventPrimaryCreateButton>
     <ServicePrimaryCreateButton>
+
 ---
 
 # 5. Funcionalidad
@@ -43,11 +43,10 @@
 
 # 6. Integración
 
-
 # 7. Estados
 
     - Carga inicial(server)
-    - partial rendering 
+    - partial rendering
 
 # 8. Consideraciones
 
@@ -62,10 +61,8 @@
 
 # 9. Consideraciones de elementos del layout
 
-
 Implementar segun:
 
     - projectInformation/domain/ubication.md
     - projectInformation/domain/categories.md
     . skills/react-clean-architecture.md
-

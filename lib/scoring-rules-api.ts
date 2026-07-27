@@ -1,68 +1,68 @@
-import { apiFetch } from './api-client'
+import { apiFetch } from './api-client';
 
 // --- Types ---
 
 export type ScoringRule = {
-  id: string
-  eventId: string
-  ruleType: string
-  weight: number
-  config: Record<string, unknown> | null
-  createdAt: string
-  updatedAt: string
-}
+  id: string;
+  eventId: string;
+  ruleType: string;
+  weight: number;
+  config: Record<string, unknown> | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 export type ScoringRuleOption = {
-  ruleType: string
-  name?: string
-  description: string
-  icon?: string
-  group?: string
-}
+  ruleType: string;
+  name?: string;
+  description: string;
+  icon?: string;
+  group?: string;
+};
 
 export type Region = {
-  id: string
-  name: string
-}
+  id: string;
+  name: string;
+};
 
 // --- Payloads ---
 
 export type CreateScoringRuleItem = {
-  ruleType: string
-  weight: number
-}
+  ruleType: string;
+  weight: number;
+};
 
 export type CreateScoringRulesPayload = {
-  rules: CreateScoringRuleItem[]
-}
+  rules: CreateScoringRuleItem[];
+};
 
 // --- Cache ---
 
-const cache = new Map<string, { data: unknown; timestamp: number }>()
-const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+const cache = new Map<string, { data: unknown; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 function getCached<T>(key: string): T | null {
-  const entry = cache.get(key)
+  const entry = cache.get(key);
   if (entry && Date.now() - entry.timestamp < CACHE_TTL) {
-    return entry.data as T
+    return entry.data as T;
   }
-  cache.delete(key)
-  return null
+  cache.delete(key);
+  return null;
 }
 
 function setCache(key: string, data: unknown): void {
-  cache.set(key, { data, timestamp: Date.now() })
+  cache.set(key, { data, timestamp: Date.now() });
 }
 
 // --- API Client ---
 
 async function fetchWithCache<T>(path: string, cacheKey: string): Promise<T> {
-  const cached = getCached<T>(cacheKey)
-  if (cached) return cached
+  const cached = getCached<T>(cacheKey);
+  if (cached) return cached;
 
-  const result = await apiFetch<T>(path)
-  setCache(cacheKey, result)
-  return result
+  const result = await apiFetch<T>(path);
+  setCache(cacheKey, result);
+  return result;
 }
 
 export const scoringRulesApi = {
@@ -86,9 +86,5 @@ export const scoringRulesApi = {
       'available-rules'
     ),
 
-  getRegions: () =>
-    fetchWithCache<{ success: boolean; data: Region[] }>(
-      '/regions',
-      'regions'
-    ),
-}
+  getRegions: () => fetchWithCache<{ success: boolean; data: Region[] }>('/regions', 'regions'),
+};

@@ -1,29 +1,29 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react'
-import { authApi } from '@/lib/api-client'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react';
+import Link from 'next/link';
+import { CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
+import { authApi } from '@/lib/api-client';
+import { Button } from '@/components/ui/button';
 
 interface VerifyEmailFormProps {
-  token: string
+  token: string;
 }
 
 export function VerifyEmailForm({ token }: VerifyEmailFormProps) {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [error, setError] = useState<string | null>(null)
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [error, setError] = useState<string | null>(null);
 
   async function handleVerify() {
-    setStatus('loading')
-    setError(null)
+    setStatus('loading');
+    setError(null);
 
     try {
-      await authApi.verifyEmail(token)
-      setStatus('success')
+      await authApi.verifyEmail(token);
+      setStatus('success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al verificar el email')
-      setStatus('error')
+      setError(err instanceof Error ? err.message : 'Error al verificar el email');
+      setStatus('error');
     }
   }
 
@@ -37,7 +37,8 @@ export function VerifyEmailForm({ token }: VerifyEmailFormProps) {
             </div>
             <h1 className="mb-2 text-2xl font-bold tracking-tight">¡Email verificado!</h1>
             <p className="mb-8 text-sm text-muted-foreground">
-              Gracias por validar tu correo electrónico. Ya podés disfrutar de todas las funcionalidades de NearU.
+              Gracias por validar tu correo electrónico. Ya podés disfrutar de todas las
+              funcionalidades de NearU.
             </p>
             <Button asChild className="w-full bg-brand text-brand-foreground hover:bg-brand/90">
               <Link href="/">Ir al inicio</Link>
@@ -45,7 +46,7 @@ export function VerifyEmailForm({ token }: VerifyEmailFormProps) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (status === 'error') {
@@ -74,7 +75,7 @@ export function VerifyEmailForm({ token }: VerifyEmailFormProps) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -111,5 +112,5 @@ export function VerifyEmailForm({ token }: VerifyEmailFormProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

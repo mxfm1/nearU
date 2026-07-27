@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
-import { EventApplicationsContent } from './_components/event-applications-content'
-import { EventApplicationsSkeleton } from './_components/event-applications-skeleton'
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, use } from 'react';
+import { EventApplicationsContent } from './_components/event-applications-content';
+import { EventApplicationsSkeleton } from './_components/event-applications-skeleton';
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default function EventApplicationsPage({ params }: PageProps) {
@@ -14,32 +14,32 @@ export default function EventApplicationsPage({ params }: PageProps) {
     <Suspense fallback={<EventApplicationsSkeleton />}>
       <EventApplicationsPageClient params={params} />
     </Suspense>
-  )
+  );
 }
 
-async function EventApplicationsPageClient({ params }: PageProps) {
-  const { id: eventId } = await params
-  const searchParams = useSearchParams()
-  const router = useRouter()
+function EventApplicationsPageClient({ params }: PageProps) {
+  const { id: eventId } = use(params);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const statusFilter = searchParams.get('status') || 'all'
-  const currentPage = parseInt(searchParams.get('page') || '1') || 1
+  const statusFilter = searchParams.get('status') || 'all';
+  const currentPage = parseInt(searchParams.get('page') || '1') || 1;
 
   function handleStatusChange(newStatus: string) {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString());
     if (newStatus === 'all') {
-      params.delete('status')
+      params.delete('status');
     } else {
-      params.set('status', newStatus)
+      params.set('status', newStatus);
     }
-    params.delete('page')
-    router.push(`?${params.toString()}`)
+    params.delete('page');
+    router.push(`?${params.toString()}`);
   }
 
   function handlePageChange(newPage: number) {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('page', String(newPage))
-    router.push(`?${params.toString()}`)
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', String(newPage));
+    router.push(`?${params.toString()}`);
   }
 
   return (
@@ -50,5 +50,5 @@ async function EventApplicationsPageClient({ params }: PageProps) {
       onStatusChange={handleStatusChange}
       onPageChange={handlePageChange}
     />
-  )
+  );
 }

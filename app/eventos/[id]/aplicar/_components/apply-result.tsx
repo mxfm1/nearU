@@ -1,25 +1,25 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { CheckCircle, XCircle, TrendingUp, Box } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { ApplyStepper } from './apply-stepper'
-import type { ApplicationStatus } from '@/lib/applications-api'
+import Link from 'next/link';
+import { CheckCircle, XCircle, TrendingUp, Box } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ApplyStepper } from './apply-stepper';
+import type { ApplicationStatus } from '@/lib/applications-api';
 
 interface StatsData {
-  activeVacancies?: number
-  profileMatch?: number
+  activeVacancies?: number;
+  profileMatch?: number;
 }
 
 interface ApplyResultProps {
-  status: ApplicationStatus
-  eventTitle: string
-  eventId: string
-  stats?: StatsData
+  status: ApplicationStatus;
+  eventTitle: string;
+  eventId: string;
+  stats?: StatsData;
 }
 
 export function ApplyResult({ status, eventTitle, eventId, stats }: ApplyResultProps) {
-  const isAccepted = status === 'accepted'
+  const isAccepted = status === 'accepted';
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,10 +36,16 @@ export function ApplyResult({ status, eventTitle, eventId, stats }: ApplyResultP
             {/* Illustration Area */}
             <div className="w-full md:w-1/2 bg-muted flex items-center justify-center p-8 md:p-12 relative overflow-hidden min-h-[300px] md:min-h-[400px]">
               {/* Background aesthetic circles */}
-              <div className={`absolute -top-12 -left-12 w-48 h-48 rounded-full blur-3xl ${isAccepted ? 'bg-green-100' : 'bg-red-100'
-                }`} />
-              <div className={`absolute -bottom-12 -right-12 w-64 h-64 rounded-full blur-3xl ${isAccepted ? 'bg-green-50' : 'bg-red-50'
-                }`} />
+              <div
+                className={`absolute -top-12 -left-12 w-48 h-48 rounded-full blur-3xl ${
+                  isAccepted ? 'bg-green-100' : 'bg-red-100'
+                }`}
+              />
+              <div
+                className={`absolute -bottom-12 -right-12 w-64 h-64 rounded-full blur-3xl ${
+                  isAccepted ? 'bg-green-50' : 'bg-red-50'
+                }`}
+              />
 
               {isAccepted ? (
                 <img
@@ -59,33 +65,38 @@ export function ApplyResult({ status, eventTitle, eventId, stats }: ApplyResultP
             {/* Text Content Area */}
             <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center text-left">
               {/* Status Badge */}
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full w-fit mb-6 ${isAccepted
-                ? 'bg-green-100 text-green-700'
-                : 'bg-red-100 text-red-700'
-                }`}>
-                {isAccepted ? (
-                  <CheckCircle className="w-4 h-4" />
-                ) : (
-                  <XCircle className="w-4 h-4" />
-                )}
+              <div
+                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full w-fit mb-6 ${
+                  isAccepted ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                }`}
+              >
+                {isAccepted ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                 <span className="text-xs font-medium">Estado Finalizado</span>
               </div>
 
               <h1 className="text-2xl md:text-3xl font-bold text-primary mb-6">
-                {isAccepted ? '¡Felicitaciones! Has sido seleccionado' : 'Postulación no seleccionada'}
+                {isAccepted
+                  ? '¡Felicitaciones! Has sido seleccionado'
+                  : 'Postulación no seleccionada'}
               </h1>
 
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 {isAccepted ? (
                   <>
-                    ¡Felicidades! Tu perfil ha sido seleccionado para participar en <strong>{eventTitle}</strong>.
-                    <span className="block mt-2">Nos pondremos en contacto contigo pronto con los siguientes pasos.</span>
+                    ¡Felicidades! Tu perfil ha sido seleccionado para participar en{' '}
+                    <strong>{eventTitle}</strong>.
+                    <span className="block mt-2">
+                      Nos pondremos en contacto contigo pronto con los siguientes pasos.
+                    </span>
                   </>
                 ) : (
                   <>
-                    Gracias por tu interés en esta vacante. En esta ocasión la empresa ha decidido avanzar con otros
-                    perfiles que se alinean más estrechamente con sus necesidades actuales.
-                    <span className="block mt-3 font-semibold text-primary">¡No te rindas, hay muchas más oportunidades esperándote en NearU!</span>
+                    Gracias por tu interés en esta vacante. En esta ocasión la empresa ha decidido
+                    avanzar con otros perfiles que se alinean más estrechamente con sus necesidades
+                    actuales.
+                    <span className="block mt-3 font-semibold text-primary">
+                      ¡No te rindas, hay muchas más oportunidades esperándote en NearU!
+                    </span>
                   </>
                 )}
               </p>
@@ -152,43 +163,91 @@ export function ApplyResult({ status, eventTitle, eventId, stats }: ApplyResultP
           <div>
             <span className="text-xs font-bold uppercase tracking-widest block mb-4">Explorar</span>
             <ul className="space-y-2">
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Eventos</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Sedes</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Categorías</Link></li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Eventos
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Sedes
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Categorías
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
             <span className="text-xs font-bold uppercase tracking-widest block mb-4">Recursos</span>
             <ul className="space-y-2">
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Blog</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Guía de Uso</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Ayuda</Link></li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Guía de Uso
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Ayuda
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
             <span className="text-xs font-bold uppercase tracking-widest block mb-4">Empresa</span>
             <ul className="space-y-2">
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Sobre Nosotros</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Carreras</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Contacto</Link></li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Sobre Nosotros
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Carreras
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Contacto
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
             <span className="text-xs font-bold uppercase tracking-widest block mb-4">Legal</span>
             <ul className="space-y-2">
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Privacidad</Link></li>
-              <li><Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Términos</Link></li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm opacity-70 hover:opacity-100 transition-opacity" href="#">
+                  Términos
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
         <div className="px-4 md:px-8 py-6 border-t border-white/10 max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <span className="text-xs opacity-60">© 2024 NearU. Todos los derechos reservados.</span>
           <div className="flex gap-4">
-            <Link href="#" className="text-sm opacity-60 hover:opacity-100 transition-opacity">🌐</Link>
-            <Link href="#" className="text-sm opacity-60 hover:opacity-100 transition-opacity">✉️</Link>
+            <Link href="#" className="text-sm opacity-60 hover:opacity-100 transition-opacity">
+              🌐
+            </Link>
+            <Link href="#" className="text-sm opacity-60 hover:opacity-100 transition-opacity">
+              ✉️
+            </Link>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }

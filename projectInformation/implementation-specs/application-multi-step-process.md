@@ -1,4 +1,4 @@
-#   1. Contexto de la screen
+# 1. Contexto de la screen
 
     evento/:id/aplicar
     Esta screen tiene como finalidad representar el proceso de aplicación de una empresa hacia otra que publica un evento en la plataforma. Consta de 3 fases.
@@ -6,17 +6,17 @@
     fase 2: Representacion de un estado de pending donde se el comunica al usuario activamente que su aplicacion/solicitud esta en proceso de ser revisada, con una screen de icono mas friendly message
     fase 3: cuando el dueño del evento actualiza el estado de la aplicacion de pending a aceptada, se despliega una interfaz de chat donde el usuario puede comunicarse con el dueño del evento.
     fase 3: en caso de que la solicitud sea rechazada, se le debe dar feedback al usuario de manera simple, con el icono y el mensaje de que su postulacion fue rechazada y un boton hacia eventos
-    
-#   2. ENTIDADES DE DOMINIO AFECTADAS
+
+# 2. ENTIDADES DE DOMINIO AFECTADAS
 
     Application	        Postulación del usuario al evento
     ApplicationScore	Score calculado por scoring rules
     ScoreBreakdown	    Desglose del score por regla
     ContactRequest	    Solicitud de contacto (chat)
     Message	            Mensajes del chat
-    ScoringRule	        Reglas de scoring del evento    
+    ScoringRule	        Reglas de scoring del evento
 
-#   3. API CONTRACTS
+# 3. API CONTRACTS
 
     FASE 1 — Aplicar al evento
 
@@ -41,7 +41,7 @@
         *IMPORTANTE*
 
         Este endpoint me obtiene las reglas del evento para puntuar postulantes, el objetivo de esto es saber
-        que fields van a haber disponibles en el formulario en el step1, por lo que aca en el frontend debes mapear 
+        que fields van a haber disponibles en el formulario en el step1, por lo que aca en el frontend debes mapear
         esta estructura esperada hacia esto:
 
         ruleType	                Grupo	Frontend input	Qué renderiza	scoringFieldValues que envía
@@ -150,17 +150,17 @@
     Estructura deseada
     METODO DE LA PETICION(GET-POST-PUT-DELETE-) /"endpoint para obtener el recurso"
     REQUIRE-AUTH : BOOLEAN
-    
-    success 200 
+
+    success 200
     {
-        estructura del endpoint en caso de exito    
+        estructura del endpoint en caso de exito
     }
 
     { si es de tipo POST O PUT indicar la estructura del input deseada}
 
     error {mapear estructura de posibles errores y la estructura que refleja el backend }
 
-#  4. Reglas de dominio
+# 4. Reglas de dominio
 
     - todas las reglas de negocio de los endpoints, por ejemplo que el perfil de usuario debe ser el mismo al del dueño del evento para hacer confguraciones al evento, etc
     - No podés aplicar a tu propio evento (profile.userId === event.profileId)
@@ -171,29 +171,25 @@
     - Solo el postulante o el dueño del evento pueden ver los mensajes
     - La aplicación debe tener status: "accepted"
     - El array viene vacío al principio → normal
-    
 
-#   3. reglas de frontend state
+# 3. reglas de frontend state
 
         Debes presentar un multistep form que el state(y el contenido presentando en la screen dependa del state de la application - GET /api/mis-aplicaciones )
         siempre utilizar framer para animaciones smooth
         react-hook-form para los estados
         llamado al api siempre con error objects y loading state para dar feedback al usuario
-        recuerda siempre tipar 
+        recuerda siempre tipar
 
-
-#   4. validation rules - zod
+# 4. validation rules - zod
 
         Los fields desplegados no pueden ser null ninguno, debes poder mapear los 17 posibles fields en un esquema dentro de la ruta donde validez que los datos numericos no pueden ser 0 , booleanso siemrpe con valor y lo que se especifica arriba
         Siempre genera reglas de zod en base a las reglas de dominio para que no lleguen al backend, si no es posible, no, solo auqellas necesarias y posibles
 
-#   5. UI constraints
+# 5. UI constraints
 
         Siempre mobile first
         utilización de estilos de la app consistentes
-        
 
 # Skill references
 
     react-clean-architecture -> .atl/skill-registry
-

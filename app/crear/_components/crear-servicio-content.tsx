@@ -1,25 +1,25 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import { useCategoriasServicio, useUbicaciones } from '@/hooks/services/service-queries'
-import { useCreateService } from '@/hooks/services/service-mutations'
-import { CrearServicioForm } from './crear-servicio-form'
-import { CrearServicioSkeleton } from './crear-servicio-skeleton'
-import { ErrorDisplay } from './display-states'
+import { useRouter } from 'next/navigation';
+import { useCategoriasServicio, useUbicaciones } from '@/hooks/services/service-queries';
+import { useCreateService } from '@/hooks/services/service-mutations';
+import { CrearServicioForm } from './crear-servicio-form';
+import { CrearServicioSkeleton } from './crear-servicio-skeleton';
+import { ErrorDisplay } from './display-states';
 
 export function CrearServicioContent() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const categoriasQuery = useCategoriasServicio()
-  const ubicacionesQuery = useUbicaciones()
+  const categoriasQuery = useCategoriasServicio();
+  const ubicacionesQuery = useUbicaciones();
 
-  const createMutation = useCreateService()
+  const createMutation = useCreateService();
 
-  const isLoading = categoriasQuery.isLoading || ubicacionesQuery.isLoading
-  const hasError = categoriasQuery.isError || ubicacionesQuery.isError
+  const isLoading = categoriasQuery.isLoading || ubicacionesQuery.isLoading;
+  const hasError = categoriasQuery.isError || ubicacionesQuery.isError;
 
   if (isLoading) {
-    return <CrearServicioSkeleton />
+    return <CrearServicioSkeleton />;
   }
 
   if (hasError) {
@@ -43,11 +43,11 @@ export function CrearServicioContent() {
           )}
         </div>
       </div>
-    )
+    );
   }
 
-  const categorias = categoriasQuery.data ?? []
-  const ubicaciones = ubicacionesQuery.data ?? []
+  const categorias = categoriasQuery.data ?? [];
+  const ubicaciones = ubicacionesQuery.data ?? [];
 
   return (
     <section className="px-4 pt-24 pb-20 md:pt-32 md:pb-28">
@@ -59,5 +59,5 @@ export function CrearServicioContent() {
         mutation={createMutation}
       />
     </section>
-  )
+  );
 }

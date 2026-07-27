@@ -1,5 +1,5 @@
-import { NotFoundFallback } from '@/components/not-found-fallback'
+import { NotFoundFallback } from '@/components/not-found-fallback';
 
 export default function NotFound() {
-  return <NotFoundFallback />
+  return <NotFoundFallback />;
 }

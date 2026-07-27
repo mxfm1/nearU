@@ -1,34 +1,29 @@
-'use client'
+'use client';
 
-import type { ServicioResumen } from '@/lib/servicios-api'
-import type { EventoResumen } from '@/lib/eventos-api'
-import { ProviderCard } from '@/components/cards/provider-card'
-import { EventCard } from '@/components/cards/event-card'
+import type { ServicioResumen } from '@/lib/servicios-api';
+import type { EventoResumen } from '@/lib/eventos-api';
+import { ProviderCard } from '@/components/cards/provider-card';
+import { EventCard } from '@/components/cards/event-card';
 
 interface SearchResultsProps {
   results: Array<
-    | { type: 'provider'; data: ServicioResumen }
-    | { type: 'event'; data: EventoResumen }
-  >
-  totalCount: number
-  hasFilters: boolean
+    { type: 'provider'; data: ServicioResumen } | { type: 'event'; data: EventoResumen }
+  >;
+  totalCount: number;
+  hasFilters: boolean;
 }
 
 function formatEventDate(iso: string): string {
-  const d = new Date(iso)
-  if (isNaN(d.getTime())) return iso
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
   return d.toLocaleDateString('es-CL', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
-  })
+  });
 }
 
-export function SearchResults({
-  results,
-  totalCount,
-  hasFilters,
-}: SearchResultsProps) {
+export function SearchResults({ results, totalCount, hasFilters }: SearchResultsProps) {
   return (
     <>
       <p className="text-sm text-muted-foreground mb-6">
@@ -59,9 +54,9 @@ export function SearchResults({
               thumbnail={item.data.thumbnailUrl ?? 'https://placehold.co/400x250?text=Sin+imagen'}
               slug={item.data.slug ?? ''}
             />
-          ),
+          )
         )}
       </div>
     </>
-  )
+  );
 }

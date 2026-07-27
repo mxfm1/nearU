@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useAuth } from '@/hooks/use-auth'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui/select';
 import {
   Form,
   FormControl,
@@ -23,17 +23,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { CheckCircle, Eye, EyeOff } from 'lucide-react'
+} from '@/components/ui/form';
+import { CheckCircle, Eye, EyeOff } from 'lucide-react';
 
 const registerSchema = z
   .object({
     firstName: z.string().min(2, 'Ingresá tu nombre'),
     lastName: z.string().min(2, 'Ingresá tu apellido'),
     email: z.string().email('Ingresá un correo válido'),
-    password: z
-      .string()
-      .min(8, 'La contraseña debe tener al menos 8 caracteres'),
+    password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
     confirmPassword: z.string().min(1, 'Confirmá tu contraseña'),
     phone: z.string().optional(),
     category: z.string().min(1, 'Seleccioná una categoría'),
@@ -41,9 +39,9 @@ const registerSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Las contraseñas no coinciden',
     path: ['confirmPassword'],
-  })
+  });
 
-type RegisterFormValues = z.infer<typeof registerSchema>
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const categories = [
   'Fotografía',
@@ -53,15 +51,15 @@ const categories = [
   'Logística',
   'Tecnología',
   'Otros',
-]
+];
 
 export function RegisterScreen() {
-  const router = useRouter()
-  const { register } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const router = useRouter();
+  const { register } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -74,22 +72,18 @@ export function RegisterScreen() {
       phone: '',
       category: '',
     },
-  })
+  });
 
   async function onSubmit(values: RegisterFormValues) {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      await register(
-        `${values.firstName} ${values.lastName}`,
-        values.email,
-        values.password,
-      )
-      router.push('/descubrir')
+      await register(`${values.firstName} ${values.lastName}`, values.email, values.password);
+      router.push('/descubrir');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al crear la cuenta')
-      setIsLoading(false)
+      setError(err instanceof Error ? err.message : 'Error al crear la cuenta');
+      setIsLoading(false);
     }
   }
 
@@ -101,21 +95,17 @@ export function RegisterScreen() {
             🎉 Regístrate
           </p>
 
-          <h1 className="mb-4 text-4xl font-bold leading-tight">
-            Curando lo Excepcional
-          </h1>
+          <h1 className="mb-4 text-4xl font-bold leading-tight">Curando lo Excepcional</h1>
           <p className="mb-12 text-base text-white/80">
-            Únete a un directorio exclusivo de profesionales de eventos y
-            creadores visionarios que redefinen las experiencias de luxe.
+            Únete a un directorio exclusivo de profesionales de eventos y creadores visionarios que
+            redefinen las experiencias de luxe.
           </p>
 
           <div className="space-y-6">
             <div className="flex items-start gap-3">
               <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-white/80" />
               <div>
-                <p className="font-semibold uppercase tracking-wide">
-                  Vínculo Premium
-                </p>
+                <p className="font-semibold uppercase tracking-wide">Vínculo Premium</p>
                 <p className="text-sm text-white/70">
                   Conecta con organizadores y profesionales del más alto nivel.
                 </p>
@@ -125,12 +115,9 @@ export function RegisterScreen() {
             <div className="flex items-start gap-3">
               <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-white/80" />
               <div>
-                <p className="font-semibold uppercase tracking-wide">
-                  Acceso a la Red
-                </p>
+                <p className="font-semibold uppercase tracking-wide">Acceso a la Red</p>
                 <p className="text-sm text-white/70">
-                  Forma parte de una comunidad selecta de expertos en eventos de
-                  lujo.
+                  Forma parte de una comunidad selecta de expertos en eventos de lujo.
                 </p>
               </div>
             </div>
@@ -152,10 +139,7 @@ export function RegisterScreen() {
           </div>
 
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -309,10 +293,7 @@ export function RegisterScreen() {
                     <FormLabel className="text-xs uppercase tracking-wide text-muted-foreground">
                       Categoría de la Empresa
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecciona el rubro de tu empresa" />
@@ -331,9 +312,7 @@ export function RegisterScreen() {
                 )}
               />
 
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
+              {error && <p className="text-sm text-destructive">{error}</p>}
 
               <Button
                 type="submit"
@@ -368,5 +347,5 @@ export function RegisterScreen() {
         </div>
       </div>
     </div>
-  )
+  );
 }

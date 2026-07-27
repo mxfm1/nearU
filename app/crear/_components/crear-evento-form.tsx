@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { motion } from 'framer-motion'
-import { Loader2, AlertCircle } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { motion } from 'framer-motion';
+import { Loader2, AlertCircle } from 'lucide-react';
 
 import {
   Form,
@@ -13,41 +13,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
-import { CrearEventoSchema, type CrearEventoFormValues } from '@/components/forms/schemas'
-import { generateSlug } from '@/lib/slug'
-import { cn } from '@/lib/utils'
-import { SingleImageUpload } from './single-image-upload'
-import type { Categoria, Region } from '@/lib/catalogo-api'
-import type { CreateEventoPayload } from '@/types/contracts/event'
+import { CrearEventoSchema, type CrearEventoFormValues } from '@/components/forms/schemas';
+import { generateSlug } from '@/lib/slug';
+import { cn } from '@/lib/utils';
+import { SingleImageUpload } from './single-image-upload';
+import type { Categoria, Region } from '@/lib/catalogo-api';
+import type { CreateEventoPayload } from '@/types/contracts/event';
 
 interface CrearEventoFormProps {
-  categorias: Categoria[]
-  categoriasLoading: boolean
-  regiones: Region[]
-  regionesLoading: boolean
-  mutation: ReturnType<typeof import('@/hooks/evento/evento-mutations').useCreateEvento>
-  onSuccess?: (evento: { id: string }) => void
+  categorias: Categoria[];
+  categoriasLoading: boolean;
+  regiones: Region[];
+  regionesLoading: boolean;
+  mutation: ReturnType<typeof import('@/hooks/evento/evento-mutations').useCreateEvento>;
+  onSuccess?: (evento: { id: string }) => void;
 }
 
 const sections = [
   { id: 'general', label: 'General' },
   { id: 'event', label: 'Evento' },
   { id: 'requirements', label: 'Requisitos' },
-] as const
+] as const;
 
 export function CrearEventoForm({
   categorias,
@@ -57,13 +57,13 @@ export function CrearEventoForm({
   mutation,
   onSuccess,
 }: CrearEventoFormProps) {
-  const [activeSection, setActiveSection] = useState('general')
-  const [selectedRegionId, setSelectedRegionId] = useState('')
+  const [activeSection, setActiveSection] = useState('general');
+  const [selectedRegionId, setSelectedRegionId] = useState('');
 
   const selectedRegion = useMemo(
     () => regiones.find((r) => r.id === selectedRegionId),
-    [regiones, selectedRegionId],
-  )
+    [regiones, selectedRegionId]
+  );
 
   const form = useForm<CrearEventoFormValues>({
     resolver: zodResolver(CrearEventoSchema),
@@ -82,16 +82,16 @@ export function CrearEventoForm({
       bannerUrl: '',
       eventStatus: 'draft',
     },
-  })
+  });
 
-  const watchedTitle = form.watch('title')
+  const watchedTitle = form.watch('title');
 
   useEffect(() => {
     if (watchedTitle) {
-      const slug = generateSlug(watchedTitle)
-      form.setValue('slug', slug, { shouldValidate: slug.length >= 2 })
+      const slug = generateSlug(watchedTitle);
+      form.setValue('slug', slug, { shouldValidate: slug.length >= 2 });
     }
-  }, [watchedTitle, form])
+  }, [watchedTitle, form]);
 
   function buildPayload(data: CrearEventoFormValues): CreateEventoPayload {
     return {
@@ -108,30 +108,26 @@ export function CrearEventoForm({
       thumbnailUrl: data.thumbnailUrl || undefined,
       bannerUrl: data.bannerUrl || undefined,
       eventStatus: data.eventStatus,
-    }
+    };
   }
 
   function handleFormSubmit(data: CrearEventoFormValues) {
-    mutation.mutate(
-      { ...buildPayload(data), eventStatus: 'published' } as never,
-    )
+    mutation.mutate({ ...buildPayload(data), eventStatus: 'published' } as never);
   }
 
   function handleSaveDraft() {
     form.handleSubmit((data) => {
-      mutation.mutate(
-        { ...buildPayload(data), eventStatus: 'draft' } as never,
-      )
-    })()
+      mutation.mutate({ ...buildPayload(data), eventStatus: 'draft' } as never);
+    })();
   }
 
   function handleSectionClick(sectionId: string) {
-    setActiveSection(sectionId)
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setActiveSection(sectionId);
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  const thumbnailUrl = form.watch('thumbnailUrl') ?? ''
-  const bannerUrl = form.watch('bannerUrl') ?? ''
+  const thumbnailUrl = form.watch('thumbnailUrl') ?? '';
+  const bannerUrl = form.watch('bannerUrl') ?? '';
 
   return (
     <Form {...form}>
@@ -248,13 +244,13 @@ export function CrearEventoForm({
                           min={1}
                           placeholder="1"
                           {...field}
-                          onChange={(e) => field.onChange(e.target.value === '' ? '' : Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? '' : Number(e.target.value))
+                          }
                         />
                       </motion.div>
                     </FormControl>
-                    <p className="text-xs text-muted-foreground">
-                      Personas a seleccionar
-                    </p>
+                    <p className="text-xs text-muted-foreground">Personas a seleccionar</p>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -274,10 +270,7 @@ export function CrearEventoForm({
                       </p>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -295,10 +288,7 @@ export function CrearEventoForm({
                       </p>
                     </div>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -311,15 +301,25 @@ export function CrearEventoForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoría</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={categoriasLoading}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={categoriasLoading}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={categoriasLoading ? 'Cargando...' : 'Seleccioná una categoría'} />
+                        <SelectValue
+                          placeholder={
+                            categoriasLoading ? 'Cargando...' : 'Seleccioná una categoría'
+                          }
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {categorias.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.id || ''}>{cat.name}</SelectItem>
+                        <SelectItem key={cat.id} value={cat.id || ''}>
+                          {cat.name}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -333,18 +333,22 @@ export function CrearEventoForm({
                 <label className="text-sm font-medium leading-none">Región</label>
                 <Select
                   onValueChange={(value) => {
-                    setSelectedRegionId(value)
-                    form.setValue('locationId', '')
+                    setSelectedRegionId(value);
+                    form.setValue('locationId', '');
                   }}
                   value={selectedRegionId}
                   disabled={regionesLoading}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={regionesLoading ? 'Cargando...' : 'Seleccioná una región'} />
+                    <SelectValue
+                      placeholder={regionesLoading ? 'Cargando...' : 'Seleccioná una región'}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {regiones.map((r) => (
-                      <SelectItem key={r.id} value={r.id || ''}>{r.name}</SelectItem>
+                      <SelectItem key={r.id} value={r.id || ''}>
+                        {r.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -356,15 +360,27 @@ export function CrearEventoForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Ubicación</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!selectedRegionId}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={!selectedRegionId}
+                    >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={!selectedRegionId ? 'Primero elegí región' : 'Seleccioná una ubicación'} />
+                          <SelectValue
+                            placeholder={
+                              !selectedRegionId
+                                ? 'Primero elegí región'
+                                : 'Seleccioná una ubicación'
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {selectedRegion?.locations?.map((loc) => (
-                          <SelectItem key={loc.id} value={loc.id || ''}>{loc.name}</SelectItem>
+                          <SelectItem key={loc.id} value={loc.id || ''}>
+                            {loc.name}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -412,7 +428,11 @@ export function CrearEventoForm({
         {mutation.isError && (
           <div className="flex items-center gap-2 p-4 rounded-xl bg-destructive/10 text-destructive text-sm card-base border-destructive/20">
             <AlertCircle className="h-4 w-4 flex-shrink-0" />
-            <span>{mutation.error instanceof Error ? mutation.error.message : 'Error al crear el evento.'}</span>
+            <span>
+              {mutation.error instanceof Error
+                ? mutation.error.message
+                : 'Error al crear el evento.'}
+            </span>
           </div>
         )}
 
@@ -425,16 +445,30 @@ export function CrearEventoForm({
             onClick={handleSaveDraft}
           >
             {mutation.isPending ? (
-              <><Loader2 className="h-4 w-4 animate-spin mr-2" />Guardando...</>
-            ) : 'Guardar como borrador'}
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Guardando...
+              </>
+            ) : (
+              'Guardar como borrador'
+            )}
           </Button>
-          <Button type="submit" className="flex-1 sm:flex-none rounded-xl" disabled={mutation.isPending}>
+          <Button
+            type="submit"
+            className="flex-1 sm:flex-none rounded-xl"
+            disabled={mutation.isPending}
+          >
             {mutation.isPending ? (
-              <><Loader2 className="h-4 w-4 animate-spin mr-2" />Guardando...</>
-            ) : 'Guardar evento'}
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Guardando...
+              </>
+            ) : (
+              'Guardar evento'
+            )}
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

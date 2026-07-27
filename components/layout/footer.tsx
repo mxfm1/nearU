@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { Send } from 'lucide-react'
-import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa'
+import Link from 'next/link';
+import { Send } from 'lucide-react';
+import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
 const footerLinks = {
   explorar: [
@@ -28,14 +28,14 @@ const footerLinks = {
     { name: 'Política de privacidad', href: '#' },
     { name: 'Política de cookies', href: '#' },
   ],
-}
+};
 
 const socialLinks = [
   { name: 'Instagram', icon: FaInstagram, href: '#' },
   { name: 'Facebook', icon: FaFacebook, href: '#' },
   { name: 'TikTok', icon: FaTwitter, href: '#' },
   { name: 'LinkedIn', icon: FaLinkedin, href: '#' },
-]
+];
 
 export function Footer() {
   return (
@@ -55,7 +55,7 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               {socialLinks.map((social) => {
-                const Icon = social.icon
+                const Icon = social.icon;
                 return (
                   <a
                     key={social.name}
@@ -65,7 +65,7 @@ export function Footer() {
                   >
                     <Icon className="w-4 h-4 text-white" />
                   </a>
-                )
+                );
               })}
             </div>
           </div>
@@ -116,5 +116,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

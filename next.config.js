@@ -1,37 +1,40 @@
 /** @type {import('next').NextConfig} */
 
-const { withSentryConfig } = require("@sentry/nextjs")
+const { withSentryConfig } = require('@sentry/nextjs');
 
-const API_BASE = process.env.NEXT_PUBLIC_ENVIRONMENT === 'develop'
-    ? (process.env.NEXT_PUBLIC_LOCAL_API_URL || 'http://localhost:3000')
-    : process.env.NEXT_PUBLIC_API_RAW_URL
+const API_BASE =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === 'develop'
+    ? process.env.NEXT_PUBLIC_LOCAL_API_URL || 'http://localhost:3000'
+    : process.env.NEXT_PUBLIC_API_RAW_URL || 'http://localhost:3001';
 
 const nextConfig = {
-    async rewrites() {
-        return [{
-            source: '/api/:path*',
-            destination: `${API_BASE}/api/:path*`
-        }]
-    },
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: '**',
-                port: '',
-                pathname: '/**',
-            },
-        ],
-    },
-}
+  async rewrites() {
+    if (!API_BASE) return [];
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${API_BASE}/api/:path*`,
+      },
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+};
 
 module.exports = withSentryConfig(nextConfig, {
-    silent: true,
-    org: process.env.SENTRY_ORG,
-    project: process.env.SENTRY_PROJECT,
-    authToken: process.env.SENTRY_AUTH_TOKEN,
-})
-
+  silent: true,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+});
 
 // Injected content via Sentry wizard below
 

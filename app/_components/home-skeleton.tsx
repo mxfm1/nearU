@@ -15,18 +15,21 @@ export function HomeSkeleton() {
                 <div className="h-4 sm:h-5 w-full bg-muted rounded animate-pulse" />
                 <div className="h-4 sm:h-5 w-4/5 bg-muted rounded animate-pulse" />
               </div>
-              
+
               {/* Search bar skeleton */}
               <div className="h-12 sm:h-14 w-full bg-card rounded-full border border-border shadow-search animate-pulse" />
-              
+
               {/* Category pills skeleton */}
               <div className="flex flex-wrap gap-2">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="h-8 sm:h-10 w-20 sm:w-24 bg-card rounded-full border border-border animate-pulse" />
+                  <div
+                    key={i}
+                    className="h-8 sm:h-10 w-20 sm:w-24 bg-card rounded-full border border-border animate-pulse"
+                  />
                 ))}
               </div>
             </div>
-            
+
             {/* Right image skeleton */}
             <div className="relative order-first lg:order-last">
               <div className="aspect-[4/5] sm:aspect-[3/2] bg-muted rounded-xl animate-pulse" />
@@ -34,7 +37,10 @@ export function HomeSkeleton() {
                 <div className="flex items-center gap-2 sm:gap-3">
                   <div className="flex -space-x-2">
                     {Array.from({ length: 3 }).map((_, i) => (
-                      <div key={i} className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-muted border-2 border-card" />
+                      <div
+                        key={i}
+                        className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-muted border-2 border-card"
+                      />
                     ))}
                   </div>
                   <div>
@@ -77,13 +83,16 @@ export function HomeSkeleton() {
             </div>
             <div className="h-3 sm:h-4 w-20 sm:w-24 bg-muted rounded animate-pulse" />
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {Array.from({ length: 2 }).map((_, i) => (
-              <div key={i} className="aspect-[4/3] sm:aspect-[3/2] bg-muted rounded-xl animate-pulse" />
+              <div
+                key={i}
+                className="aspect-[4/3] sm:aspect-[3/2] bg-muted rounded-xl animate-pulse"
+              />
             ))}
           </div>
-          
+
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="aspect-square bg-muted rounded-xl animate-pulse" />
@@ -99,7 +108,7 @@ export function HomeSkeleton() {
             <div className="h-6 sm:h-8 w-48 sm:w-64 bg-muted rounded-lg animate-pulse mx-auto mb-3 sm:mb-4" />
             <div className="h-3 sm:h-4 w-64 sm:w-96 bg-muted rounded animate-pulse mx-auto" />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="text-center">
@@ -142,7 +151,10 @@ export function HomeSkeleton() {
               <div className="h-3 sm:h-4 w-48 sm:w-64 bg-white/20 rounded animate-pulse" />
               <div className="flex gap-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full animate-pulse" />
+                  <div
+                    key={i}
+                    className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full animate-pulse"
+                  />
                 ))}
               </div>
             </div>
@@ -158,5 +170,5 @@ export function HomeSkeleton() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

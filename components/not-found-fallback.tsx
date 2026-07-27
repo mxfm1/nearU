@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { SearchX } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { motion } from 'framer-motion';
+import { SearchX } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export function NotFoundFallback() {
   return (
@@ -24,5 +24,5 @@ export function NotFoundFallback() {
         <Link href="/">Volver al inicio</Link>
       </Button>
     </motion.div>
-  )
+  );
 }

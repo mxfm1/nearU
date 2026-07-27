@@ -1,52 +1,47 @@
-import { ApiError, type BackendErrorCodes } from "./api/errors";
+import { ApiError, type BackendErrorCodes } from './api/errors';
 
 const BASE_URL = (() => {
   if (typeof window !== 'undefined') {
-    return process.env.NEXT_PUBLIC_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_RAW_URL || ''
+    return process.env.NEXT_PUBLIC_LOCAL_API_URL || process.env.NEXT_PUBLIC_API_RAW_URL || '';
   }
-  return ''
-})()
+  return '';
+})();
 
 export type User = {
-  id: string
-  name: string
-  email: string
-  emailVerified: boolean
-  image: string | null
-  createdAt: string
-  updatedAt: string
-}
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 type Session = {
-  id: string
-  userId: string
-  expiresAt: string
-}
+  id: string;
+  userId: string;
+  expiresAt: string;
+};
 
 export type ApiResponse<T> = {
-  success: boolean
-  data?: T
-  message?: string
-}
+  success: boolean;
+  data?: T;
+  message?: string;
+};
 
 export type APISuccess<T> = {
-  success: true
-  data: T
-}
+  success: true;
+  data: T;
+};
 
 export type APIError = {
-  success: false
-  errorCode: BackendErrorCodes
-}
+  success: false;
+  errorCode: BackendErrorCodes;
+};
 
-export type APIResponse<T> = APISuccess<T> | APIError
+export type APIResponse<T> = APISuccess<T> | APIError;
 
-
-
-export async function apiFetch<T>(
-  path: string,
-  options?: RequestInit
-): Promise<T> {
+export async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   try {
     const res = await fetch(`${BASE_URL}/api${path}`, {
       ...options,
@@ -55,37 +50,36 @@ export async function apiFetch<T>(
         'Content-Type': 'application/json',
         ...options?.headers,
       },
-    })
+    });
 
     if (res.status === 204) {
-      return undefined as T
+      return undefined as T;
     }
 
-    const body = await res.json()
+    const body = await res.json();
 
     if (!res.ok) {
-      console.log("response", res)
+      console.log('response', res);
       throw new ApiError(
         body.error?.code ?? body.code ?? body.errorCode ?? 'INTERNAL_SERVER_ERROR',
         body.error?.message ?? body.message
-      )
+      );
     }
 
-    return body
+    return body;
   } catch (err) {
     if (err instanceof ApiError) {
-      console.log(err.message)
-      throw err
+      console.log(err.message);
+      throw err;
     }
 
-    console.log(err)
+    console.log(err);
 
-    throw new ApiError('INTERNAL_SERVER_ERROR')
+    throw new ApiError('INTERNAL_SERVER_ERROR');
   }
 }
 
 export const authApi = {
-
   sendVerificationEmail: (email: string, callbackURL?: string) =>
     apiFetch<{ success: boolean }>('/auth/send-verification-email', {
       method: 'POST',
@@ -104,11 +98,9 @@ export const authApi = {
       body: JSON.stringify({ name, email, password }),
     }),
 
-  signOut: () =>
-    apiFetch<void>('/auth/sign-out', { method: 'POST' }),
+  signOut: () => apiFetch<void>('/auth/sign-out', { method: 'POST' }),
 
-  getMe: () =>
-    apiFetch<{ success: boolean; data: User }>('/auth/me'),
+  getMe: () => apiFetch<{ success: boolean; data: User }>('/auth/me'),
 
   updateMe: (data: { name?: string; image?: string }) =>
     apiFetch<{ success: boolean; data: User }>('/users/me', {
@@ -128,8 +120,7 @@ export const authApi = {
       body: JSON.stringify({ newEmail }),
     }),
 
-  deleteUser: (userId: string) =>
-    apiFetch<void>(`/users/${userId}`, { method: 'DELETE' }),
+  deleteUser: (userId: string) => apiFetch<void>(`/users/${userId}`, { method: 'DELETE' }),
 
   forgotPassword: (email: string) =>
     apiFetch<{ success: boolean }>('/auth/forgot-password', {
@@ -143,12 +134,11 @@ export const authApi = {
       body: JSON.stringify({ token, newPassword }),
     }),
 
-  getUser: (id: string) =>
-    apiFetch<{ success: boolean; data: User }>(`/users/${id}`),
+  getUser: (id: string) => apiFetch<{ success: boolean; data: User }>(`/users/${id}`),
 
   verifyEmail: (token: string) =>
     apiFetch<{ success: boolean }>('/auth/verify-email', {
       method: 'POST',
       body: JSON.stringify({ token }),
     }),
-}
+};

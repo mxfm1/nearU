@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { mensajesApi, type Conversation, type Mensaje } from '@/lib/mensajes-api'
-import { MensajesHeader } from './mensajes-header'
-import { MensajesList } from './mensajes-list'
-import { MensajesInput } from './mensajes-input'
-import { MensajesBanner } from './mensajes-banner'
-import { MensajesError } from './mensajes-error'
-import { MensajesEmpty } from './mensajes-empty'
-import { motion, AnimatePresence } from 'framer-motion'
-import { AlertCircle, X } from 'lucide-react'
-import { useAuth } from '@/hooks/use-auth'
+import { useEffect, useRef, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { mensajesApi, type Conversation, type Mensaje } from '@/lib/mensajes-api';
+import { MensajesHeader } from './mensajes-header';
+import { MensajesList } from './mensajes-list';
+import { MensajesInput } from './mensajes-input';
+import { MensajesBanner } from './mensajes-banner';
+import { MensajesError } from './mensajes-error';
+import { MensajesEmpty } from './mensajes-empty';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertCircle, X } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
 
 interface MensajesContentProps {
-  threadId: string
+  threadId: string;
 }
 
 function SystemBanner({ message, onDismiss }: { message: string; onDismiss: () => void }) {
@@ -36,91 +36,93 @@ function SystemBanner({ message, onDismiss }: { message: string; onDismiss: () =
         <X className="w-4 h-4 text-destructive" />
       </button>
     </motion.div>
-  )
+  );
 }
 
 export function MensajesContent({ threadId }: MensajesContentProps) {
-  const queryClient = useQueryClient()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [systemMessage, setSystemMessage] = useState<string | null>(null)
-  const [dismissedSystemMessages, setDismissedSystemMessages] = useState<Set<string>>(new Set())
-  const { user } = useAuth()
+  const queryClient = useQueryClient();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [systemMessage, setSystemMessage] = useState<string | null>(null);
+  const [dismissedSystemMessages, setDismissedSystemMessages] = useState<Set<string>>(new Set());
+  const { user } = useAuth();
 
   // Obtener metadata del thread
   const threadQuery = useQuery({
     queryKey: ['thread', threadId],
     queryFn: () => mensajesApi.getThread(threadId),
-  })
+  });
 
   // Obtener mensajes del thread con polling basado en IntersectionObserver
   const messagesQuery = useQuery({
     queryKey: ['thread-messages', threadId],
     queryFn: () => mensajesApi.getThreadMessages(threadId),
     refetchInterval: false, // We control refetch manually via IntersectionObserver
-  })
+  });
 
   // IntersectionObserver for polling when visible
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const container = containerRef.current;
+    if (!container) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const [entry] = entries
-        setIsVisible(entry.isIntersecting)
+        const [entry] = entries;
+        setIsVisible(entry.isIntersecting);
       },
       { threshold: 0 }
-    )
+    );
 
-    observer.observe(container)
+    observer.observe(container);
 
     return () => {
-      observer.disconnect()
-    }
-  }, [])
+      observer.disconnect();
+    };
+  }, []);
 
   // Polling when visible
   useEffect(() => {
-    if (!isVisible) return
+    if (!isVisible) return;
 
     const interval = setInterval(() => {
-      queryClient.refetchQueries({ queryKey: ['thread-messages', threadId] })
-    }, 10000) // 10 seconds
+      queryClient.refetchQueries({ queryKey: ['thread-messages', threadId] });
+    }, 10000); // 10 seconds
 
-    return () => clearInterval(interval)
-  }, [isVisible, threadId, queryClient])
+    return () => clearInterval(interval);
+  }, [isVisible, threadId, queryClient]);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messagesQuery.data])
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messagesQuery.data]);
 
   // Log del error al inicio del componente
   if (threadQuery.isError) {
-    console.error('[MensajesContent] Error fetching thread:', threadQuery.error)
+    console.error('[MensajesContent] Error fetching thread:', threadQuery.error);
   }
   if (messagesQuery.isError) {
-    console.error('[MensajesContent] Error fetching messages:', messagesQuery.error)
+    console.error('[MensajesContent] Error fetching messages:', messagesQuery.error);
   }
 
   // Loading state
   if (threadQuery.isLoading || messagesQuery.isLoading) {
-    return null
+    return null;
   }
 
   // Error state
   if (threadQuery.isError) {
     return (
       <MensajesError
-        error={threadQuery.error instanceof Error ? threadQuery.error : new Error('Error desconocido')}
+        error={
+          threadQuery.error instanceof Error ? threadQuery.error : new Error('Error desconocido')
+        }
         onRetry={() => threadQuery.refetch()}
       />
-    )
+    );
   }
 
-  const conversation: Conversation | undefined = threadQuery.data
+  const conversation: Conversation | undefined = threadQuery.data;
 
   if (!conversation) {
     return (
@@ -128,45 +130,47 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
         error={new Error('Conversación no encontrada')}
         onRetry={() => threadQuery.refetch()}
       />
-    )
+    );
   }
 
-  const rawMessages = messagesQuery.data ?? []
+  const rawMessages = messagesQuery.data ?? [];
 
   // Extraer mensajes SYSTEM para el banner (derived state, no effect needed)
   const systemMessages = rawMessages.filter(
     (msg) => msg.messageType === 'SYSTEM' && !dismissedSystemMessages.has(msg.id)
-  )
-  const currentSystemMessage = systemMessage || (systemMessages[0]?.content || null)
+  );
+  const currentSystemMessage = systemMessage || systemMessages[0]?.content || null;
 
   const mensajes = rawMessages.map((msg) => ({
     ...msg,
     isFromCurrentUser:
-      (msg.senderProfileId === conversation.applicantProfileId && user?.id === conversation.applicantUserId) ||
-      (msg.senderProfileId === conversation.organizerProfileId && user?.id === conversation.organizerUserId),
+      (msg.senderProfileId === conversation.applicantProfileId &&
+        user?.id === conversation.applicantUserId) ||
+      (msg.senderProfileId === conversation.organizerProfileId &&
+        user?.id === conversation.organizerUserId),
     timestamp: msg.createdAt,
     senderAvatar: msg.senderLogoUrl,
     isRead: !!msg.readAt,
-  }))
+  }));
   // Si el usuario actual es el applicant, el otro es el organizer
   // Si el usuario actual es el organizer, el otro es el applicant
-  const isApplicant = user?.id === conversation.applicantUserId
+  const isApplicant = user?.id === conversation.applicantUserId;
   const otherParty = isApplicant
     ? {
-      id: conversation.organizerProfileId,
-      name: conversation.organizerName,
-      logoUrl: conversation.organizerLogoUrl,
-    }
+        id: conversation.organizerProfileId,
+        name: conversation.organizerName,
+        logoUrl: conversation.organizerLogoUrl,
+      }
     : {
-      id: conversation.applicantProfileId,
-      name: conversation.applicantName,
-      logoUrl: conversation.applicantLogoUrl,
-    }
+        id: conversation.applicantProfileId,
+        name: conversation.applicantName,
+        logoUrl: conversation.applicantLogoUrl,
+      };
 
   const handleDismissSystemMessage = (messageId: string) => {
-    setDismissedSystemMessages((prev) => new Set(prev).add(messageId))
-    setSystemMessage(null)
-  }
+    setDismissedSystemMessages((prev) => new Set(prev).add(messageId));
+    setSystemMessage(null);
+  };
 
   return (
     <div ref={containerRef} className="flex flex-col h-screen max-w-5xl mx-auto">
@@ -176,9 +180,9 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
           <SystemBanner
             message={currentSystemMessage}
             onDismiss={() => {
-              const msg = systemMessages.find((m) => m.content === currentSystemMessage)
+              const msg = systemMessages.find((m) => m.content === currentSystemMessage);
               if (msg) {
-                handleDismissSystemMessage(msg.id)
+                handleDismissSystemMessage(msg.id);
               }
             }}
           />
@@ -192,10 +196,7 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
 
       {/* Fixed Header */}
       <div className="shrink-0">
-        <MensajesHeader
-          empresa={otherParty}
-          eventTitle={conversation.applicationTitle}
-        />
+        <MensajesHeader empresa={otherParty} eventTitle={conversation.applicationTitle} />
       </div>
 
       {/* Scrollable Messages */}
@@ -215,5 +216,5 @@ export function MensajesContent({ threadId }: MensajesContentProps) {
         <MensajesInput threadId={threadId} />
       </div>
     </div>
-  )
+  );
 }

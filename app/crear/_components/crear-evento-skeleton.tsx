@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
 export function CrearEventoSkeleton() {
   return (
@@ -13,10 +13,7 @@ export function CrearEventoSkeleton() {
 
         <div className="flex gap-2 overflow-x-auto pb-4 mb-6 md:mb-8">
           {['General', 'Evento', 'Requisitos'].map((_, i) => (
-            <div
-              key={i}
-              className="h-9 w-20 bg-muted rounded-full animate-pulse"
-            />
+            <div key={i} className="h-9 w-20 bg-muted rounded-full animate-pulse" />
           ))}
         </div>
 
@@ -75,5 +72,5 @@ export function CrearEventoSkeleton() {
         </div>
       </div>
     </section>
-  )
+  );
 }

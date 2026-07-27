@@ -1,28 +1,13 @@
-'use client'
+'use client';
 
-import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-  type FormEvent,
-} from 'react'
-import { useRouter } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-  Search,
-  SearchX,
-  Building2,
-  Briefcase,
-  Calendar,
-  Tags,
-  Loader2,
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { serviciosApi } from '@/lib/servicios-api'
-import { eventosApi } from '@/lib/eventos-api'
+import { useState, useRef, useEffect, useCallback, useMemo, type FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, SearchX, Building2, Briefcase, Calendar, Tags, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { serviciosApi } from '@/lib/servicios-api';
+import { eventosApi } from '@/lib/eventos-api';
 
 /* -------------------------------------------------------------------------- */
 /*  Constants                                                                 */
@@ -36,7 +21,7 @@ const SERVICE_CATEGORIES = [
   'Decoración',
   'Tecnología',
   'Espacios',
-]
+];
 
 const EVENT_CATEGORIES = [
   'Congreso',
@@ -45,38 +30,38 @@ const EVENT_CATEGORIES = [
   'Activación',
   'Lanzamiento',
   'Networking',
-]
+];
 
-const TYPE_ORDER = ['empresa', 'servicio', 'evento', 'categoria'] as const
+const TYPE_ORDER = ['empresa', 'servicio', 'evento', 'categoria'] as const;
 
 const TYPE_LABELS: Record<(typeof TYPE_ORDER)[number], string> = {
   empresa: 'Empresas',
   servicio: 'Servicios',
   evento: 'Eventos',
   categoria: 'Categorías',
-}
+};
 
 const TYPE_ICONS = {
   empresa: Building2,
   servicio: Briefcase,
   evento: Calendar,
   categoria: Tags,
-} as const
+} as const;
 
-const MAX_RESULTS = 8
+const MAX_RESULTS = 8;
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
 /* -------------------------------------------------------------------------- */
 
-type ResultType = keyof typeof TYPE_LABELS
+type ResultType = keyof typeof TYPE_LABELS;
 
 interface SearchResult {
-  id: string
-  label: string
-  description: string
-  type: ResultType
-  href: string
+  id: string;
+  label: string;
+  description: string;
+  type: ResultType;
+  href: string;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -88,7 +73,7 @@ function normalize(text: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .trim()
+    .trim();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -96,102 +81,102 @@ function normalize(text: string): string {
 /* -------------------------------------------------------------------------- */
 
 interface TypeaheadSearchProps {
-  className?: string
-  placeholder?: string
+  className?: string;
+  placeholder?: string;
 }
 
 export function TypeaheadSearch({
   className,
   placeholder = 'Buscar empresas, servicios, eventos...',
 }: TypeaheadSearchProps) {
-  const router = useRouter()
-  const [query, setQuery] = useState('')
-  const [isFocused, setIsFocused] = useState(false)
-  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
-  const inputRef = useRef<HTMLInputElement>(null)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const listRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
-  const normalizedQuery = normalize(query)
+  const normalizedQuery = normalize(query);
 
   // ── Queries ──
   const { data: serviciosRes, isLoading: serviciosLoading } = useQuery({
     queryKey: ['servicios'],
     queryFn: () => serviciosApi.list(),
-  })
+  });
 
   const { data: eventosRes, isLoading: eventosLoading } = useQuery({
     queryKey: ['eventos'],
     queryFn: () => eventosApi.list(),
-  })
+  });
 
   const serviciosPublicados = useMemo(
     () => (serviciosRes?.data ?? []).filter((s) => s.status?.slug === 'published'),
-    [serviciosRes],
-  )
+    [serviciosRes]
+  );
 
   const eventosPublicados = useMemo(
     () => (eventosRes?.data ?? []).filter((e) => (e as any).eventStatus === 'published'),
-    [eventosRes],
-  )
+    [eventosRes]
+  );
 
-  const isLoading = serviciosLoading || eventosLoading
+  const isLoading = serviciosLoading || eventosLoading;
 
   /* ------ Flattened results for keyboard navigation ------ */
   const flatResults = useMemo<SearchResult[]>(() => {
-    if (!normalizedQuery) return []
+    if (!normalizedQuery) return [];
 
-    const results: SearchResult[] = []
+    const results: SearchResult[] = [];
 
     // Empresas (agrupadas por marca única)
-    const seenEmpresas = new Set<string>()
+    const seenEmpresas = new Set<string>();
     serviciosPublicados.forEach((s) => {
-      const name = s.marca || s.title || ''
-      if (!normalize(name).includes(normalizedQuery)) return
-      if (seenEmpresas.has(name)) return
-      seenEmpresas.add(name)
+      const name = s.marca || s.title || '';
+      if (!normalize(name).includes(normalizedQuery)) return;
+      if (seenEmpresas.has(name)) return;
+      seenEmpresas.add(name);
       results.push({
         id: `empresa-${s.slug ?? ''}`,
         label: name,
         description: s.category?.name ?? 'Proveedor',
         type: 'empresa',
         href: `/servicios/${s.slug ?? ''}`,
-      })
-    })
+      });
+    });
 
     // Servicios
     serviciosPublicados.forEach((s) => {
-      const title = s.title || ''
-      if (!normalize(title).includes(normalizedQuery)) return
+      const title = s.title || '';
+      if (!normalize(title).includes(normalizedQuery)) return;
       results.push({
         id: `servicio-${s.id ?? ''}`,
         label: title,
         description: s.marca || s.category?.name || 'Servicio',
         type: 'servicio',
         href: `/servicios/${s.slug ?? ''}`,
-      })
-    })
+      });
+    });
 
     // Eventos
     eventosPublicados.forEach((e) => {
-      const title = e.title || ''
-      if (!normalize(title).includes(normalizedQuery)) return
+      const title = e.title || '';
+      if (!normalize(title).includes(normalizedQuery)) return;
       const dateStr = e.startAt
         ? new Date(e.startAt).toLocaleDateString('es-ES', {
             day: 'numeric',
             month: 'short',
             year: 'numeric',
           })
-        : ''
+        : '';
       results.push({
         id: `evento-${e.id ?? ''}`,
         label: title,
         description: dateStr || e.location?.name || 'Evento',
         type: 'evento',
         href: `/search?q=${encodeURIComponent(e.title ?? '')}&type=eventos`,
-      })
-    })
+      });
+    });
 
     // Categorías de servicio
     SERVICE_CATEGORIES.forEach((c) => {
@@ -202,9 +187,9 @@ export function TypeaheadSearch({
           description: 'Categoría de servicio',
           type: 'categoria',
           href: `/search?type=proveedores&category=${encodeURIComponent(c)}`,
-        })
+        });
       }
-    })
+    });
 
     // Categorías de evento
     EVENT_CATEGORIES.forEach((c) => {
@@ -215,141 +200,137 @@ export function TypeaheadSearch({
           description: 'Categoría de evento',
           type: 'categoria',
           href: `/search?type=eventos&category=${encodeURIComponent(c)}`,
-        })
+        });
       }
-    })
+    });
 
     // Sort: exact matches first, then alphabetical
     results.sort((a, b) => {
-      const aNorm = normalize(a.label)
-      const bNorm = normalize(b.label)
-      const aExact = aNorm === normalizedQuery ? -1 : 0
-      const bExact = bNorm === normalizedQuery ? -1 : 0
-      if (aExact !== bExact) return aExact - bExact
-      return a.label.localeCompare(b.label)
-    })
+      const aNorm = normalize(a.label);
+      const bNorm = normalize(b.label);
+      const aExact = aNorm === normalizedQuery ? -1 : 0;
+      const bExact = bNorm === normalizedQuery ? -1 : 0;
+      if (aExact !== bExact) return aExact - bExact;
+      return a.label.localeCompare(b.label);
+    });
 
-    return results.slice(0, MAX_RESULTS)
-  }, [normalizedQuery, serviciosPublicados, eventosPublicados])
+    return results.slice(0, MAX_RESULTS);
+  }, [normalizedQuery, serviciosPublicados, eventosPublicados]);
 
   /* ------ Grouped results for display ------ */
   const groupedResults = useMemo(() => {
     const groups: {
-      type: ResultType
-      label: string
-      results: SearchResult[]
-    }[] = []
+      type: ResultType;
+      label: string;
+      results: SearchResult[];
+    }[] = [];
 
     for (const type of TYPE_ORDER) {
-      const filtered = flatResults.filter((r) => r.type === type)
+      const filtered = flatResults.filter((r) => r.type === type);
       if (filtered.length > 0) {
-        groups.push({ type, label: TYPE_LABELS[type], results: filtered })
+        groups.push({ type, label: TYPE_LABELS[type], results: filtered });
       }
     }
 
-    return groups
-  }, [flatResults])
+    return groups;
+  }, [flatResults]);
 
   /* ------ Derived state ------ */
-  const showDropdown = isFocused && normalizedQuery.length > 0
-  const hasResults = flatResults.length > 0
+  const showDropdown = isFocused && normalizedQuery.length > 0;
+  const hasResults = flatResults.length > 0;
 
   /* ------ Reset highlight when results change ------ */
   useEffect(() => {
-    setHighlightedIndex(-1)
-  }, [flatResults.length])
+    setHighlightedIndex(-1);
+  }, [flatResults.length]);
 
   /* ------ Close on click outside ------ */
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      const target = e.target as Node
+      const target = e.target as Node;
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(target) &&
         inputRef.current &&
         !inputRef.current.contains(target)
       ) {
-        setIsFocused(false)
+        setIsFocused(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   /* ------ Close on Escape ------ */
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape' && showDropdown) {
-        setIsFocused(false)
-        inputRef.current?.blur()
+        setIsFocused(false);
+        inputRef.current?.blur();
       }
     }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [showDropdown])
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showDropdown]);
 
   /* ------ Scroll highlighted item into view ------ */
   useEffect(() => {
-    if (highlightedIndex < 0 || !listRef.current) return
-    const items = listRef.current.querySelectorAll<HTMLElement>('[data-index]')
-    const target = items[highlightedIndex]
-    target?.scrollIntoView({ block: 'nearest' })
-  }, [highlightedIndex])
+    if (highlightedIndex < 0 || !listRef.current) return;
+    const items = listRef.current.querySelectorAll<HTMLElement>('[data-index]');
+    const target = items[highlightedIndex];
+    target?.scrollIntoView({ block: 'nearest' });
+  }, [highlightedIndex]);
 
   /* ------ Handlers ------ */
   const handleSelect = useCallback(
     (result: SearchResult) => {
-      setIsFocused(false)
-      setQuery('')
-      setHighlightedIndex(-1)
-      router.push(result.href)
+      setIsFocused(false);
+      setQuery('');
+      setHighlightedIndex(-1);
+      router.push(result.href);
     },
-    [router],
-  )
+    [router]
+  );
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
-      e.preventDefault()
+      e.preventDefault();
       if (highlightedIndex >= 0 && flatResults[highlightedIndex]) {
-        handleSelect(flatResults[highlightedIndex])
-        return
+        handleSelect(flatResults[highlightedIndex]);
+        return;
       }
-      const trimmed = query.trim()
+      const trimmed = query.trim();
       if (trimmed) {
-        setIsFocused(false)
-        setQuery('')
-        router.push(`/search?q=${encodeURIComponent(trimmed)}`)
+        setIsFocused(false);
+        setQuery('');
+        router.push(`/search?q=${encodeURIComponent(trimmed)}`);
       }
     },
-    [query, highlightedIndex, flatResults, handleSelect, router],
-  )
+    [query, highlightedIndex, flatResults, handleSelect, router]
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (!showDropdown) return
+      if (!showDropdown) return;
 
       switch (e.key) {
         case 'ArrowDown':
-          e.preventDefault()
-          setHighlightedIndex((prev) =>
-            prev < flatResults.length - 1 ? prev + 1 : 0,
-          )
-          break
+          e.preventDefault();
+          setHighlightedIndex((prev) => (prev < flatResults.length - 1 ? prev + 1 : 0));
+          break;
         case 'ArrowUp':
-          e.preventDefault()
-          setHighlightedIndex((prev) =>
-            prev > 0 ? prev - 1 : flatResults.length - 1,
-          )
-          break
+          e.preventDefault();
+          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : flatResults.length - 1));
+          break;
         case 'Enter':
           // handled by handleSubmit
-          break
+          break;
         default:
-          break
+          break;
       }
     },
-    [showDropdown, flatResults.length],
-  )
+    [showDropdown, flatResults.length]
+  );
 
   /* ------ Render ------ */
   return (
@@ -364,8 +345,8 @@ export function TypeaheadSearch({
           type="text"
           value={query}
           onChange={(e) => {
-            setQuery(e.target.value)
-            setIsFocused(true)
+            setQuery(e.target.value);
+            setIsFocused(true);
           }}
           onFocus={() => setIsFocused(true)}
           onKeyDown={handleKeyDown}
@@ -403,9 +384,9 @@ export function TypeaheadSearch({
 
                     {/* Group items */}
                     {group.results.map((result) => {
-                      const flatIdx = flatResults.indexOf(result)
-                      const isHighlighted = flatIdx === highlightedIndex
-                      const Icon = TYPE_ICONS[result.type]
+                      const flatIdx = flatResults.indexOf(result);
+                      const isHighlighted = flatIdx === highlightedIndex;
+                      const Icon = TYPE_ICONS[result.type];
 
                       return (
                         <button
@@ -416,17 +397,13 @@ export function TypeaheadSearch({
                           onClick={() => handleSelect(result)}
                           className={cn(
                             'w-full flex items-start gap-3 px-3 py-2 text-left transition-colors duration-150',
-                            isHighlighted
-                              ? 'bg-muted'
-                              : 'hover:bg-muted/50',
+                            isHighlighted ? 'bg-muted' : 'hover:bg-muted/50'
                           )}
                         >
                           <Icon
                             className={cn(
                               'h-4 w-4 mt-0.5 shrink-0',
-                              result.type === 'categoria'
-                                ? 'text-primary'
-                                : 'text-muted-foreground',
+                              result.type === 'categoria' ? 'text-primary' : 'text-muted-foreground'
                             )}
                           />
                           <div className="min-w-0 flex-1">
@@ -438,7 +415,7 @@ export function TypeaheadSearch({
                             </div>
                           </div>
                         </button>
-                      )
+                      );
                     })}
                   </div>
                 ))}
@@ -447,14 +424,12 @@ export function TypeaheadSearch({
               /* ---- Empty state ---- */
               <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
                 <SearchX className="h-8 w-8 text-muted-foreground/40" />
-                <p className="text-sm text-muted-foreground">
-                  No encontramos un resultado
-                </p>
+                <p className="text-sm text-muted-foreground">No encontramos un resultado</p>
               </div>
             )}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 
 export default function TestSentry() {
   const handleThrowError = () => {
-    throw new Error("Test Sentry - Error forzado")
-  }
+    throw new Error('Test Sentry - Error forzado');
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-4">
@@ -17,5 +17,5 @@ export default function TestSentry() {
         Lanzar error
       </Button>
     </div>
-  )
+  );
 }

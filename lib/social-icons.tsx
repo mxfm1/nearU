@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 import {
   FaInstagram,
   FaLinkedin,
@@ -17,7 +17,7 @@ import {
   FaDribbble,
   FaBehance,
   FaGlobe,
-} from 'react-icons/fa'
+} from 'react-icons/fa';
 
 const iconMap: Record<string, ReactNode> = {
   instagram: <FaInstagram />,
@@ -36,11 +36,11 @@ const iconMap: Record<string, ReactNode> = {
   github: <FaGithub />,
   dribbble: <FaDribbble />,
   behance: <FaBehance />,
-}
+};
 
 export function getSocialIcon(type: string, className?: string): ReactNode {
-  const icon = iconMap[type.toLowerCase()]
-  return icon ? <span className={className}>{icon}</span> : <FaGlobe className={className} />
+  const icon = iconMap[type.toLowerCase()];
+  return icon ? <span className={className}>{icon}</span> : <FaGlobe className={className} />;
 }
 
 export const SOCIAL_PLATFORMS = [
@@ -60,4 +60,4 @@ export const SOCIAL_PLATFORMS = [
   { value: 'github', label: 'GitHub' },
   { value: 'dribbble', label: 'Dribbble' },
   { value: 'behance', label: 'Behance' },
-]
+];

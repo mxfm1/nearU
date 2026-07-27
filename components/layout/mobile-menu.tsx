@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence, type Variants } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { useAuth } from '@/hooks/use-auth'
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
 
 const publicLinks = [
   { label: 'Explorar', href: '/descubrir' },
@@ -14,14 +14,14 @@ const publicLinks = [
   { label: 'Eventos', href: '/search?type=eventos' },
   { label: 'Recursos', href: '/recursos' },
   { label: 'Sobre NearU', href: '/about' },
-]
+];
 
 const privateLinks = [
   { label: 'Descubrir', href: '/descubrir' },
   { label: 'Crear', href: '/crear' },
   { label: 'Mi perfil', href: '/user/perfil' },
   { label: 'Bandeja', href: '/user/inbox' },
-]
+];
 
 const menuVariants: Variants = {
   closed: {
@@ -40,7 +40,7 @@ const menuVariants: Variants = {
       ease: 'easeInOut' as const,
     },
   },
-}
+};
 
 const linkVariants: Variants = {
   closed: { opacity: 0, x: -20 },
@@ -53,14 +53,14 @@ const linkVariants: Variants = {
       ease: 'easeOut' as const,
     },
   }),
-}
+};
 
 export function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
-  const { user } = useAuth()
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const { user } = useAuth();
 
-  const links = user ? privateLinks : publicLinks
+  const links = user ? privateLinks : publicLinks;
 
   return (
     <div className="md:hidden">
@@ -71,10 +71,7 @@ export function MobileMenu() {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
       >
-        <motion.div
-          animate={{ rotate: isOpen ? 90 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </motion.div>
       </Button>
@@ -91,7 +88,7 @@ export function MobileMenu() {
               className="fixed inset-0 bg-black/50 z-40"
               onClick={() => setIsOpen(false)}
             />
-            
+
             {/* Menu panel */}
             <motion.div
               initial="closed"
@@ -102,11 +99,7 @@ export function MobileMenu() {
             >
               <nav className="flex flex-col p-4 gap-1">
                 {links.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    custom={index}
-                    variants={linkVariants}
-                  >
+                  <motion.div key={link.href} custom={index} variants={linkVariants}>
                     <Link
                       href={link.href}
                       onClick={() => setIsOpen(false)}
@@ -126,5 +119,5 @@ export function MobileMenu() {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

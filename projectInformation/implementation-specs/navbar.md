@@ -12,7 +12,6 @@
 # 2. Finalidad
 
     Generar accesibilidad para todos los usuarios de la aplicacion, ya sea que estén logueados o no
-    
 
 # 3. UI Reference
 
@@ -39,6 +38,7 @@
 # 5. Componentes Reutilizables
 
     <searchbarGlobal>
+
 ---
 
 # 5. Funcionalidad
@@ -46,8 +46,6 @@
     Debe cargar en el servidor la estructura basica del navbar y utilizar framengts o suspense para aquellos elementos que necesiten espera como los botonrs de inicio de sesion en caso de no detectrar una sesion o el dropdown del usuario que habilita el submenu del usuario apra navegacion
 
 # 6. Integración
-
-    
 
 # 7. Estados
 
@@ -64,10 +62,8 @@
 
 # 9. Consideraciones de elementos del layout
 
-
 Implementar segun:
 
     - projectInformation/domain/ubication.md
     - projectInformation/domain/categories.md
     . skills/react-clean-architecture.md
-

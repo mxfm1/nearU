@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { ArrowLeft, Calendar, MapPin } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import type { EventoDetalle } from '@/lib/eventos-api'
+import Link from 'next/link';
+import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import type { EventoDetalle } from '@/lib/eventos-api';
 
 interface EventInfoSectionProps {
-  event: EventoDetalle | null
+  event: EventoDetalle | null;
 }
 
 export function EventInfoSection({ event }: EventInfoSectionProps) {
-  if (!event) return null
+  if (!event) return null;
 
   return (
     <section className="bg-card rounded-xl shadow-sm overflow-hidden mb-8 border border-border">
@@ -62,5 +62,5 @@ export function EventInfoSection({ event }: EventInfoSectionProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

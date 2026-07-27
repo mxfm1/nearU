@@ -1,11 +1,11 @@
-import { ChevronRight } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import type { ContactoResumen } from '@/lib/contactos-api'
-import { formatDate, getInitials, getAvatarColor, estadoBadge } from './inbox-utils'
-import Link from 'next/link'
+import { ChevronRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import type { ContactoResumen } from '@/lib/contactos-api';
+import { formatDate, getInitials, getAvatarColor, estadoBadge } from './inbox-utils';
+import Link from 'next/link';
 
 interface InboxCardProps {
-  message: ContactoResumen
+  message: ContactoResumen;
 }
 
 export function InboxCard({ message }: InboxCardProps) {
@@ -22,9 +22,7 @@ export function InboxCard({ message }: InboxCardProps) {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <h3 className="font-semibold text-foreground truncate">
-            {message.remitente.nombre}
-          </h3>
+          <h3 className="font-semibold text-foreground truncate">{message.remitente.nombre}</h3>
           {message.estado && (
             <Badge
               variant={estadoBadge[message.estado]?.variant ?? 'outline'}
@@ -34,16 +32,12 @@ export function InboxCard({ message }: InboxCardProps) {
             </Badge>
           )}
           {message.estado === 'pendiente' && (
-            <Badge className="bg-brand text-white text-[10px] px-1.5 py-0 shrink-0">
-              NUEVO
-            </Badge>
+            <Badge className="bg-brand text-white text-[10px] px-1.5 py-0 shrink-0">NUEVO</Badge>
           )}
         </div>
         <p className="text-sm text-muted-foreground">{message.remitente.nombre}</p>
         {message.ultimoMensaje && (
-          <p className="text-sm text-muted-foreground truncate mt-0.5">
-            {message.ultimoMensaje}
-          </p>
+          <p className="text-sm text-muted-foreground truncate mt-0.5">{message.ultimoMensaje}</p>
         )}
       </div>
 
@@ -54,5 +48,5 @@ export function InboxCard({ message }: InboxCardProps) {
         <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-brand transition-colors" />
       </div>
     </Link>
-  )
+  );
 }

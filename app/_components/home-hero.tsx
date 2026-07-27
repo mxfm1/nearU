@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { HomeSearchBar } from './home-search-bar'
-import { HomeCategories } from './home-categories'
-import { Users, Star } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { HomeSearchBar } from './home-search-bar';
+import { HomeCategories } from './home-categories';
+import { Users, Star } from 'lucide-react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-}
+};
 
 const fadeInRight = {
   initial: { opacity: 0, x: 30 },
   animate: { opacity: 1, x: 0 },
-}
+};
 
 const staggerContainer = {
   animate: {
@@ -21,7 +21,7 @@ const staggerContainer = {
       staggerChildren: 0.1,
     },
   },
-}
+};
 
 export function HomeHero() {
   return (
@@ -41,19 +41,18 @@ export function HomeHero() {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-text-primary"
             >
-              Encuentra los mejores{' '}
-              <span className="text-primary">proveedores</span>{' '}
-              para tu evento
+              Encuentra los mejores <span className="text-primary">proveedores</span> para tu evento
             </motion.h1>
-            
+
             <motion.p
               variants={fadeInUp}
               transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
               className="text-base sm:text-lg text-text-secondary max-w-xl"
             >
-              Conecta con empresas confiables de calidad, producción, iluminación y más para eventos inolvidables, fáciles y exitosos.
+              Conecta con empresas confiables de calidad, producción, iluminación y más para eventos
+              inolvidables, fáciles y exitosos.
             </motion.p>
-            
+
             {/* Search bar */}
             <motion.div
               variants={fadeInUp}
@@ -61,7 +60,7 @@ export function HomeHero() {
             >
               <HomeSearchBar />
             </motion.div>
-            
+
             {/* Category chips below search */}
             <motion.div
               variants={fadeInUp}
@@ -70,7 +69,7 @@ export function HomeHero() {
               <HomeCategories />
             </motion.div>
           </motion.div>
-          
+
           {/* Right image with floating cards */}
           <motion.div
             className="relative flex justify-center lg:justify-end order-first lg:order-last"
@@ -91,7 +90,7 @@ export function HomeHero() {
                 className="w-full h-auto object-cover"
               />
             </motion.div>
-            
+
             {/* Floating card - empresas verificadas */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8, x: -20 }}
@@ -113,11 +112,13 @@ export function HomeHero() {
                 </div>
                 <div>
                   <div className="text-xs sm:text-sm font-semibold text-text-primary">+1,200</div>
-                  <div className="text-[10px] sm:text-xs text-text-secondary">Empresas verificadas</div>
+                  <div className="text-[10px] sm:text-xs text-text-secondary">
+                    Empresas verificadas
+                  </div>
                 </div>
               </div>
             </motion.div>
-            
+
             {/* Rating card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8, x: 20 }}
@@ -132,12 +133,14 @@ export function HomeHero() {
                     <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-brand-500 text-brand-500" />
                   ))}
                 </div>
-                <div className="text-[10px] sm:text-xs text-text-secondary mt-1">Calificación promedio</div>
+                <div className="text-[10px] sm:text-xs text-text-secondary mt-1">
+                  Calificación promedio
+                </div>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </div>
     </section>
-  )
+  );
 }

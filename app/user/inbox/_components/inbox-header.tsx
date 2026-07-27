@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 interface InboxHeaderProps {
-  searchQuery: string
-  onSearchChange: (value: string) => void
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
 }
 
 export function InboxHeader({ searchQuery, onSearchChange }: InboxHeaderProps) {
@@ -25,12 +25,12 @@ export function InboxHeader({ searchQuery, onSearchChange }: InboxHeaderProps) {
             placeholder="Buscar mensajes..."
             value={searchQuery}
             onChange={(e) => {
-              onSearchChange(e.target.value)
+              onSearchChange(e.target.value);
             }}
             className="pl-9"
           />
         </div>
       </div>
     </div>
-  )
+  );
 }

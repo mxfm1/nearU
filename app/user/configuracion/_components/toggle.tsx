@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 export interface ToggleProps {
-  checked: boolean
-  onChange: (checked: boolean) => void
-  disabled?: boolean
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
 }
 
 export function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
@@ -28,5 +28,5 @@ export function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
         `}
       />
     </button>
-  )
+  );
 }

@@ -1,9 +1,9 @@
-import Link from 'next/link'
-import { Suspense } from 'react'
-import { NavbarActions } from './navbar-actions'
-import { NavbarLinks } from './navbar-links'
-import { MobileMenu } from './mobile-menu'
-import { TypeaheadSearch } from '@/components/typeahead-search'
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { NavbarActions } from './navbar-actions';
+import { NavbarLinks } from './navbar-links';
+import { MobileMenu } from './mobile-menu';
+import { TypeaheadSearch } from '@/components/typeahead-search';
 
 export function Navbar() {
   return (
@@ -37,5 +37,5 @@ export function Navbar() {
         </Suspense>
       </div>
     </header>
-  )
+  );
 }

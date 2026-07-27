@@ -1,54 +1,59 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { X, Plus } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { getSocialIcon, SOCIAL_PLATFORMS } from '@/lib/social-icons'
-import type { SocialLink } from '@/lib/profile-api'
+import { useState } from 'react';
+import { X, Plus } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { getSocialIcon, SOCIAL_PLATFORMS } from '@/lib/social-icons';
+import type { SocialLink } from '@/lib/profile-api';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui/select';
 
 interface DigitalPresenceProps {
-  website: string
-  whatsapp: string
-  socialLinks: SocialLink[]
-  onChange: (field: string, value: unknown) => void
+  website: string;
+  whatsapp: string;
+  socialLinks: SocialLink[];
+  onChange: (field: string, value: unknown) => void;
 }
 
-export function DigitalPresence({ website, whatsapp, socialLinks, onChange }: DigitalPresenceProps) {
-  const [addingSocial, setAddingSocial] = useState(false)
-  const [newPlatform, setNewPlatform] = useState(SOCIAL_PLATFORMS[0].value)
+export function DigitalPresence({
+  website,
+  whatsapp,
+  socialLinks,
+  onChange,
+}: DigitalPresenceProps) {
+  const [addingSocial, setAddingSocial] = useState(false);
+  const [newPlatform, setNewPlatform] = useState(SOCIAL_PLATFORMS[0].value);
 
   const availablePlatforms = SOCIAL_PLATFORMS.filter(
-    (p) => !socialLinks.some((s) => s.platform === p.value),
-  )
+    (p) => !socialLinks.some((s) => s.platform === p.value)
+  );
 
   const handleAddSocial = () => {
-    if (socialLinks.some((s) => s.platform === newPlatform)) return
+    if (socialLinks.some((s) => s.platform === newPlatform)) return;
     onChange('socialLinks', [
       ...socialLinks,
       { platform: newPlatform, url: '', orden: socialLinks.length },
-    ])
-    setAddingSocial(false)
-  }
+    ]);
+    setAddingSocial(false);
+  };
 
   const handleRemoveSocial = (index: number) => {
-    const updated = socialLinks.filter((_, i) => i !== index)
-    onChange('socialLinks', updated)
-  }
+    const updated = socialLinks.filter((_, i) => i !== index);
+    onChange('socialLinks', updated);
+  };
 
   const handleSocialUrlChange = (index: number, url: string) => {
-    const updated = socialLinks.map((s, i) => (i === index ? { ...s, url } : s))
-    onChange('socialLinks', updated)
-  }
+    const updated = socialLinks.map((s, i) => (i === index ? { ...s, url } : s));
+    onChange('socialLinks', updated);
+  };
 
   return (
     <Card className="mb-8">
@@ -64,20 +69,14 @@ export function DigitalPresence({ website, whatsapp, socialLinks, onChange }: Di
               <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
                 Sitio Web Oficial
               </Label>
-              <Input
-                value={website}
-                onChange={(e) => onChange('website', e.target.value)}
-              />
+              <Input value={website} onChange={(e) => onChange('website', e.target.value)} />
             </div>
 
             <div>
               <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
                 WhatsApp Business
               </Label>
-              <Input
-                value={whatsapp}
-                onChange={(e) => onChange('whatsapp', e.target.value)}
-              />
+              <Input value={whatsapp} onChange={(e) => onChange('whatsapp', e.target.value)} />
             </div>
           </div>
 
@@ -128,7 +127,12 @@ export function DigitalPresence({ website, whatsapp, socialLinks, onChange }: Di
                   <Button type="button" size="sm" onClick={handleAddSocial}>
                     Agregar
                   </Button>
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setAddingSocial(false)}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setAddingSocial(false)}
+                  >
                     Cancelar
                   </Button>
                 </div>
@@ -138,8 +142,8 @@ export function DigitalPresence({ website, whatsapp, socialLinks, onChange }: Di
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    setNewPlatform(availablePlatforms[0]?.value ?? SOCIAL_PLATFORMS[0].value)
-                    setAddingSocial(true)
+                    setNewPlatform(availablePlatforms[0]?.value ?? SOCIAL_PLATFORMS[0].value);
+                    setAddingSocial(true);
                   }}
                   disabled={availablePlatforms.length === 0}
                 >
@@ -152,5 +156,5 @@ export function DigitalPresence({ website, whatsapp, socialLinks, onChange }: Di
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

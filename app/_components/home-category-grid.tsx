@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { 
-  Clapperboard, 
-  Camera, 
-  Music, 
-  UtensilsCrossed, 
-  Lightbulb, 
-  Paintbrush, 
-  Play, 
-  Truck 
-} from 'lucide-react'
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import {
+  Clapperboard,
+  Camera,
+  Music,
+  UtensilsCrossed,
+  Lightbulb,
+  Paintbrush,
+  Play,
+  Truck,
+} from 'lucide-react';
 
 const largeCategories = [
   {
@@ -28,7 +28,7 @@ const largeCategories = [
     image: 'https://placehold.co/600x400/2D5A3D/FFFFFF?text=Fotografía',
     isPremium: true,
   },
-]
+];
 
 const smallCategories = [
   {
@@ -73,7 +73,7 @@ const smallCategories = [
     image: 'https://placehold.co/300x300/4A6B5A/FFFFFF?text=Transporte',
     isPremium: true,
   },
-]
+];
 
 const containerVariants = {
   initial: {},
@@ -82,16 +82,16 @@ const containerVariants = {
       staggerChildren: 0.1,
     },
   },
-}
+};
 
 const itemVariants = {
   initial: { opacity: 0, y: 20 },
-  animate: { 
-    opacity: 1, 
+  animate: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: 'easeOut' as const },
   },
-}
+};
 
 export function HomeCategoryGrid() {
   return (
@@ -130,12 +130,9 @@ export function HomeCategoryGrid() {
           viewport={{ once: true, margin: '-50px' }}
         >
           {largeCategories.map((category) => {
-            const Icon = category.icon
+            const Icon = category.icon;
             return (
-              <motion.div
-                key={category.slug}
-                variants={itemVariants}
-              >
+              <motion.div key={category.slug} variants={itemVariants}>
                 <Link
                   href={`/search?category=${category.slug}`}
                   className="group relative block aspect-[4/3] sm:aspect-[3/2] rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300"
@@ -156,7 +153,9 @@ export function HomeCategoryGrid() {
                   </div>
                   {/* Content bottom */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">{category.name}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">
+                      {category.name}
+                    </h3>
                     {category.isPremium && (
                       <span className="inline-block bg-brand text-white rounded-md px-2 py-1 text-[10px] sm:text-xs font-semibold">
                         Premium
@@ -165,7 +164,7 @@ export function HomeCategoryGrid() {
                   </div>
                 </Link>
               </motion.div>
-            )
+            );
           })}
         </motion.div>
 
@@ -178,12 +177,9 @@ export function HomeCategoryGrid() {
           viewport={{ once: true, margin: '-50px' }}
         >
           {smallCategories.map((category) => {
-            const Icon = category.icon
+            const Icon = category.icon;
             return (
-              <motion.div
-                key={category.slug}
-                variants={itemVariants}
-              >
+              <motion.div key={category.slug} variants={itemVariants}>
                 <Link
                   href={`/search?category=${category.slug}`}
                   className="group relative block aspect-square rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300"
@@ -204,7 +200,9 @@ export function HomeCategoryGrid() {
                   </div>
                   {/* Content bottom */}
                   <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
-                    <h3 className="text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">{category.name}</h3>
+                    <h3 className="text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">
+                      {category.name}
+                    </h3>
                     {category.isPremium && (
                       <span className="inline-block bg-brand text-white rounded px-1 sm:px-1.5 py-0.5 text-[8px] sm:text-[10px] font-semibold">
                         Premium
@@ -213,10 +211,10 @@ export function HomeCategoryGrid() {
                   </div>
                 </Link>
               </motion.div>
-            )
+            );
           })}
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

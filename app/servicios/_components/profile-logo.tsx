@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { Building2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { Building2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ProfileLogoProps {
-  src?: string
-  alt: string
-  companyName: string
+  src?: string;
+  alt: string;
+  companyName: string;
 }
 
 export function ProfileLogo({ src, alt, companyName }: ProfileLogoProps) {
@@ -24,7 +24,7 @@ export function ProfileLogo({ src, alt, companyName }: ProfileLogoProps) {
           'h-24 w-24 sm:h-28 sm:w-28 md:h-24 md:w-48',
           'rounded-md border-4 border-background overflow-hidden',
           'bg-muted flex items-center justify-center',
-          'shadow-md',
+          'shadow-md'
         )}
       >
         {src ? (
@@ -40,5 +40,5 @@ export function ProfileLogo({ src, alt, companyName }: ProfileLogoProps) {
         )}
       </div>
     </motion.div>
-  )
+  );
 }

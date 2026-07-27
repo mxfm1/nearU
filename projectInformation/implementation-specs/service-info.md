@@ -13,7 +13,6 @@
 
     Esta screen tiene la finalidad de mostrar información detallada sobre un servicio en específico, posteado en la plataforma
     Tras clickear en una card de servicio, esta screen es desplegada. Tiene dentro de sus funciones el boton de contacto que despliega un formulario de contacto de manera de alert dialog con el objetivo de conntactarme con la empresa creadora del servicio
-    
 
 # 3. UI Reference
 
@@ -40,6 +39,7 @@
     <ContactSection>
     <ContactButton>
     <PortfolioSection>
+
 ---
 
 # 5. Funcionalidad
@@ -61,7 +61,7 @@
     | "instagram"
     | "facebook"
     | "twitter";
-        value:string 
+        value:string
     }
 
     type PortfolioImage {
@@ -87,8 +87,8 @@
         | "ARCHIVED";
     }
 
-    responses: 
-    
+    responses:
+
     success: {
         success:true
         code: "OK" ;
@@ -101,13 +101,13 @@
         location:string,
         contactInformation: ContactInformation []
         portafolio: PortfolioImage[]
-    } 
+    }
 
     <ErrorAPI> : {
         success:false
         code: ErrorAPI
-    } 
-    
+    }
+
     <UnknownError> : {
         success:false
         code: "UNKNOWN_ERROR"
@@ -132,7 +132,7 @@
     SIEMPRE debe ser mobile FIRST utilizando tailwindcss
 
     <Navbar />
-    
+
     - No implementar todavia, utilizar la que ya existe
 
     <BannerSection>
@@ -163,10 +163,8 @@
         - Componente que recibe como prop el portafolio del servicio
         - Tendra un modo de carrusel, recibirá un array de imagenes como prop qeu renderizará. Se encargará de presentarlas como imagenes de un carrusel con las propicedades de framer motion, mobile first, scrolleable lateralmente y con botones de control arrow en desktop
 
-
 Implementar segun:
 
     - projectInformation/domain/ubication.md
     - projectInformation/domain/categories.md
     . skills/react-clean-architecture.md
-

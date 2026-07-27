@@ -1,19 +1,19 @@
 export interface MockProvider {
-  name: string
-  category: string
-  verified: boolean
-  location: string
-  thumbnail: string
-  slug: string
+  name: string;
+  category: string;
+  verified: boolean;
+  location: string;
+  thumbnail: string;
+  slug: string;
 }
 
 export interface MockEvent {
-  title: string
-  description: string
-  date: string
-  location: string
-  thumbnail: string
-  slug: string
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  thumbnail: string;
+  slug: string;
 }
 
 export const mockProviders: MockProvider[] = [
@@ -81,7 +81,7 @@ export const mockProviders: MockProvider[] = [
     thumbnail: 'https://picsum.photos/seed/escenario-events/400/300',
     slug: 'escenario-events',
   },
-]
+];
 
 export const mockEvents: MockEvent[] = [
   {
@@ -156,4 +156,4 @@ export const mockEvents: MockEvent[] = [
     thumbnail: 'https://picsum.photos/seed/noche-gastronomia/400/250',
     slug: 'noche-de-la-gastronomia',
   },
-]
+];

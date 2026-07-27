@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react';
 
 export function ProfileLoading() {
   return (
@@ -8,5 +8,5 @@ export function ProfileLoading() {
       <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       <span className="ml-2 text-muted-foreground">Cargando perfil...</span>
     </div>
-  )
+  );
 }

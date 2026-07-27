@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import {  PersonStanding, X } from 'lucide-react'
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { PersonStanding, X } from 'lucide-react';
 
 const slideDown = {
   initial: { opacity: 0, y: -100 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.4 },
-}
+};
 
 interface MensajesBannerProps {
-  empresa: string
+  empresa: string;
 }
 
 export function MensajesBanner({ empresa }: MensajesBannerProps) {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true);
 
   return (
     <AnimatePresence>
@@ -29,9 +29,7 @@ export function MensajesBanner({ empresa }: MensajesBannerProps) {
               <PersonStanding className="w-5 h-5 md:w-6 md:h-6 text-primary" />
             </div>
             <div>
-              <h2 className="text-base md:text-lg font-semibold text-primary">
-                ¡Felicidades!
-              </h2>
+              <h2 className="text-base md:text-lg font-semibold text-primary">¡Felicidades!</h2>
               <p className="text-sm text-muted-foreground">
                 Fuiste seleccionado para trabajar con{' '}
                 <span className="font-semibold text-foreground">{empresa}</span>
@@ -47,5 +45,5 @@ export function MensajesBanner({ empresa }: MensajesBannerProps) {
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

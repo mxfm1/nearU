@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useSearch } from '@/hooks/use-search'
-import { HorizontalSearchBar } from './horizontal-search-bar'
-import { SearchSkeleton } from './search-skeleton'
-import { SearchResults } from './search-results'
-import { PaginationBar } from './pagination-bar'
-import { SearchEmptyState } from './search-empty-state'
-import { SearchErrorState } from './search-error-state'
+import { useSearch } from '@/hooks/use-search';
+import { HorizontalSearchBar } from './horizontal-search-bar';
+import { SearchSkeleton } from './search-skeleton';
+import { SearchResults } from './search-results';
+import { PaginationBar } from './pagination-bar';
+import { SearchEmptyState } from './search-empty-state';
+import { SearchErrorState } from './search-error-state';
 
 export function SearchPageContent() {
   const {
@@ -19,9 +19,9 @@ export function SearchPageContent() {
     paginatedResults,
     hasFilters,
     goToPage,
-  } = useSearch()
+  } = useSearch();
 
-  if (isLoading) return <SearchSkeleton />
+  if (isLoading) return <SearchSkeleton />;
 
   return (
     <div className="bg-background min-h-screen">
@@ -56,5 +56,5 @@ export function SearchPageContent() {
         </div>
       </section>
     </div>
-  )
+  );
 }

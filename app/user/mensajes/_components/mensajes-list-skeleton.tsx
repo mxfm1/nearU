@@ -34,10 +34,7 @@ export function MensajesListSkeleton() {
       {/* List Skeleton */}
       <div className="flex-1 overflow-y-auto px-4 md:px-6 pb-6 space-y-3">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div 
-            key={i} 
-            className="flex items-center gap-4 p-4 md:p-5 bg-card rounded-xl"
-          >
+          <div key={i} className="flex items-center gap-4 p-4 md:p-5 bg-card rounded-xl">
             <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-muted animate-pulse shrink-0" />
             <div className="flex-1 min-w-0 space-y-2">
               <div className="flex justify-between">
@@ -57,5 +54,5 @@ export function MensajesListSkeleton() {
         ))}
       </div>
     </div>
-  )
+  );
 }

@@ -1,12 +1,22 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { FaLinkedin, FaTwitter, FaInstagram, FaArrowLeft, FaMapPin, FaCalendar, FaUsers, FaPhone, FaGlobe } from "react-icons/fa"
-import { Mail, MessageCircle } from 'lucide-react'
-import { useAuth } from '@/hooks'
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  FaLinkedin,
+  FaTwitter,
+  FaInstagram,
+  FaArrowLeft,
+  FaMapPin,
+  FaCalendar,
+  FaUsers,
+  FaPhone,
+  FaGlobe,
+} from 'react-icons/fa';
+import { Mail, MessageCircle } from 'lucide-react';
+import { useAuth } from '@/hooks';
 
 const MOCK_PROFILE = {
   name: 'Terra Roots Co.',
@@ -47,19 +57,18 @@ const MOCK_PROFILE = {
       image: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=400&h=300&fit=crop',
     },
   ],
-}
+};
 
 export default function ProfilePreviewPage() {
+  const { loading, user } = useAuth();
 
-  const { loading, user } = useAuth()
-
-  const profile = MOCK_PROFILE
+  const profile = MOCK_PROFILE;
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
-  console.log(user)
+  console.log(user);
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,9 +81,7 @@ export default function ProfilePreviewPage() {
             <FaArrowLeft className="h-4 w-4" />
             Volver
           </Link>
-          <h1 className="flex-1 text-center font-semibold text-foreground pr-8">
-            NearU
-          </h1>
+          <h1 className="flex-1 text-center font-semibold text-foreground pr-8">NearU</h1>
         </div>
       </header>
 
@@ -129,9 +136,7 @@ export default function ProfilePreviewPage() {
             <Card>
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-foreground mb-4">Información General</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  {profile.description}
-                </p>
+                <p className="text-muted-foreground leading-relaxed mb-4">{profile.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {profile.tags.map((tag) => (
                     <Badge key={tag} variant="outline" className="text-xs">
@@ -151,7 +156,10 @@ export default function ProfilePreviewPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profile.services.map((service) => (
-                  <Card key={service.id} className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
+                  <Card
+                    key={service.id}
+                    className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                  >
                     <div className="relative h-40">
                       <img
                         src={service.image}
@@ -208,13 +216,22 @@ export default function ProfilePreviewPage() {
                 <div className="mt-6">
                   <h4 className="text-sm font-medium text-foreground mb-3">Redes Sociales</h4>
                   <div className="flex gap-3">
-                    <a href={profile.social.instagram} className="text-muted-foreground hover:text-brand transition-colors">
+                    <a
+                      href={profile.social.instagram}
+                      className="text-muted-foreground hover:text-brand transition-colors"
+                    >
                       <FaInstagram className="h-5 w-5" />
                     </a>
-                    <a href={profile.social.linkedin} className="text-muted-foreground hover:text-brand transition-colors">
+                    <a
+                      href={profile.social.linkedin}
+                      className="text-muted-foreground hover:text-brand transition-colors"
+                    >
                       <FaLinkedin className="h-5 w-5" />
                     </a>
-                    <a href={profile.social.whatsapp} className="text-muted-foreground hover:text-brand transition-colors">
+                    <a
+                      href={profile.social.whatsapp}
+                      className="text-muted-foreground hover:text-brand transition-colors"
+                    >
                       <MessageCircle className="h-5 w-5" />
                     </a>
                   </div>
@@ -246,5 +263,5 @@ export default function ProfilePreviewPage() {
         </p>
       </footer>
     </div>
-  )
+  );
 }

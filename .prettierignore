@@ -1,0 +1,11 @@
+node_modules
+.next
+build
+dist
+coverage
+e2e
+*.lock
+package-lock.json
+pnpm-lock.yaml
+CHANGELOG.md
+.env*

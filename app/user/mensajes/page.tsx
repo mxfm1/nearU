@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { Suspense } from 'react'
-import { MensajesListContent } from './_components/mensajes-list-content.presentational'
-import { MensajesListSkeleton } from './_components/mensajes-list-skeleton'
-import { useMensajesList } from '@/hooks/use-mensajes-list'
+import { Suspense } from 'react';
+import { MensajesListContent } from './_components/mensajes-list-content.presentational';
+import { MensajesListSkeleton } from './_components/mensajes-list-skeleton';
+import { useMensajesList } from '@/hooks/use-mensajes-list';
 
 export default function MensajesPage() {
-  const query = useMensajesList()
+  const query = useMensajesList();
 
   return (
     <div className="h-[calc(100vh-4rem)]">
@@ -14,5 +14,5 @@ export default function MensajesPage() {
         <MensajesListContent result={query} />
       </Suspense>
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { ConfirmAccess } from './_components/confirm-access'
+import { ConfirmAccess } from './_components/confirm-access';
 
 export default function ConfirmAccessPage() {
-  return <ConfirmAccess />
+  return <ConfirmAccess />;
 }

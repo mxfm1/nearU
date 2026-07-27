@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export function EventoSkeleton() {
   return (
@@ -65,5 +65,5 @@ export function EventoSkeleton() {
         </div>
       </section>
     </div>
-  )
+  );
 }

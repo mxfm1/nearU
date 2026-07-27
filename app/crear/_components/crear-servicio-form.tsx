@@ -1,11 +1,20 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
-import { useForm, useFieldArray } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { motion } from 'framer-motion'
-import { Plus, Trash2, Loader2, AlertCircle, CheckCircle2, Camera, X, ImageIcon } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { motion } from 'framer-motion';
+import {
+  Plus,
+  Trash2,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  Camera,
+  X,
+  ImageIcon,
+} from 'lucide-react';
 
 import {
   Form,
@@ -14,50 +23,56 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui/select';
 
-import { CrearServicioSchema, type CrearServicioFormValues } from '@/components/forms/schemas'
-import { generateSlug } from '@/lib/slug'
-import { cn } from '@/lib/utils'
-import { uploadFiles } from '@/lib/uploadthing'
-import type { Categoria } from '@/lib/catalogo-api'
-import type { CreateServicioPayload } from '@/lib/servicios-api'
+import { CrearServicioSchema, type CrearServicioFormValues } from '@/components/forms/schemas';
+import { generateSlug } from '@/lib/slug';
+import { cn } from '@/lib/utils';
+import { uploadFiles } from '@/lib/uploadthing';
+import type { Categoria } from '@/lib/catalogo-api';
+import type { CreateServicioPayload } from '@/lib/servicios-api';
 
 interface ServicioUploadProps {
-  label: string
-  value: string
-  onChange: (url: string) => void
-  route: 'serviceBanner' | 'serviceThumbnail'
-  aspectRatio?: string
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  route: 'serviceBanner' | 'serviceThumbnail';
+  aspectRatio?: string;
 }
 
-function ServicioImageUpload({ label, value, onChange, route, aspectRatio = '16:9' }: ServicioUploadProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [uploading, setUploading] = useState(false)
-  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle')
+function ServicioImageUpload({
+  label,
+  value,
+  onChange,
+  route,
+  aspectRatio = '16:9',
+}: ServicioUploadProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle');
 
   async function handleUpload(file: File) {
-    setUploading(true)
-    setFeedback('idle')
+    setUploading(true);
+    setFeedback('idle');
     try {
-      const [result] = await uploadFiles(route, { files: [file] })
-      onChange(result.url)
-      setFeedback('success')
-      setTimeout(() => setFeedback('idle'), 3000)
+      const [result] = await uploadFiles(route, { files: [file] });
+      onChange(result.url);
+      setFeedback('success');
+      setTimeout(() => setFeedback('idle'), 3000);
     } catch {
-      setFeedback('error')
+      setFeedback('error');
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
@@ -68,19 +83,29 @@ function ServicioImageUpload({ label, value, onChange, route, aspectRatio = '16:
         className={cn(
           'relative rounded-lg overflow-hidden border-2 border-dashed transition-all duration-200',
           'group cursor-pointer',
-          value ? 'border-border' : 'border-muted-foreground/20 hover:border-primary/50',
+          value ? 'border-border' : 'border-muted-foreground/20 hover:border-primary/50'
         )}
         onClick={() => !uploading && inputRef.current?.click()}
       >
         {value ? (
-          <div className={cn('relative overflow-hidden', aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square')}>
+          <div
+            className={cn(
+              'relative overflow-hidden',
+              aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square'
+            )}
+          >
             <Image src={value} alt={label} fill className="object-cover" sizes="400px" />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
               <Camera className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </div>
         ) : (
-          <div className={cn('flex flex-col items-center justify-center gap-2 p-8', aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square')}>
+          <div
+            className={cn(
+              'flex flex-col items-center justify-center gap-2 p-8',
+              aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square'
+            )}
+          >
             <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
             <p className="text-xs text-muted-foreground text-center">
               {uploading ? 'Subiendo...' : 'Hacé clic para subir'}
@@ -112,15 +137,17 @@ function ServicioImageUpload({ label, value, onChange, route, aspectRatio = '16:
           accept="image/*"
           disabled={uploading}
           onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) handleUpload(file)
-            e.target.value = ''
+            const file = e.target.files?.[0];
+            if (file) handleUpload(file);
+            e.target.value = '';
           }}
         />
       </div>
       {value && (
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground truncate max-w-[200px]">Imagen subida</span>
+          <span className="text-xs text-muted-foreground truncate max-w-[200px]">
+            Imagen subida
+          </span>
           <Button
             type="button"
             variant="ghost"
@@ -133,36 +160,36 @@ function ServicioImageUpload({ label, value, onChange, route, aspectRatio = '16:
         </div>
       )}
     </div>
-  )
+  );
 }
 
 interface MultiImageUploadProps {
-  images: string[]
-  onChange: (images: string[]) => void
-  max?: number
+  images: string[];
+  onChange: (images: string[]) => void;
+  max?: number;
 }
 
 function ServicioMultiImageUpload({ images, onChange, max = 4 }: MultiImageUploadProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [uploading, setUploading] = useState(false)
-  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle')
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle');
 
   async function handleUpload(file: File) {
-    setUploading(true)
-    setFeedback('idle')
+    setUploading(true);
+    setFeedback('idle');
     try {
-      const [result] = await uploadFiles('serviceImages', { files: [file] })
-      onChange([...images, result.url])
-      setFeedback('success')
-      setTimeout(() => setFeedback('idle'), 3000)
+      const [result] = await uploadFiles('serviceImages', { files: [file] });
+      onChange([...images, result.url]);
+      setFeedback('success');
+      setTimeout(() => setFeedback('idle'), 3000);
     } catch {
-      setFeedback('error')
+      setFeedback('error');
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
-  const canAdd = images.length < max
+  const canAdd = images.length < max;
 
   return (
     <div className="space-y-2">
@@ -186,7 +213,10 @@ function ServicioMultiImageUpload({ images, onChange, max = 4 }: MultiImageUploa
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {images.map((url, i) => (
-          <div key={url} className="relative aspect-square rounded-lg overflow-hidden border border-border group">
+          <div
+            key={url}
+            className="relative aspect-square rounded-lg overflow-hidden border border-border group"
+          >
             <Image src={url} alt={`Imagen ${i + 1}`} fill className="object-cover" sizes="150px" />
             <button
               type="button"
@@ -205,7 +235,7 @@ function ServicioMultiImageUpload({ images, onChange, max = 4 }: MultiImageUploa
               'aspect-square rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-all duration-200',
               uploading
                 ? 'border-muted bg-muted/30 cursor-not-allowed'
-                : 'border-muted-foreground/20 hover:border-primary/50 hover:bg-muted/50 cursor-pointer',
+                : 'border-muted-foreground/20 hover:border-primary/50 hover:bg-muted/50 cursor-pointer'
             )}
             onClick={() => !uploading && inputRef.current?.click()}
             disabled={uploading}
@@ -228,29 +258,29 @@ function ServicioMultiImageUpload({ images, onChange, max = 4 }: MultiImageUploa
           accept="image/*"
           disabled={uploading}
           onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) handleUpload(file)
-            e.target.value = ''
+            const file = e.target.files?.[0];
+            if (file) handleUpload(file);
+            e.target.value = '';
           }}
         />
       </div>
     </div>
-  )
+  );
 }
 
 interface CrearServicioFormProps {
-  categorias: Categoria[]
-  categoriasLoading: boolean
-  ubicaciones: { id: string; name: string; region: { id: string; name: string; slug: string } }[]
-  ubicacionesLoading: boolean
-  mutation: ReturnType<typeof import('@/hooks/services/service-mutations').useCreateService>
+  categorias: Categoria[];
+  categoriasLoading: boolean;
+  ubicaciones: { id: string; name: string; region: { id: string; name: string; slug: string } }[];
+  ubicacionesLoading: boolean;
+  mutation: ReturnType<typeof import('@/hooks/services/service-mutations').useCreateService>;
 }
 
 const steps = [
   { id: 'brand-essentials', label: 'Información General', number: '01' },
   { id: 'portfolio-narrative', label: 'Detalles del servicio', number: '02' },
   { id: 'service-details', label: 'Contacto', number: '03' },
-]
+];
 
 export function CrearServicioForm({
   categorias,
@@ -259,7 +289,7 @@ export function CrearServicioForm({
   ubicacionesLoading,
   mutation,
 }: CrearServicioFormProps) {
-  const [activeStep, setActiveStep] = useState('brand-essentials')
+  const [activeStep, setActiveStep] = useState('brand-essentials');
 
   const form = useForm<CrearServicioFormValues>({
     resolver: zodResolver(CrearServicioSchema),
@@ -280,31 +310,32 @@ export function CrearServicioForm({
       serviceImages: [],
       status: 'draft',
     },
-  })
+  });
 
-  const watchedTitle = form.watch('title')
+  const watchedTitle = form.watch('title');
 
   useEffect(() => {
     if (watchedTitle) {
-      const slug = generateSlug(watchedTitle)
-      form.setValue('slug', slug, { shouldValidate: slug.length >= 2 })
+      const slug = generateSlug(watchedTitle);
+      form.setValue('slug', slug, { shouldValidate: slug.length >= 2 });
     }
-  }, [watchedTitle, form])
+  }, [watchedTitle, form]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'contacts',
-  })
+  });
 
   function buildPayload(data: CrearServicioFormValues): CreateServicioPayload {
-    const portfolioImages: { url: string; title: string; description: string }[] =
-      (data.serviceImages ?? []).map((url) => ({
-        url,
-        title: '',
-        description: '',
-      }))
+    const portfolioImages: { url: string; title: string; description: string }[] = (
+      data.serviceImages ?? []
+    ).map((url) => ({
+      url,
+      title: '',
+      description: '',
+    }));
 
-    const contacts = data.contacts?.filter((c) => c.value.trim()) ?? []
+    const contacts = data.contacts?.filter((c) => c.value.trim()) ?? [];
 
     return {
       slug: data.slug || generateSlug(data.title),
@@ -322,26 +353,26 @@ export function CrearServicioForm({
       thumbnailUrl: data.thumbnailUrl || undefined,
       portfolio: portfolioImages.length > 0 ? portfolioImages : undefined,
       status: data.status,
-    }
+    };
   }
 
   function handleFormSubmit(data: CrearServicioFormValues) {
-    mutation.mutate({ ...buildPayload(data), status: 'published' } as never)
+    mutation.mutate({ ...buildPayload(data), status: 'published' } as never);
   }
 
   function handleSaveDraft() {
-    const data = form.getValues()
-    mutation.mutate({ ...buildPayload(data), status: 'draft' } as never)
+    const data = form.getValues();
+    mutation.mutate({ ...buildPayload(data), status: 'draft' } as never);
   }
 
   const handleStepClick = (stepId: string) => {
-    setActiveStep(stepId)
-    document.getElementById(stepId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+    setActiveStep(stepId);
+    document.getElementById(stepId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
-  const bannerUrl = form.watch('bannerUrl') ?? ''
-  const thumbnailUrl = form.watch('thumbnailUrl') ?? ''
-  const serviceImages = form.watch('serviceImages') ?? []
+  const bannerUrl = form.watch('bannerUrl') ?? '';
+  const thumbnailUrl = form.watch('thumbnailUrl') ?? '';
+  const serviceImages = form.watch('serviceImages') ?? [];
 
   const contactTypes = [
     { value: 'email', label: 'Correo' },
@@ -351,7 +382,7 @@ export function CrearServicioForm({
     { value: 'instagram', label: 'Instagram' },
     { value: 'facebook', label: 'Facebook' },
     { value: 'twitter', label: 'X' },
-  ] as const
+  ] as const;
 
   return (
     <Form {...form}>
@@ -360,9 +391,7 @@ export function CrearServicioForm({
           <div className="w-full lg:w-64 shrink-0">
             <div className="sticky top-28 space-y-6">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-                  Crear servicio
-                </h1>
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">Crear servicio</h1>
                 <p className="text-sm text-muted-foreground mt-1">
                   Completa los datos de tu servicio para publicarlo en el directorio de proveedores.
                 </p>
@@ -376,15 +405,17 @@ export function CrearServicioForm({
                       'w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all duration-200',
                       activeStep === step.id
                         ? 'bg-primary text-primary-foreground'
-                        : 'hover:bg-muted',
+                        : 'hover:bg-muted'
                     )}
                   >
-                    <span className={cn(
-                      'flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium',
-                      activeStep === step.id
-                        ? 'bg-white/20 text-white'
-                        : 'bg-muted text-muted-foreground',
-                    )}>
+                    <span
+                      className={cn(
+                        'flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium',
+                        activeStep === step.id
+                          ? 'bg-white/20 text-white'
+                          : 'bg-muted text-muted-foreground'
+                      )}
+                    >
                       {step.number}
                     </span>
                     <span className="text-sm font-medium">{step.label}</span>
@@ -398,13 +429,20 @@ export function CrearServicioForm({
             {mutation.isError && (
               <div className="flex items-center gap-2 p-4 mb-6 rounded-md bg-destructive/10 text-destructive text-sm">
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
-                <span>{mutation.error instanceof Error ? mutation.error.message : 'Error al crear el servicio.'}</span>
+                <span>
+                  {mutation.error instanceof Error
+                    ? mutation.error.message
+                    : 'Error al crear el servicio.'}
+                </span>
               </div>
             )}
 
             <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-12">
               <div className="space-y-6">
-                <h2 id="brand-essentials" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-3">
+                <h2
+                  id="brand-essentials"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-3"
+                >
                   01 Información general del servicio
                 </h2>
 
@@ -443,15 +481,25 @@ export function CrearServicioForm({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Categoría</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value} disabled={categoriasLoading}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          disabled={categoriasLoading}
+                        >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={categoriasLoading ? 'Cargando...' : 'Seleccioná una categoría'} />
+                              <SelectValue
+                                placeholder={
+                                  categoriasLoading ? 'Cargando...' : 'Seleccioná una categoría'
+                                }
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {categorias.map((cat) => (
-                              <SelectItem key={cat.id} value={cat.id || ''}>{cat.name}</SelectItem>
+                              <SelectItem key={cat.id} value={cat.id || ''}>
+                                {cat.name}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -504,7 +552,10 @@ export function CrearServicioForm({
               </div>
 
               <div className="space-y-6">
-                <h2 id="portfolio-narrative" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-3">
+                <h2
+                  id="portfolio-narrative"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-3"
+                >
                   02 Detalles del servicio
                 </h2>
 
@@ -570,7 +621,10 @@ export function CrearServicioForm({
               </div>
 
               <div className="space-y-6">
-                <h2 id="service-details" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-3">
+                <h2
+                  id="service-details"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-3"
+                >
                   03 Información de contacto
                 </h2>
 
@@ -580,10 +634,18 @@ export function CrearServicioForm({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Ubicación</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={ubicacionesLoading}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={ubicacionesLoading}
+                      >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={ubicacionesLoading ? 'Cargando...' : 'Seleccioná una ubicación'} />
+                            <SelectValue
+                              placeholder={
+                                ubicacionesLoading ? 'Cargando...' : 'Seleccioná una ubicación'
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -606,9 +668,9 @@ export function CrearServicioForm({
                       <Select
                         defaultValue={field.type}
                         onValueChange={(value) => {
-                          const contacts = form.getValues('contacts')
-                          contacts[index].type = value as typeof field.type
-                          form.setValue('contacts', contacts)
+                          const contacts = form.getValues('contacts');
+                          contacts[index].type = value as typeof field.type;
+                          form.setValue('contacts', contacts);
                         }}
                       >
                         <SelectTrigger className="w-32">
@@ -616,7 +678,9 @@ export function CrearServicioForm({
                         </SelectTrigger>
                         <SelectContent>
                           {contactTypes.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -624,9 +688,9 @@ export function CrearServicioForm({
                         placeholder="Valor"
                         value={field.value}
                         onChange={(e) => {
-                          const contacts = form.getValues('contacts')
-                          contacts[index].value = e.target.value
-                          form.setValue('contacts', contacts)
+                          const contacts = form.getValues('contacts');
+                          contacts[index].value = e.target.value;
+                          form.setValue('contacts', contacts);
                         }}
                         className="flex-1"
                       />
@@ -673,5 +737,5 @@ export function CrearServicioForm({
         </div>
       </div>
     </Form>
-  )
+  );
 }

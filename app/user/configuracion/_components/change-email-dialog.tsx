@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Mail, CircleCheck, AlertTriangle } from 'lucide-react'
-import { authApi } from '@/lib/api-client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Mail, CircleCheck, AlertTriangle } from 'lucide-react';
+import { authApi } from '@/lib/api-client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogContent,
@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -23,57 +23,57 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
+} from '@/components/ui/form';
 
 const changeEmailSchema = z.object({
   newEmail: z.string().email('Ingresá un correo válido'),
-})
+});
 
-type ChangeEmailFormValues = z.infer<typeof changeEmailSchema>
+type ChangeEmailFormValues = z.infer<typeof changeEmailSchema>;
 
-type Step = 'form' | 'success' | 'error'
+type Step = 'form' | 'success' | 'error';
 
 interface ChangeEmailDialogProps {
-  currentEmail: string
-  children?: React.ReactNode
+  currentEmail: string;
+  children?: React.ReactNode;
 }
 
 export function ChangeEmailDialog({ currentEmail, children }: ChangeEmailDialogProps) {
-  const [open, setOpen] = useState(false)
-  const [step, setStep] = useState<Step>('form')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [previousEmail, setPreviousEmail] = useState(currentEmail)
+  const [open, setOpen] = useState(false);
+  const [step, setStep] = useState<Step>('form');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [previousEmail, setPreviousEmail] = useState(currentEmail);
 
   const form = useForm<ChangeEmailFormValues>({
     resolver: zodResolver(changeEmailSchema),
     defaultValues: { newEmail: '' },
-  })
+  });
 
   async function onSubmit(values: ChangeEmailFormValues) {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      await authApi.changeEmail(values.newEmail)
-      setPreviousEmail(values.newEmail)
-      setStep('success')
+      await authApi.changeEmail(values.newEmail);
+      setPreviousEmail(values.newEmail);
+      setStep('success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cambiar el correo')
-      setStep('error')
+      setError(err instanceof Error ? err.message : 'Error al cambiar el correo');
+      setStep('error');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   function handleOpenChange(open: boolean) {
-    setOpen(open)
+    setOpen(open);
     if (!open) {
       setTimeout(() => {
-        setStep('form')
-        setError(null)
-        form.reset()
-      }, 200)
+        setStep('form');
+        setError(null);
+        form.reset();
+      }, 200);
     }
   }
 
@@ -140,14 +140,10 @@ export function ChangeEmailDialog({ currentEmail, children }: ChangeEmailDialogP
             <DialogTitle className="mb-2">Correo enviado</DialogTitle>
             <DialogDescription className="mb-6">
               Te enviamos un link de verificación a{' '}
-              <span className="font-medium text-foreground">{previousEmail}</span>.
-              Hacé clic en el enlace para confirmar el cambio.
+              <span className="font-medium text-foreground">{previousEmail}</span>. Hacé clic en el
+              enlace para confirmar el cambio.
             </DialogDescription>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => handleOpenChange(false)}
-            >
+            <Button variant="outline" className="w-full" onClick={() => handleOpenChange(false)}>
               Entendido
             </Button>
           </div>
@@ -162,16 +158,12 @@ export function ChangeEmailDialog({ currentEmail, children }: ChangeEmailDialogP
             <DialogDescription className="mb-6">
               {error ?? 'No se pudo cambiar el correo. Intentalo de nuevo.'}
             </DialogDescription>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={() => setStep('form')}
-            >
+            <Button variant="outline" className="w-full" onClick={() => setStep('form')}>
               Intentar de nuevo
             </Button>
           </div>
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

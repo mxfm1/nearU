@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { ImageIcon } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { ImageIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ImageUploadZoneProps {
-  className?: string
-  aspectRatio?: string
-  minResolution?: string
+  className?: string;
+  aspectRatio?: string;
+  minResolution?: string;
 }
 
 export function ImageUploadZone({
@@ -23,13 +23,11 @@ export function ImageUploadZone({
     >
       <ImageIcon className="h-10 w-10 text-muted-foreground/40" />
       <div className="text-center">
-        <p className="text-sm font-medium text-foreground">
-          UPLOAD HIGH-RES COVER
-        </p>
+        <p className="text-sm font-medium text-foreground">UPLOAD HIGH-RES COVER</p>
         <p className="text-xs text-muted-foreground mt-1">
           Optimal ratio: {aspectRatio}, Min {minResolution}
         </p>
       </div>
     </div>
-  )
+  );
 }

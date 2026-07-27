@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { MapPin } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { motion } from 'framer-motion';
+import { MapPin } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface ServiceDetailProps {
-  title: string
-  description: string
-  categoryName: string
-  companyName: string
-  location: string
+  title: string;
+  description: string;
+  categoryName: string;
+  companyName: string;
+  location: string;
 }
 
 export function ServiceDetail({
@@ -39,11 +39,9 @@ export function ServiceDetail({
         <p className="text-sm text-muted-foreground ml-2">{companyName}</p>
       </div>
 
-      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-        {description}
-      </p>
+      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">{description}</p>
 
-      <div className='border border-t border-background' />
+      <div className="border border-t border-background" />
 
       <div className="flex justify-between items-center gap-3">
         <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -58,5 +56,5 @@ export function ServiceDetail({
         </div>
       </div>
     </motion.div>
-  )
+  );
 }

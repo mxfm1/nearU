@@ -1,8 +1,8 @@
-import { Suspense } from 'react'
-import { EditarEventoContent } from './_components/editar-evento-content'
+import { Suspense } from 'react';
+import { EditarEventoContent } from './_components/editar-evento-content';
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 function LoadingSkeleton() {
@@ -13,14 +13,14 @@ function LoadingSkeleton() {
         <p className="text-sm text-muted-foreground">Cargando evento...</p>
       </div>
     </div>
-  )
+  );
 }
 
 export default async function EditarEventoPage({ params }: PageProps) {
-  const { id } = await params
+  const { id } = await params;
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <EditarEventoContent id={id} />
     </Suspense>
-  )
+  );
 }

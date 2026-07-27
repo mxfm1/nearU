@@ -1,35 +1,65 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, CheckCircle, XCircle, Clock, Star, MapPin } from 'lucide-react'
-import { type ApplicationStatus, type Application } from '@/lib/applications-api'
-import type { EventoDetalle } from '@/lib/eventos-api'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowLeft, CheckCircle, XCircle, Clock, Star, MapPin } from 'lucide-react';
+import { type ApplicationStatus, type Application } from '@/lib/applications-api';
+import type { EventoDetalle } from '@/lib/eventos-api';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface ApplicationSectionProps {
-  application: Application | null
-  event: EventoDetalle | null
-  isPending: boolean
-  isError: boolean
-  onRefetch: () => void
-  onStatusChange: (status: ApplicationStatus) => void
-  isStatusPending: boolean
+  application: Application | null;
+  event: EventoDetalle | null;
+  isPending: boolean;
+  isError: boolean;
+  onRefetch: () => void;
+  onStatusChange: (status: ApplicationStatus) => void;
+  isStatusPending: boolean;
 }
 
 function getStatusConfig(status?: string) {
   switch (status) {
     case 'pending':
-      return { label: 'Pendiente', bg: 'bg-muted', text: 'text-muted-foreground', border: 'border-border', icon: Clock }
+      return {
+        label: 'Pendiente',
+        bg: 'bg-muted',
+        text: 'text-muted-foreground',
+        border: 'border-border',
+        icon: Clock,
+      };
     case 'reviewing':
-      return { label: 'En revisión', bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200', icon: Clock }
+      return {
+        label: 'En revisión',
+        bg: 'bg-blue-100',
+        text: 'text-blue-700',
+        border: 'border-blue-200',
+        icon: Clock,
+      };
     case 'accepted':
-      return { label: 'Aprobado', bg: 'bg-green-100', text: 'text-green-700', border: 'border-green-200', icon: CheckCircle }
+      return {
+        label: 'Aprobado',
+        bg: 'bg-green-100',
+        text: 'text-green-700',
+        border: 'border-green-200',
+        icon: CheckCircle,
+      };
     case 'rejected':
-      return { label: 'Rechazado', bg: 'bg-red-100', text: 'text-red-700', border: 'border-red-200', icon: XCircle }
+      return {
+        label: 'Rechazado',
+        bg: 'bg-red-100',
+        text: 'text-red-700',
+        border: 'border-red-200',
+        icon: XCircle,
+      };
     default:
-      return { label: status || 'Desconocido', bg: 'bg-muted', text: 'text-muted-foreground', border: 'border-border', icon: Clock }
+      return {
+        label: status || 'Desconocido',
+        bg: 'bg-muted',
+        text: 'text-muted-foreground',
+        border: 'border-border',
+        icon: Clock,
+      };
   }
 }
 
@@ -38,11 +68,11 @@ function LoadingState() {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
     </div>
-  )
+  );
 }
 
 function ErrorState({ onRefetch }: { onRefetch: () => void }) {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
@@ -52,11 +82,11 @@ function ErrorState({ onRefetch }: { onRefetch: () => void }) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 function EmptyState() {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
@@ -67,7 +97,7 @@ function EmptyState() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 export function ApplicationSection({
@@ -79,16 +109,16 @@ export function ApplicationSection({
   onStatusChange,
   isStatusPending,
 }: ApplicationSectionProps) {
-  const router = useRouter()
+  const router = useRouter();
 
-  if (isPending) return <LoadingState />
-  if (isError) return <ErrorState onRefetch={onRefetch} />
-  if (!application) return <EmptyState />
+  if (isPending) return <LoadingState />;
+  if (isError) return <ErrorState onRefetch={onRefetch} />;
+  if (!application) return <EmptyState />;
 
-  const statusConfig = getStatusConfig(application.status)
-  const StatusIcon = statusConfig.icon
-  const maxScore = application.score?.maxPossible || 100
-  const totalScore = application.score?.totalScore || 0
+  const statusConfig = getStatusConfig(application.status);
+  const StatusIcon = statusConfig.icon;
+  const maxScore = application.score?.maxPossible || 100;
+  const totalScore = application.score?.totalScore || 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -174,10 +204,12 @@ export function ApplicationSection({
                     <span className="block text-xs text-muted-foreground uppercase tracking-wider mb-1">
                       Puntuación
                     </span>
-                    <div className={cn(
-                      'flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold text-lg',
-                      totalScore >= 80 ? 'bg-amber-100 text-amber-700' : 'bg-muted'
-                    )}>
+                    <div
+                      className={cn(
+                        'flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-bold text-lg',
+                        totalScore >= 80 ? 'bg-amber-100 text-amber-700' : 'bg-muted'
+                      )}
+                    >
                       <Star className={cn('w-5 h-5', totalScore >= 80 && 'fill-amber-500')} />
                       {totalScore}/{maxScore}
                     </div>
@@ -233,13 +265,23 @@ export function ApplicationSection({
                 <h2 className="text-xl font-bold">Estado</h2>
               </div>
               <div className="p-6 space-y-4">
-                <div className={cn('flex items-center gap-2 px-4 py-3 rounded-lg border', statusConfig.bg, statusConfig.text, statusConfig.border)}>
+                <div
+                  className={cn(
+                    'flex items-center gap-2 px-4 py-3 rounded-lg border',
+                    statusConfig.bg,
+                    statusConfig.text,
+                    statusConfig.border
+                  )}
+                >
                   <StatusIcon className="w-5 h-5" />
                   <span className="font-semibold">{statusConfig.label}</span>
                 </div>
 
                 <p className="text-sm text-muted-foreground">
-                  Fecha de postulación: {application.createdAt ? new Date(application.createdAt).toLocaleDateString('es-CL') : 'N/A'}
+                  Fecha de postulación:{' '}
+                  {application.createdAt
+                    ? new Date(application.createdAt).toLocaleDateString('es-CL')
+                    : 'N/A'}
                 </p>
 
                 <div className="space-y-2">
@@ -285,5 +327,5 @@ export function ApplicationSection({
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -1,47 +1,46 @@
-'use client'
+'use client';
 
-import { Lock, Shield, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { authApi } from '@/lib/api-client'
-import { useAuth } from '@/hooks'
-import { useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
+import { Lock, Shield, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { authApi } from '@/lib/api-client';
+import { useAuth } from '@/hooks';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export function SecuritySection() {
+  const [buttonCooldown, setButtonCooldown] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
-  const [buttonCooldown, setButtonCooldown] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isEmailSent, setIsEmailSent] = useState(false)
-
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
 
   const handlePasswordChange = async () => {
-    if (buttonCooldown > 0 || isLoading) return
+    if (buttonCooldown > 0 || isLoading) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      if (!user?.email) throw new Error('No se encontró tu correo electrónico')
-      await authApi.forgotPassword(user.email)
-      toast.success('Se ha enviado un enlace a tu correo electrónico.')
-      setIsEmailSent(true)
-      setButtonCooldown(60)
+      if (!user?.email) throw new Error('No se encontró tu correo electrónico');
+      await authApi.forgotPassword(user.email);
+      toast.success('Se ha enviado un enlace a tu correo electrónico.');
+      setIsEmailSent(true);
+      setButtonCooldown(60);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al enviar el correo')
+      toast.error(err instanceof Error ? err.message : 'Error al enviar el correo');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (buttonCooldown === 0) return
+    if (buttonCooldown === 0) return;
 
     const interval = setInterval(() => {
-      setButtonCooldown((value) => value - 1)
-    }, 1000)
+      setButtonCooldown((value) => value - 1);
+    }, 1000);
 
-    return () => clearInterval(interval)
-  }, [buttonCooldown])
+    return () => clearInterval(interval);
+  }, [buttonCooldown]);
 
   return (
     <section>
@@ -62,12 +61,17 @@ export function SecuritySection() {
                 </p>
               </div>
             </div>
-            <Button variant="outline" size="sm" onClick={handlePasswordChange} disabled={isLoading || buttonCooldown > 0}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePasswordChange}
+              disabled={isLoading || buttonCooldown > 0}
+            >
               {isLoading
-                ? "Enviando..."
+                ? 'Enviando...'
                 : buttonCooldown > 0
                   ? `Reenviar en ${buttonCooldown}s`
-                  : "Enviar enlace"}
+                  : 'Enviar enlace'}
             </Button>
           </div>
 
@@ -88,5 +92,5 @@ export function SecuritySection() {
         </CardContent>
       </Card>
     </section>
-  )
+  );
 }

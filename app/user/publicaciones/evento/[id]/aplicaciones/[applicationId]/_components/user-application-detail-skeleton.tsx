@@ -49,5 +49,5 @@ export function UserApplicationDetailSkeleton() {
         </div>
       </main>
     </div>
-  )
+  );
 }

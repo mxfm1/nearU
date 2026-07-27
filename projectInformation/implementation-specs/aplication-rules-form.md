@@ -1,22 +1,21 @@
-#   1. Contexto de la screen
+# 1. Contexto de la screen
 
-    Esta screen tiene como finalidad representar el proceso de crear reglas para un evento. 
+    Esta screen tiene como finalidad representar el proceso de crear reglas para un evento.
     El usuario podra seleccionar reglas y asignarles un puntaje,luego se guardaran asociadas al  evento.
 
-#   2. ENTIDADES DE DOMINIO AFECTADAS
+# 2. ENTIDADES DE DOMINIO AFECTADAS
 
     Crea / Modifica
         Entidad	Descripción	Relación
         ScoringRule	Regla de scoring que asocia un ruleType + weight a un evento	Pertenecen a un Event
-    
+
     Lee (solo lectura)
         Entidad	Descripción	Uso en la screen
         Event	Evento al que se le configuran las reglas	Verificar propiedad (eventId)
         Region	Catálogo de regiones disponibles	Carga del catálogo de reglas (via GET /api/scoring-rules/catalog)
     Location	Ubicaciones asociadas a cada r	Resolución de regionId para la regla SAME_REGION
 
-
-#   3. API contraints(GET structure - POST STRUCTURE)
+# 3. API contraints(GET structure - POST STRUCTURE)
 
         Obtener catálogo de reglas
             GET /api/scoring-rules/catalog
@@ -63,12 +62,12 @@
             AUTH-PROPIETARIO_DEL_EVENTO — Solo el propietario del evento
             Path params:
                 eventId
-            Response 200:   
+            Response 200:
         {
         "success": true,
         "data": [
             {
-            "id": "rule_abc",   
+            "id": "rule_abc",
             "eventId": "evt_xyz",
             "ruleType": "VERIFIED_PROFILE",
             "weight": 10,
@@ -144,7 +143,7 @@
             Retorna el listado de regiones del sistema. Se usa para el dropdown de ubicación del evento.
             AUTH-None - No se requiere token
 
-            success - 200 
+            success - 200
             {
                 "success": true,
                 "data": [
@@ -171,8 +170,7 @@
 
         as RULE_TYPE
 
-        
-#   3. reglas de frontend state
+# 3. reglas de frontend state
 
         Existe una funcion que mapea el "ruleTYPE" hacia un friendly message
         esta funcion esta ubicada en /lib/domain/rules/functions
@@ -183,15 +181,12 @@
             PHONE_VERIFIED: "Teléfono verificado",
         };
 
-
-
-        
-#   4. validation rules - zod
+# 4. validation rules - zod
 
         - Al submitearel form que crea reglas para la publciacion/evento, debe existir una valdiacion de que debe haber por lo menos 1 regla creada
         - Los puntos de cada regla deben ser un valor numerico positivo - weight
-        - los puntos van del 1 al 100 
+        - los puntos van del 1 al 100
 
-#   5. UI constraints
+# 5. UI constraints
 
-    - 
+    -

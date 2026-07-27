@@ -1,32 +1,32 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useCallback, type FormEvent } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { Search, SlidersHorizontal } from 'lucide-react'
+import { useState, useEffect, useCallback, type FormEvent } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Search, SlidersHorizontal } from 'lucide-react';
 
-import { cn } from '@/lib/utils'
-import { useMediaQuery } from '@/hooks/use-media-query'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
-import { FilterModal } from './filters/filter-modal'
+import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { FilterModal } from './filters/filter-modal';
 
 interface HorizontalSearchBarProps {
-  onSearch?: (query: string) => void
-  onFilterChange?: (updates: Record<string, string>) => void
+  onSearch?: (query: string) => void;
+  onFilterChange?: (updates: Record<string, string>) => void;
   initialFilters?: {
-    type?: string
-    category?: string
-    region?: string
-    dateFrom?: string
-    dateTo?: string
-  }
-  className?: string
+    type?: string;
+    category?: string;
+    region?: string;
+    dateFrom?: string;
+    dateTo?: string;
+  };
+  className?: string;
 }
 
 const typeOptions = [
   { value: '', label: 'Todos' },
   { value: 'proveedores', label: 'Proveedores' },
   { value: 'eventos', label: 'Eventos' },
-]
+];
 
 const serviceCategories = [
   { value: '', label: 'Todas las categorías' },
@@ -37,7 +37,7 @@ const serviceCategories = [
   { value: 'decoracion', label: 'Decoración' },
   { value: 'tecnologia', label: 'Tecnología' },
   { value: 'espacios', label: 'Espacios' },
-]
+];
 
 const eventCategories = [
   { value: '', label: 'Todas las categorías' },
@@ -47,7 +47,7 @@ const eventCategories = [
   { value: 'activacion', label: 'Activación' },
   { value: 'lanzamiento', label: 'Lanzamiento' },
   { value: 'networking', label: 'Networking' },
-]
+];
 
 const regions = [
   { value: '', label: 'Todas las regiones' },
@@ -67,13 +67,13 @@ const regions = [
   { value: 'Los Lagos', label: 'Los Lagos' },
   { value: 'Aysén', label: 'Aysén' },
   { value: 'Magallanes', label: 'Magallanes' },
-]
+];
 
 function formatDateRange(dateFrom: string, dateTo: string): string | null {
-  if (!dateFrom && !dateTo) return null
-  if (dateFrom && dateTo) return `${dateFrom} – ${dateTo}`
-  if (dateFrom) return `Desde ${dateFrom}`
-  return `Hasta ${dateTo}`
+  if (!dateFrom && !dateTo) return null;
+  if (dateFrom && dateTo) return `${dateFrom} – ${dateTo}`;
+  if (dateFrom) return `Desde ${dateFrom}`;
+  return `Hasta ${dateTo}`;
 }
 
 export function HorizontalSearchBar({
@@ -82,158 +82,163 @@ export function HorizontalSearchBar({
   initialFilters,
   className,
 }: HorizontalSearchBarProps) {
-  const isCallbackMode = !!onSearch || !!onFilterChange
+  const isCallbackMode = !!onSearch || !!onFilterChange;
 
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  const [query, setQuery] = useState('')
-  const [localType, setLocalType] = useState(initialFilters?.type || '')
-  const [localCategory, setLocalCategory] = useState(initialFilters?.category || '')
-  const [localRegion, setLocalRegion] = useState(initialFilters?.region || '')
-  const [localDateFrom, setLocalDateFrom] = useState(initialFilters?.dateFrom || '')
-  const [localDateTo, setLocalDateTo] = useState(initialFilters?.dateTo || '')
-  const [modalOpen, setModalOpen] = useState(false)
-  const [popoverOpen, setPopoverOpen] = useState(false)
+  const [query, setQuery] = useState('');
+  const [localType, setLocalType] = useState(initialFilters?.type || '');
+  const [localCategory, setLocalCategory] = useState(initialFilters?.category || '');
+  const [localRegion, setLocalRegion] = useState(initialFilters?.region || '');
+  const [localDateFrom, setLocalDateFrom] = useState(initialFilters?.dateFrom || '');
+  const [localDateTo, setLocalDateTo] = useState(initialFilters?.dateTo || '');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const categoryType = localType === 'eventos' ? 'event' : 'service'
-  const categories = categoryType === 'service' ? serviceCategories : eventCategories
-  const showDateFilter = localType === 'eventos'
-  const hasActiveFilters = !!(localCategory || localRegion || localDateFrom || localDateTo)
-  const dateLabel = formatDateRange(localDateFrom, localDateTo)
+  const categoryType = localType === 'eventos' ? 'event' : 'service';
+  const categories = categoryType === 'service' ? serviceCategories : eventCategories;
+  const showDateFilter = localType === 'eventos';
+  const hasActiveFilters = !!(localCategory || localRegion || localDateFrom || localDateTo);
+  const dateLabel = formatDateRange(localDateFrom, localDateTo);
 
   useEffect(() => {
     if (!isCallbackMode) {
-      setQuery(searchParams.get('q') || '')
-      setLocalType(searchParams.get('type') || '')
-      setLocalCategory(searchParams.get('category') || '')
-      setLocalRegion(searchParams.get('region') || '')
-      setLocalDateFrom(searchParams.get('dateFrom') || '')
-      setLocalDateTo(searchParams.get('dateTo') || '')
+      setQuery(searchParams.get('q') || '');
+      setLocalType(searchParams.get('type') || '');
+      setLocalCategory(searchParams.get('category') || '');
+      setLocalRegion(searchParams.get('region') || '');
+      setLocalDateFrom(searchParams.get('dateFrom') || '');
+      setLocalDateTo(searchParams.get('dateTo') || '');
     }
-  }, [isCallbackMode, searchParams])
+  }, [isCallbackMode, searchParams]);
 
   useEffect(() => {
     if (!isCallbackMode) {
       const handlePopState = () => {
-        const params = new URLSearchParams(window.location.search)
-        setQuery(params.get('q') || '')
-        setLocalType(params.get('type') || '')
-        setLocalCategory(params.get('category') || '')
-        setLocalRegion(params.get('region') || '')
-        setLocalDateFrom(params.get('dateFrom') || '')
-        setLocalDateTo(params.get('dateTo') || '')
-      }
-      window.addEventListener('popstate', handlePopState)
-      return () => window.removeEventListener('popstate', handlePopState)
+        const params = new URLSearchParams(window.location.search);
+        setQuery(params.get('q') || '');
+        setLocalType(params.get('type') || '');
+        setLocalCategory(params.get('category') || '');
+        setLocalRegion(params.get('region') || '');
+        setLocalDateFrom(params.get('dateFrom') || '');
+        setLocalDateTo(params.get('dateTo') || '');
+      };
+      window.addEventListener('popstate', handlePopState);
+      return () => window.removeEventListener('popstate', handlePopState);
     }
-  }, [isCallbackMode])
+  }, [isCallbackMode]);
 
   function handleTypeChange(value: string) {
-    const updates: Record<string, string> = { type: value, page: '1' }
-    const resetCategory = value !== localType
+    const updates: Record<string, string> = { type: value, page: '1' };
+    const resetCategory = value !== localType;
     if (resetCategory) {
-      updates.category = ''
-      setLocalCategory('')
+      updates.category = '';
+      setLocalCategory('');
     }
     if (value !== 'eventos') {
-      updates.dateFrom = ''
-      updates.dateTo = ''
-      setLocalDateFrom('')
-      setLocalDateTo('')
+      updates.dateFrom = '';
+      updates.dateTo = '';
+      setLocalDateFrom('');
+      setLocalDateTo('');
     }
-    setLocalType(value)
+    setLocalType(value);
 
     if (isCallbackMode && onFilterChange) {
-      onFilterChange(updates)
+      onFilterChange(updates);
     }
   }
 
   function handleFilterChange(updates: Record<string, string>) {
-    if (updates.category !== undefined) setLocalCategory(updates.category)
-    if (updates.region !== undefined) setLocalRegion(updates.region)
-    if (updates.dateFrom !== undefined) setLocalDateFrom(updates.dateFrom)
-    if (updates.dateTo !== undefined) setLocalDateTo(updates.dateTo)
+    if (updates.category !== undefined) setLocalCategory(updates.category);
+    if (updates.region !== undefined) setLocalRegion(updates.region);
+    if (updates.dateFrom !== undefined) setLocalDateFrom(updates.dateFrom);
+    if (updates.dateTo !== undefined) setLocalDateTo(updates.dateTo);
 
     if (isCallbackMode && onFilterChange) {
-      onFilterChange(updates)
+      onFilterChange(updates);
     }
   }
 
   function handleClear() {
-    setLocalCategory('')
-    setLocalRegion('')
-    setLocalDateFrom('')
-    setLocalDateTo('')
+    setLocalCategory('');
+    setLocalRegion('');
+    setLocalDateFrom('');
+    setLocalDateTo('');
 
     if (isCallbackMode && onFilterChange) {
-      onFilterChange({ category: '', region: '', dateFrom: '', dateTo: '' })
+      onFilterChange({ category: '', region: '', dateFrom: '', dateTo: '' });
     }
   }
 
   function handleTypeClick(value: string) {
-    handleTypeChange(value)
+    handleTypeChange(value);
   }
 
   function handleApplyFilters() {
-    setModalOpen(false)
+    setModalOpen(false);
   }
 
   const navigateWithParams = useCallback(
     (extraUpdates?: Record<string, string>) => {
-      const params = new URLSearchParams()
-      if (query.trim()) params.set('q', query.trim())
-      if (localType) params.set('type', localType)
-      if (localCategory) params.set('category', localCategory)
-      if (localRegion) params.set('region', localRegion)
-      if (localDateFrom) params.set('dateFrom', localDateFrom)
-      if (localDateTo) params.set('dateTo', localDateTo)
+      const params = new URLSearchParams();
+      if (query.trim()) params.set('q', query.trim());
+      if (localType) params.set('type', localType);
+      if (localCategory) params.set('category', localCategory);
+      if (localRegion) params.set('region', localRegion);
+      if (localDateFrom) params.set('dateFrom', localDateFrom);
+      if (localDateTo) params.set('dateTo', localDateTo);
       if (extraUpdates) {
         Object.entries(extraUpdates).forEach(([key, value]) => {
-          if (value) params.set(key, value)
-          else params.delete(key)
-        })
+          if (value) params.set(key, value);
+          else params.delete(key);
+        });
       }
-      params.set('page', '1')
-      router.push(`/search?${params.toString()}`)
+      params.set('page', '1');
+      router.push(`/search?${params.toString()}`);
     },
-    [query, localType, localCategory, localRegion, localDateFrom, localDateTo, router],
-  )
+    [query, localType, localCategory, localRegion, localDateFrom, localDateTo, router]
+  );
 
   const navigateDebounced = useCallback(
     (() => {
-      let timer: ReturnType<typeof setTimeout> | null = null
+      let timer: ReturnType<typeof setTimeout> | null = null;
       return (extraUpdates?: Record<string, string>) => {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => navigateWithParams(extraUpdates), 150)
-      }
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => navigateWithParams(extraUpdates), 150);
+      };
     })(),
-    [navigateWithParams],
-  )
-
-
+    [navigateWithParams]
+  );
 
   function handleSubmit(e: FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!query.trim() && !localType && !localCategory && !localRegion && !localDateFrom && !localDateTo) {
-      router.push('/search')
-      return
+    if (
+      !query.trim() &&
+      !localType &&
+      !localCategory &&
+      !localRegion &&
+      !localDateFrom &&
+      !localDateTo
+    ) {
+      router.push('/search');
+      return;
     }
 
     if (isCallbackMode) {
-      if (onSearch) onSearch(query.trim())
-      navigateWithParams()
+      if (onSearch) onSearch(query.trim());
+      navigateWithParams();
     } else {
-      navigateDebounced()
+      navigateDebounced();
     }
   }
 
   function handleQueryKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      e.preventDefault()
-      handleSubmit(e)
+      e.preventDefault();
+      handleSubmit(e);
     }
   }
 
@@ -242,7 +247,7 @@ export function HorizontalSearchBar({
       onSubmit={handleSubmit}
       className={cn(
         'flex items-center gap-2 w-full bg-card border border-border rounded-md px-4 py-2 shadow-sm flex-wrap',
-        className,
+        className
       )}
     >
       <Search className="h-5 w-5 text-muted-foreground shrink-0" />
@@ -310,9 +315,9 @@ export function HorizontalSearchBar({
                   type="date"
                   value={localDateFrom}
                   onChange={(e) => {
-                    setLocalDateFrom(e.target.value)
+                    setLocalDateFrom(e.target.value);
                     if (isCallbackMode && onFilterChange) {
-                      onFilterChange({ dateFrom: e.target.value })
+                      onFilterChange({ dateFrom: e.target.value });
                     }
                   }}
                   className="flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm text-foreground [color-scheme:light] dark:[color-scheme:dark]"
@@ -324,9 +329,9 @@ export function HorizontalSearchBar({
                   type="date"
                   value={localDateTo}
                   onChange={(e) => {
-                    setLocalDateTo(e.target.value)
+                    setLocalDateTo(e.target.value);
                     if (isCallbackMode && onFilterChange) {
-                      onFilterChange({ dateTo: e.target.value })
+                      onFilterChange({ dateTo: e.target.value });
                     }
                   }}
                   className="flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm text-foreground [color-scheme:light] dark:[color-scheme:dark]"
@@ -344,7 +349,7 @@ export function HorizontalSearchBar({
         Buscar
       </button>
     </form>
-  )
+  );
 
   const mobileForm = (
     <>
@@ -352,7 +357,7 @@ export function HorizontalSearchBar({
         onSubmit={handleSubmit}
         className={cn(
           'flex items-center gap-2 w-full bg-card border border-border rounded-md px-4 py-2 shadow-sm',
-          className,
+          className
         )}
       >
         <Search className="h-5 w-5 text-muted-foreground shrink-0" />
@@ -370,7 +375,9 @@ export function HorizontalSearchBar({
           className="text-sm text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap flex items-center gap-1"
         >
           <SlidersHorizontal className="h-4 w-4" />
-          Filtros{hasActiveFilters && ` (${(localCategory ? 1 : 0) + (localRegion ? 1 : 0) + (localDateFrom || localDateTo ? 1 : 0)})`}
+          Filtros
+          {hasActiveFilters &&
+            ` (${(localCategory ? 1 : 0) + (localRegion ? 1 : 0) + (localDateFrom || localDateTo ? 1 : 0)})`}
         </button>
         <button
           type="submit"
@@ -394,7 +401,7 @@ export function HorizontalSearchBar({
         onApply={handleApplyFilters}
       />
     </>
-  )
+  );
 
-  return isDesktop ? desktopForm : mobileForm
+  return isDesktop ? desktopForm : mobileForm;
 }

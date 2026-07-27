@@ -1,15 +1,29 @@
-import { ShieldCheck, MapPin, Crown, Briefcase, FileCheck, Star, Users, Building2, Globe, Award, HelpCircle, Link, FileText } from 'lucide-react'
-import type { ComponentType } from 'react'
+import {
+  ShieldCheck,
+  MapPin,
+  Crown,
+  Briefcase,
+  FileCheck,
+  Star,
+  Users,
+  Building2,
+  Globe,
+  Award,
+  HelpCircle,
+  Link,
+  FileText,
+} from 'lucide-react';
+import type { ComponentType } from 'react';
 
 // --- Rule Metadata ---
 
 export type RuleMetadata = {
-  name: string
-  description: string
-  icon: ComponentType<{ className?: string }>
-  bgColor: string
-  borderColor: string
-}
+  name: string;
+  description: string;
+  icon: ComponentType<{ className?: string }>;
+  bgColor: string;
+  borderColor: string;
+};
 
 // --- Rule Type Mapping ---
 
@@ -112,7 +126,7 @@ const rulesMap: Record<string, RuleMetadata> = {
     bgColor: 'bg-slate-50',
     borderColor: 'border-slate-200',
   },
-}
+};
 
 // --- Helper Functions ---
 
@@ -120,29 +134,29 @@ function formatRuleType(ruleType: string): string {
   return ruleType
     .split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ')
+    .join(' ');
 }
 
 export function getRuleMetadata(ruleType: string): RuleMetadata | undefined {
-  return rulesMap[ruleType]
+  return rulesMap[ruleType];
 }
 
 export function getRuleName(ruleType: string): string {
-  return rulesMap[ruleType]?.name ?? formatRuleType(ruleType)
+  return rulesMap[ruleType]?.name ?? formatRuleType(ruleType);
 }
 
 export function getRuleDescription(ruleType: string): string {
-  return rulesMap[ruleType]?.description ?? 'Regla personalizada'
+  return rulesMap[ruleType]?.description ?? 'Regla personalizada';
 }
 
 export function getRuleIcon(ruleType: string) {
-  return rulesMap[ruleType]?.icon ?? HelpCircle
+  return rulesMap[ruleType]?.icon ?? HelpCircle;
 }
 
 export function getRuleColors(ruleType: string): { bgColor: string; borderColor: string } {
-  const rule = rulesMap[ruleType]
+  const rule = rulesMap[ruleType];
   return {
     bgColor: rule?.bgColor ?? 'bg-gray-50',
     borderColor: rule?.borderColor ?? 'border-gray-200',
-  }
+  };
 }

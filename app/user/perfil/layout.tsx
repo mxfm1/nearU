@@ -1,14 +1,10 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { profileApi, type Profile } from '@/lib/profile-api'
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { profileApi, type Profile } from '@/lib/profile-api';
 
-const API_URL = process.env.API_URL || ''
+const API_URL = process.env.API_URL || '';
 
-export default async function PerfilLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function PerfilLayout({ children }: { children: React.ReactNode }) {
   // const cookieStore = await cookies()
   // const cookieHeader = cookieStore.toString()
 
@@ -31,5 +27,5 @@ export default async function PerfilLayout({
   // const profileRes = await profileApi.getByUserId(userId)
   // const profile: Profile = profileRes.data
 
-  return <>{children}</>
+  return <>{children}</>;
 }

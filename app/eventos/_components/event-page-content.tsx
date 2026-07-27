@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import {
   Loader2,
   AlertTriangle,
@@ -20,11 +20,11 @@ import {
   Users,
   MessageCircle,
   Box,
-} from 'lucide-react'
-import { eventosApi, type EventoDetalle } from '@/lib/eventos-api'
-import { profileApi } from '@/lib/profile-api'
-import { useAuth } from '@/hooks/use-auth'
-import { Button } from '@/components/ui/button'
+} from 'lucide-react';
+import { eventosApi, type EventoDetalle } from '@/lib/eventos-api';
+import { profileApi } from '@/lib/profile-api';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,28 +34,28 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { useState } from 'react'
-import { cn } from '@/lib/utils'
+} from '@/components/ui/alert-dialog';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface EventPageContentProps {
-  id: string
+  id: string;
 }
 
 function formatDate(dateString: string | null | undefined): string {
-  if (!dateString) return 'Sin fecha'
-  const date = new Date(dateString)
-  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+  if (!dateString) return 'Sin fecha';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 }
 
 function formatDateFull(dateString: string | null | undefined): string {
-  if (!dateString) return 'Sin fecha'
-  const date = new Date(dateString)
+  if (!dateString) return 'Sin fecha';
+  const date = new Date(dateString);
   return date.toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-  })
+  });
 }
 
 function MetricCard({
@@ -64,17 +64,17 @@ function MetricCard({
   value,
   variant = 'default',
 }: {
-  icon: React.ElementType
-  label: string
-  value: string
-  variant?: 'default' | 'success' | 'warning' | 'error'
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  variant?: 'default' | 'success' | 'warning' | 'error';
 }) {
   const variantStyles = {
     default: 'bg-muted text-muted-foreground',
     success: 'bg-primary/10 text-primary',
     warning: 'bg-amber-50 text-amber-600',
     error: 'bg-red-50 text-red-600',
-  }
+  };
 
   return (
     <div className="bg-card p-4 md:p-6 rounded-2xl shadow-sm border border-border flex flex-col items-center text-center">
@@ -99,16 +99,10 @@ function MetricCard({
         {value}
       </p>
     </div>
-  )
+  );
 }
 
-function RequirementItem({
-  title,
-  description,
-}: {
-  title: string
-  description: string
-}) {
+function RequirementItem({ title, description }: { title: string; description: string }) {
   return (
     <div className="flex items-start gap-3 p-3 bg-muted/30 rounded-xl">
       <div className="p-1.5 bg-card rounded-lg shadow-sm shrink-0">
@@ -119,41 +113,41 @@ function RequirementItem({
         <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
       </div>
     </div>
-  )
+  );
 }
 
 export function EventPageContent({ id }: EventPageContentProps) {
-  const router = useRouter()
-  const [showApplyDialog, setShowApplyDialog] = useState(false)
+  const router = useRouter();
+  const [showApplyDialog, setShowApplyDialog] = useState(false);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['evento', id],
     queryFn: () => eventosApi.getById(id),
     enabled: !!id,
-  })
+  });
 
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   const { data: myProfile } = useQuery({
     queryKey: ['my-profile', user?.id],
     queryFn: () => profileApi.getByUserId(user!.id),
     enabled: !!user?.id,
     select: (res) => res.data,
-  })
+  });
 
   const { data: organizerProfile } = useQuery({
     queryKey: ['profile-by-id', data?.data?.profileId],
     queryFn: () => profileApi.getById(data!.data!.profileId!),
     enabled: !!data?.data?.profileId,
     select: (res) => res.data,
-  })
+  });
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
-    )
+    );
   }
 
   if (isError) {
@@ -175,18 +169,16 @@ export function EventPageContent({ id }: EventPageContentProps) {
           </Button>
         </div>
       </div>
-    )
+    );
   }
 
-  const evento = data?.data as (EventoDetalle & { eventStatus?: string }) | undefined
-  if (!evento) return null
+  const evento = data?.data as (EventoDetalle & { eventStatus?: string }) | undefined;
+  if (!evento) return null;
 
-  const isOwnEvent = !!myProfile && myProfile.id === evento.profileId
-  const isOpen = evento.eventStatus === 'published' || evento.eventStatus === undefined
+  const isOwnEvent = !!myProfile && myProfile.id === evento.profileId;
+  const isOpen = evento.eventStatus === 'published' || evento.eventStatus === undefined;
 
-  const requirements = evento.requirements
-    ? evento.requirements.split('\n').filter(Boolean)
-    : []
+  const requirements = evento.requirements ? evento.requirements.split('\n').filter(Boolean) : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -271,11 +263,7 @@ export function EventPageContent({ id }: EventPageContentProps) {
                 label="Vacantes"
                 value={`${evento.requiredCandidates || 1} Cupos`}
               />
-              <MetricCard
-                icon={Send}
-                label="Postulaciones"
-                value="0 Hoy"
-              />
+              <MetricCard icon={Send} label="Postulaciones" value="0 Hoy" />
             </div>
 
             {/* Description Section */}
@@ -286,13 +274,9 @@ export function EventPageContent({ id }: EventPageContentProps) {
               </h3>
               <div className="text-sm md:text-base text-muted-foreground leading-relaxed space-y-3 md:space-y-4">
                 {evento.description ? (
-                  evento.description.split('\n').map((paragraph, i) => (
-                    <p key={i}>{paragraph}</p>
-                  ))
+                  evento.description.split('\n').map((paragraph, i) => <p key={i}>{paragraph}</p>)
                 ) : (
-                  <p className="text-muted-foreground/60 italic">
-                    Sin descripción disponible
-                  </p>
+                  <p className="text-muted-foreground/60 italic">Sin descripción disponible</p>
                 )}
               </div>
             </div>
@@ -305,15 +289,15 @@ export function EventPageContent({ id }: EventPageContentProps) {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {requirements.map((req, index) => {
-                    const [title, ...descParts] = req.split(':')
-                    const description = descParts.join(':').trim()
+                    const [title, ...descParts] = req.split(':');
+                    const description = descParts.join(':').trim();
                     return (
                       <RequirementItem
                         key={index}
                         title={title.trim()}
                         description={description || 'Requisito obligatorio'}
                       />
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -398,13 +382,11 @@ export function EventPageContent({ id }: EventPageContentProps) {
                 <div className="bg-amber-50 border border-amber-200 p-3 md:p-4 rounded-xl">
                   <div className="flex items-center gap-1.5 text-amber-700 mb-1.5">
                     <Info className="w-3.5 h-3.5" />
-                    <span className="text-xs font-semibold uppercase">
-                      Proceso de Selección
-                    </span>
+                    <span className="text-xs font-semibold uppercase">Proceso de Selección</span>
                   </div>
                   <p className="text-[11px] text-amber-700/80 leading-relaxed">
-                    El equipo evaluará las postulaciones en un plazo de 72 horas hábiles.
-                    Las entrevistas técnicas se realizarán vía videollamada.
+                    El equipo evaluará las postulaciones en un plazo de 72 horas hábiles. Las
+                    entrevistas técnicas se realizarán vía videollamada.
                   </p>
                 </div>
               </div>
@@ -441,8 +423,8 @@ export function EventPageContent({ id }: EventPageContentProps) {
             <AlertDialogHeader>
               <AlertDialogTitle>¿Querés postularte a este evento?</AlertDialogTitle>
               <AlertDialogDescription>
-                Serás redirigido al formulario de postulación. Completá los datos
-                solicitados para que el organizador pueda evaluar tu perfil.
+                Serás redirigido al formulario de postulación. Completá los datos solicitados para
+                que el organizador pueda evaluar tu perfil.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -458,5 +440,5 @@ export function EventPageContent({ id }: EventPageContentProps) {
         </AlertDialog>
       )}
     </div>
-  )
+  );
 }

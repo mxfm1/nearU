@@ -1,0 +1,126 @@
+name: Deploy
+
+on:
+  push:
+    branches: [develop]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/nearu-frontend
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    environment:
+      name: stagging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test -- --passWithNoTests
+      - name: Build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_ENVIRONMENT: ${{ secrets.NEXT_PUBLIC_ENVIRONMENT }}
+          NEXT_PUBLIC_API_RAW_URL: ${{ secrets.NEXT_PUBLIC_API_RAW_URL }}
+      - name: Run E2E tests
+        run: pnpm test:e2e
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3000/api
+
+  version-and-tag:
+    name: Version & Tag
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    outputs:
+      new_version: ${{ steps.semantic.outputs.new_version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Install semantic-release
+        run: pnpm add -D semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github
+      - name: Run semantic-release
+        id: semantic
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-and-push-docker:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [version-and-tag]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version-and-tag.outputs.new_version }} .
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging .
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest .
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version-and-tag.outputs.new_version }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    environment:
+      name: stagging
+      url: ${{ secrets.STAGING_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: ./.next
+          production-deploy: false
+          deploy-message: 'Deploy from GitHub Actions - Staging'
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_STAGING }}
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, version-and-tag]
+    environment:
+      name: production
+      url: ${{ secrets.PRODUCTION_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: ./.next
+          production-deploy: true
+          deploy-message: 'Deploy from GitHub Actions - Production v${{ needs.version-and-tag.outputs.new_version }}'
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PRODUCTION }}

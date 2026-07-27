@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Mail, ArrowLeft } from 'lucide-react'
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Mail, ArrowLeft } from 'lucide-react';
 
 export function ConfirmAccess() {
-  const [isResending, setIsResending] = useState(false)
+  const [isResending, setIsResending] = useState(false);
 
   async function handleResend() {
-    setIsResending(true)
+    setIsResending(true);
     // TODO: Implement resend verification email
-    setTimeout(() => setIsResending(false), 2000)
+    setTimeout(() => setIsResending(false), 2000);
   }
 
   return (
@@ -23,15 +23,12 @@ export function ConfirmAccess() {
               <Mail className="h-8 w-8 text-brand" />
             </div>
 
-            <h1 className="mb-3 text-2xl font-bold tracking-tight">
-              Revisa tu Bandeja de Entrada
-            </h1>
+            <h1 className="mb-3 text-2xl font-bold tracking-tight">Revisa tu Bandeja de Entrada</h1>
 
             <p className="mb-8 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Se ha enviado un enlace de acceso seguro a tu correo electrónico.{' '}
               <span className="font-medium text-foreground">
-                Por favor, haz clic en el enlace para verificar tu cuenta y
-                continuar.
+                Por favor, haz clic en el enlace para verificar tu cuenta y continuar.
               </span>
             </p>
 
@@ -66,5 +63,5 @@ export function ConfirmAccess() {
         </div>
       </div>
     </div>
-  )
+  );
 }

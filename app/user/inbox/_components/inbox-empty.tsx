@@ -1,7 +1,7 @@
-import { Inbox } from 'lucide-react'
+import { Inbox } from 'lucide-react';
 
 interface InboxEmptyProps {
-  searchQuery?: string
+  searchQuery?: string;
 }
 
 export function InboxEmpty({ searchQuery }: InboxEmptyProps) {
@@ -14,5 +14,5 @@ export function InboxEmpty({ searchQuery }: InboxEmptyProps) {
           : 'No tienes solicitudes de contacto aún.'}
       </p>
     </div>
-  )
+  );
 }

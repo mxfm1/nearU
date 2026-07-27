@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   AlertDialog,
@@ -9,13 +9,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@/components/ui/alert-dialog';
 
 interface UnsavedChangesDialogProps {
-  open: boolean
-  dirtyFields: string[]
-  onConfirm: () => void
-  onCancel: () => void
+  open: boolean;
+  dirtyFields: string[];
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 const FIELD_LABELS: Record<string, string> = {
@@ -30,7 +30,7 @@ const FIELD_LABELS: Record<string, string> = {
   website: 'Sitio web',
   whatsapp: 'WhatsApp',
   socialLinks: 'Redes sociales',
-}
+};
 
 export function UnsavedChangesDialog({
   open,
@@ -59,11 +59,14 @@ export function UnsavedChangesDialog({
 
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>Seguir editando</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
+          <AlertDialogAction
+            onClick={onConfirm}
+            className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+          >
             Salir sin guardar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

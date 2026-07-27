@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { AlertCircle, RefreshCw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { AlertCircle, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface CrearEventoErrorProps {
-  message?: string
-  onRetry?: () => void
+  message?: string;
+  onRetry?: () => void;
 }
 
 export function CrearEventoError({
@@ -27,9 +27,7 @@ export function CrearEventoError({
               No se pudieron cargar los datos
             </h2>
 
-            <p className="text-sm text-muted-foreground mb-6">
-              {message}
-            </p>
+            <p className="text-sm text-muted-foreground mb-6">{message}</p>
 
             {onRetry && (
               <Button onClick={onRetry} className="bg-brand hover:bg-brand/90">
@@ -41,5 +39,5 @@ export function CrearEventoError({
         </div>
       </div>
     </section>
-  )
+  );
 }

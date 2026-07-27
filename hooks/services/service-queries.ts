@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { useQuery } from '@tanstack/react-query'
-import { catalogoApi } from '@/lib/catalogo-api'
+import { useQuery } from '@tanstack/react-query';
+import { catalogoApi } from '@/lib/catalogo-api';
 
 export function useCategoriasServicio() {
   return useQuery({
     queryKey: ['categorias', 'service'],
     queryFn: () => catalogoApi.categorias('service'),
     select: (res) => res?.data,
-  })
+  });
 }
 
 export function useUbicaciones() {
@@ -16,5 +16,5 @@ export function useUbicaciones() {
     queryKey: ['ubicaciones'],
     queryFn: () => catalogoApi.ubicaciones(),
     select: (res) => res?.data,
-  })
+  });
 }

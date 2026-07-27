@@ -1,31 +1,24 @@
-# Archivos de control de versiones y entornos
+node_modules
+npm-debug.log
+pnpm-debug.log
+yarn-error.log
 .git
 .gitignore
+.next
 .env
-docker-compose.yml
+.env.local
+.env.development
+.env.production
+.dockerignore
 Dockerfile
-
-# Dependencias (se deben reinstalar dentro del contenedor)
-node_modules/
-vendor/
-venv/
-env/
-
-# Archivos de compilación y caché
-dist/
-build/
-out/
-.next/
-.cache/
-npm-debug.log
-yarn-error.log
-
-# Archivos y carpetas del sistema / editores
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# Documentación
+docker-compose.yml
+docker-compose*.yml
 README.md
-docs/
+coverage
+.nyc_output
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+__mocks__

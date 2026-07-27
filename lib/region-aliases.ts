@@ -4,4 +4,4 @@ export const REGION_ALIASES: Record<string, string[]> = {
   biobio: ['concepción', 'concepcion', 'talcahuano'],
   aysen: ['coihaique', 'coyhaique'],
   magallanes: ['punta arenas'],
-}
+};

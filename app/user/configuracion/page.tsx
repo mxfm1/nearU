@@ -1,30 +1,30 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useAuth } from '@/hooks'
-import { ConfigHeader } from './_components/config-header'
-import { AccountSection } from './_components/account-section'
-import { PrivacySection } from './_components/privacy-section'
-import { NotificationsSection } from './_components/notifications-section'
-import type { EmailNotifications, PushNotifications } from './_components/notifications-section'
-import { SecuritySection } from './_components/security-section'
-import { DangerZone } from './_components/danger-zone'
+import { useState } from 'react';
+import { useAuth } from '@/hooks';
+import { ConfigHeader } from './_components/config-header';
+import { AccountSection } from './_components/account-section';
+import { PrivacySection } from './_components/privacy-section';
+import { NotificationsSection } from './_components/notifications-section';
+import type { EmailNotifications, PushNotifications } from './_components/notifications-section';
+import { SecuritySection } from './_components/security-section';
+import { DangerZone } from './_components/danger-zone';
 
 export default function ConfiguracionPage() {
-  const { user, loading, login, register, logout } = useAuth()
+  const { user, loading, login, register, logout } = useAuth();
 
-  const [profileVisibility, setProfileVisibility] = useState<'public' | 'followers'>('public')
-  const [shareData, setShareData] = useState(true)
+  const [profileVisibility, setProfileVisibility] = useState<'public' | 'followers'>('public');
+  const [shareData, setShareData] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState<EmailNotifications>({
     newEvents: true,
     quotes: true,
     authorize: true,
-  })
+  });
   const [pushNotifications, setPushNotifications] = useState<PushNotifications>({
     reminders: true,
-  })
+  });
 
-  if (loading || !user) return <div>Cargando...</div>
+  if (loading || !user) return <div>Cargando...</div>;
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,5 +50,5 @@ export default function ConfiguracionPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-import z from "zod";
+import z from 'zod';
 
 const INTENCIONES = [
   'Solicitar una cotización',
   'Solicitar una propuesta comercial',
   'Consultar disponibilidad',
   'Realizar una consulta sobre el servicio',
-] as const
+] as const;
 
 export const ApplySchema = z.object({
   intencion: z.enum(INTENCIONES, {
@@ -21,10 +21,9 @@ export const ApplySchema = z.object({
     .max(6, 'Máximo 6 archivos adjuntos')
     .optional()
     .default([]),
-})
+});
 
-export type ApplyFormValues = z.infer<typeof ApplySchema>
-
+export type ApplyFormValues = z.infer<typeof ApplySchema>;
 
 // Crear Evento Schema (alineado con API)
 export const CrearEventoSchema = z.object({
@@ -60,16 +59,15 @@ export const CrearEventoSchema = z.object({
   thumbnailUrl: z.string().optional().or(z.literal('')),
   bannerUrl: z.string().optional().or(z.literal('')),
   eventStatus: z.enum(['draft', 'published']).default('draft'),
-})
+});
 
-export type CrearEventoFormValues = z.infer<typeof CrearEventoSchema>
-
+export type CrearEventoFormValues = z.infer<typeof CrearEventoSchema>;
 
 // Contact info item
 const ContactInfoItemSchema = z.object({
   type: z.enum(['email', 'telefono', 'whatsapp', 'website', 'instagram', 'facebook', 'twitter']),
   value: z.string().min(1, 'Debes ingresar al menos un método de contacto'),
-})
+});
 
 // Crear Servicio Schema (alineado con API)
 export const CrearServicioSchema = z.object({
@@ -88,18 +86,9 @@ export const CrearServicioSchema = z.object({
     .max(5000, 'La descripción no puede superar los 5000 caracteres')
     .optional()
     .or(z.literal('')),
-  yearsExperience: z
-    .string()
-    .optional()
-    .or(z.literal('')),
-  priceMin: z
-    .string()
-    .optional()
-    .or(z.literal('')),
-  priceMax: z
-    .string()
-    .optional()
-    .or(z.literal('')),
+  yearsExperience: z.string().optional().or(z.literal('')),
+  priceMin: z.string().optional().or(z.literal('')),
+  priceMax: z.string().optional().or(z.literal('')),
   availability: z
     .string()
     .max(500, 'La disponibilidad no puede superar los 500 caracteres')
@@ -112,10 +101,9 @@ export const CrearServicioSchema = z.object({
   thumbnailUrl: z.string().optional().or(z.literal('')),
   serviceImages: z.array(z.string()).optional().default([]),
   status: z.enum(['draft', 'published']).default('draft'),
-})
+});
 
-export type CrearServicioFormValues = z.infer<typeof CrearServicioSchema>
-
+export type CrearServicioFormValues = z.infer<typeof CrearServicioSchema>;
 
 // --- Scoring Rules Schema ---
 
@@ -128,29 +116,20 @@ const ScoringRuleSchema = z.object({
     .min(0, 'El puntaje no puede ser negativo')
     .max(100, 'El puntaje no puede superar 100')
     .default(1),
-  config: z
-    .record(z.unknown())
-    .nullable()
-    .optional()
-    .default(null),
-})
+  config: z.record(z.unknown()).nullable().optional().default(null),
+});
 
 export const ScoringRulesFormSchema = z.object({
-  rules: z
-    .array(ScoringRuleSchema)
-    .min(1, 'Debe agregar al menos una regla de puntaje'),
-})
+  rules: z.array(ScoringRuleSchema).min(1, 'Debe agregar al menos una regla de puntaje'),
+});
 
-export type ScoringRuleFormValues = z.infer<typeof ScoringRuleSchema>
-export type ScoringRulesFormValues = z.infer<typeof ScoringRulesFormSchema>
-
+export type ScoringRuleFormValues = z.infer<typeof ScoringRuleSchema>;
+export type ScoringRulesFormValues = z.infer<typeof ScoringRulesFormSchema>;
 
 // --- Application Form Schema (Phase 1) ---
 
 export const ApplicationFormSchema = z.object({
-  coverLetter: z
-    .string()
-    .max(400, 'La carta de presentación no puede superar los 400 caracteres'),
-})
+  coverLetter: z.string().max(400, 'La carta de presentación no puede superar los 400 caracteres'),
+});
 
-export type ApplicationFormValues = z.infer<typeof ApplicationFormSchema>
+export type ApplicationFormValues = z.infer<typeof ApplicationFormSchema>;

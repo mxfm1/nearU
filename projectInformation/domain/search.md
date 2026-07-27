@@ -47,9 +47,9 @@ Categorías:
 ### Empresas
 
 - Tipo de Perfil
-    - Proveedor
-    - Organizador
-    - Ambos
+  - Proveedor
+  - Organizador
+  - Ambos
 
 - Región
 

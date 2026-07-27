@@ -1,25 +1,25 @@
-'use client'
+'use client';
 
-import { Mail, Smartphone } from 'lucide-react'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent } from '@/components/ui/card'
-import { Toggle } from './toggle'
+import { Mail, Smartphone } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { Toggle } from './toggle';
 
 export interface EmailNotifications {
-  newEvents: boolean
-  quotes: boolean
-  authorize: boolean
+  newEvents: boolean;
+  quotes: boolean;
+  authorize: boolean;
 }
 
 export interface PushNotifications {
-  reminders: boolean
+  reminders: boolean;
 }
 
 interface NotificationsSectionProps {
-  emailNotifications: EmailNotifications
-  onEmailNotificationsChange: (value: EmailNotifications) => void
-  pushNotifications: PushNotifications
-  onPushNotificationsChange: (value: PushNotifications) => void
+  emailNotifications: EmailNotifications;
+  onEmailNotificationsChange: (value: EmailNotifications) => void;
+  pushNotifications: PushNotifications;
+  onPushNotificationsChange: (value: PushNotifications) => void;
 }
 
 export function NotificationsSection({
@@ -47,7 +47,9 @@ export function NotificationsSection({
                 <p className="text-sm text-foreground">Nuevos Eventos</p>
                 <Toggle
                   checked={emailNotifications.newEvents}
-                  onChange={(v) => onEmailNotificationsChange({ ...emailNotifications, newEvents: v })}
+                  onChange={(v) =>
+                    onEmailNotificationsChange({ ...emailNotifications, newEvents: v })
+                  }
                 />
               </div>
               <div className="flex items-center justify-between">
@@ -62,7 +64,9 @@ export function NotificationsSection({
                   <p className="text-sm text-foreground">Autorizar notificaciones por email</p>
                   <Toggle
                     checked={emailNotifications.authorize}
-                    onChange={(v) => onEmailNotificationsChange({ ...emailNotifications, authorize: v })}
+                    onChange={(v) =>
+                      onEmailNotificationsChange({ ...emailNotifications, authorize: v })
+                    }
                   />
                 </div>
                 <p className="text-xs text-muted-foreground mt-1 ml-0">
@@ -90,5 +94,5 @@ export function NotificationsSection({
         </CardContent>
       </Card>
     </section>
-  )
+  );
 }

@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { useState, useRef, type ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useAuth } from '@/hooks/use-auth'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Mail, Eye, EyeOff } from 'lucide-react'
-import { ForgotPasswordAlertDialog } from './forgot-password-alert-dialog'
+import { useState, useRef, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useAuth } from '@/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Mail, Eye, EyeOff } from 'lucide-react';
+import { ForgotPasswordAlertDialog } from './forgot-password-alert-dialog';
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -26,20 +26,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
+} from '@/components/ui/form';
 
 const loginSchema = z.object({
   email: z.string().email('Ingresá un correo válido'),
   password: z.string(),
-})
+});
 
-type LoginFormValues = z.infer<typeof loginSchema>
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 interface LoginDialogProps {
-  children?: ReactNode
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
-  defaultOpen?: boolean
+  children?: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  defaultOpen?: boolean;
 }
 
 export function LoginDialog({
@@ -48,39 +48,39 @@ export function LoginDialog({
   onOpenChange: controlledOnOpenChange,
   defaultOpen,
 }: LoginDialogProps) {
-  const router = useRouter()
-  const { login } = useAuth()
-  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [forgotOpen, setForgotOpen] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const closeSource = useRef<'user' | 'programmatic'>('user')
+  const router = useRouter();
+  const { login } = useAuth();
+  const [internalOpen, setInternalOpen] = useState(defaultOpen ?? false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const closeSource = useRef<'user' | 'programmatic'>('user');
 
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : internalOpen
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
 
   const setOpen = (value: boolean) => {
     if (!isControlled) {
-      setInternalOpen(value)
+      setInternalOpen(value);
     }
-    controlledOnOpenChange?.(value)
+    controlledOnOpenChange?.(value);
     if (defaultOpen && !value && closeSource.current === 'user') {
-      router.push('/')
+      router.push('/');
     }
-    closeSource.current = 'user'
-  }
+    closeSource.current = 'user';
+  };
 
   const handleForgotPassword = () => {
-    closeSource.current = 'programmatic'
-    setOpen(false)
-    setTimeout(() => setForgotOpen(true), 150)
-  }
+    closeSource.current = 'programmatic';
+    setOpen(false);
+    setTimeout(() => setForgotOpen(true), 150);
+  };
 
   const handleBackToLogin = () => {
-    setForgotOpen(false)
-    setTimeout(() => setOpen(true), 150)
-  }
+    setForgotOpen(false);
+    setTimeout(() => setOpen(true), 150);
+  };
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -88,23 +88,22 @@ export function LoginDialog({
       email: '',
       password: '',
     },
-  })
+  });
 
   async function onSubmit(values: LoginFormValues) {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      await login(values.email, values.password)
-      setOpen(false)
-      router.push('/descubrir')
+      await login(values.email, values.password);
+      setOpen(false);
+      router.push('/descubrir');
     } catch (err) {
-      console.log("error", err)
-      setError(err instanceof Error ? err.message : 'Credenciales inválidas')
-      setIsLoading(false)
+      console.log('error', err);
+      setError(err instanceof Error ? err.message : 'Credenciales inválidas');
+      setIsLoading(false);
     }
   }
-
 
   async function handleGoogleLogin() {
     // TODO: implementar Google OAuth cuando la API lo soporte
@@ -116,12 +115,8 @@ export function LoginDialog({
         {children && <DialogTrigger asChild>{children}</DialogTrigger>}
         <DialogContent className="sm:max-w-md">
           <DialogHeader className="sm:text-center">
-            <DialogTitle className="text-2xl font-bold">
-              Bienvenido de nuevo
-            </DialogTitle>
-            <DialogDescription>
-              Inicia sesión en tu cuenta
-            </DialogDescription>
+            <DialogTitle className="text-2xl font-bold">Bienvenido de nuevo</DialogTitle>
+            <DialogDescription>Inicia sesión en tu cuenta</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -191,9 +186,7 @@ export function LoginDialog({
                 )}
               />
 
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
+              {error && <p className="text-sm text-destructive">{error}</p>}
 
               <Button
                 type="submit"
@@ -229,8 +222,8 @@ export function LoginDialog({
             <Link
               href="/auth/register"
               onClick={() => {
-                closeSource.current = 'programmatic'
-                setOpen(false)
+                closeSource.current = 'programmatic';
+                setOpen(false);
               }}
               className="font-medium text-foreground underline-offset-4 hover:underline"
             >
@@ -246,5 +239,5 @@ export function LoginDialog({
         onBackToLogin={handleBackToLogin}
       />
     </>
-  )
+  );
 }

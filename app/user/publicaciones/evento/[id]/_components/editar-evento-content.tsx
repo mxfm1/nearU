@@ -1,27 +1,32 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import {
-  Loader2, AlertTriangle, ArrowLeft,
-  CheckCircle2, AlertCircle, Camera, ImageIcon,
-} from 'lucide-react'
+  Loader2,
+  AlertTriangle,
+  ArrowLeft,
+  CheckCircle2,
+  AlertCircle,
+  Camera,
+  ImageIcon,
+} from 'lucide-react';
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/ui/select';
 import {
   Form,
   FormControl,
@@ -29,15 +34,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Card, CardContent } from '@/components/ui/card'
-import { eventosApi, type EventoDetalle } from '@/lib/eventos-api'
-import { catalogoApi } from '@/lib/catalogo-api'
-import { uploadFiles } from '@/lib/uploadthing'
-import { generateSlug } from '@/lib/slug'
-import { cn } from '@/lib/utils'
-import { useAuth } from '@/hooks/use-auth'
-import Link from 'next/link'
+} from '@/components/ui/form';
+import { Card, CardContent } from '@/components/ui/card';
+import { eventosApi, type EventoDetalle } from '@/lib/eventos-api';
+import { catalogoApi } from '@/lib/catalogo-api';
+import { uploadFiles } from '@/lib/uploadthing';
+import { generateSlug } from '@/lib/slug';
+import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/use-auth';
+import Link from 'next/link';
 
 // ── Schema ──
 
@@ -50,37 +55,43 @@ const EditarEventoSchema = z.object({
   locationId: z.string().optional().or(z.literal('')),
   thumbnailUrl: z.string().optional().or(z.literal('')),
   eventStatus: z.enum(['draft', 'published', 'paused', 'archived']),
-})
+});
 
-type EditarEventoFormValues = z.infer<typeof EditarEventoSchema>
+type EditarEventoFormValues = z.infer<typeof EditarEventoSchema>;
 
 // ── Image Upload ──
 
 interface SingleUploadProps {
-  label: string
-  value: string
-  onChange: (url: string) => void
-  route: 'eventThumbnail'
-  aspectRatio?: string
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  route: 'eventThumbnail';
+  aspectRatio?: string;
 }
 
-function SingleImageUpload({ label, value, onChange, route, aspectRatio = '16:9' }: SingleUploadProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [uploading, setUploading] = useState(false)
-  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle')
+function SingleImageUpload({
+  label,
+  value,
+  onChange,
+  route,
+  aspectRatio = '16:9',
+}: SingleUploadProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle');
 
   async function handleUpload(file: File) {
-    setUploading(true)
-    setFeedback('idle')
+    setUploading(true);
+    setFeedback('idle');
     try {
-      const [result] = await uploadFiles(route, { files: [file] })
-      onChange(result.url)
-      setFeedback('success')
-      setTimeout(() => setFeedback('idle'), 3000)
+      const [result] = await uploadFiles(route, { files: [file] });
+      onChange(result.url);
+      setFeedback('success');
+      setTimeout(() => setFeedback('idle'), 3000);
     } catch {
-      setFeedback('error')
+      setFeedback('error');
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
@@ -91,19 +102,29 @@ function SingleImageUpload({ label, value, onChange, route, aspectRatio = '16:9'
         className={cn(
           'relative rounded-lg overflow-hidden border-2 border-dashed transition-all duration-200',
           'group cursor-pointer',
-          value ? 'border-border' : 'border-muted-foreground/20 hover:border-primary/50',
+          value ? 'border-border' : 'border-muted-foreground/20 hover:border-primary/50'
         )}
         onClick={() => !uploading && inputRef.current?.click()}
       >
         {value ? (
-          <div className={cn('relative overflow-hidden', aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square')}>
+          <div
+            className={cn(
+              'relative overflow-hidden',
+              aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square'
+            )}
+          >
             <Image src={value} alt={label} fill className="object-cover" sizes="400px" />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
               <Camera className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </div>
         ) : (
-          <div className={cn('flex flex-col items-center justify-center gap-2 p-8', aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square')}>
+          <div
+            className={cn(
+              'flex flex-col items-center justify-center gap-2 p-8',
+              aspectRatio === '16:9' ? 'aspect-video' : 'aspect-square'
+            )}
+          >
             <ImageIcon className="h-8 w-8 text-muted-foreground/40" />
             <p className="text-xs text-muted-foreground text-center">
               {uploading ? 'Subiendo...' : 'Hacé clic para subir'}
@@ -135,15 +156,17 @@ function SingleImageUpload({ label, value, onChange, route, aspectRatio = '16:9'
           accept="image/*"
           disabled={uploading}
           onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) handleUpload(file)
-            e.target.value = ''
+            const file = e.target.files?.[0];
+            if (file) handleUpload(file);
+            e.target.value = '';
           }}
         />
       </div>
       {value && (
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground truncate max-w-[200px]">Imagen subida</span>
+          <span className="text-xs text-muted-foreground truncate max-w-[200px]">
+            Imagen subida
+          </span>
           <Button
             type="button"
             variant="ghost"
@@ -156,63 +179,73 @@ function SingleImageUpload({ label, value, onChange, route, aspectRatio = '16:9'
         </div>
       )}
     </div>
-  )
+  );
 }
 
 // ── Main component ──
 
 interface EditarEventoContentProps {
-  id: string
+  id: string;
 }
 
 export function EditarEventoContent({ id }: EditarEventoContentProps) {
-  const router = useRouter()
-  const { user } = useAuth()
-  const queryClient = useQueryClient()
-  const [selectedRegionId, setSelectedRegionId] = useState('')
+  const router = useRouter();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const [selectedRegionId, setSelectedRegionId] = useState('');
 
   // ── Queries ──
 
-  const { data: eventoData, isLoading: eventoLoading, isError: eventoError, error: eventoErrorObj } = useQuery({
+  const {
+    data: eventoData,
+    isLoading: eventoLoading,
+    isError: eventoError,
+    error: eventoErrorObj,
+  } = useQuery({
     queryKey: ['evento', id],
     queryFn: () => eventosApi.getById(id),
     enabled: !!id,
-  })
+  });
 
   const { data: categoriasRes } = useQuery({
     queryKey: ['categorias', 'event'],
     queryFn: () => catalogoApi.categorias('event'),
-  })
+  });
 
   const { data: regionesRes } = useQuery({
     queryKey: ['regiones'],
     queryFn: () => catalogoApi.regiones(),
-  })
+  });
 
-  const categorias = categoriasRes?.data ?? []
-  const regiones = regionesRes?.data ?? []
+  const categorias = categoriasRes?.data ?? [];
+  const regiones = regionesRes?.data ?? [];
 
   const selectedRegion = useMemo(
     () => regiones.find((r) => r.id === selectedRegionId),
-    [regiones, selectedRegionId],
-  )
+    [regiones, selectedRegionId]
+  );
 
-  const evento = eventoData?.data ?? null
+  const evento = eventoData?.data ?? null;
 
   // ── Form defaults from API data ──
 
   const defaultValues = useMemo((): EditarEventoFormValues => {
     if (!evento) {
       return {
-        title: '', slug: '', description: '',
-        startAt: '', categoryId: '', locationId: '',
-        thumbnailUrl: '', eventStatus: 'draft',
-      }
+        title: '',
+        slug: '',
+        description: '',
+        startAt: '',
+        categoryId: '',
+        locationId: '',
+        thumbnailUrl: '',
+        eventStatus: 'draft',
+      };
     }
 
-    const validStatuses = ['draft', 'published', 'paused', 'archived']
-    const backendStatus = (evento as any).status?.slug || (evento as any).eventStatus || 'draft'
-    const eventStatus = validStatuses.includes(backendStatus) ? backendStatus : 'draft'
+    const validStatuses = ['draft', 'published', 'paused', 'archived'];
+    const backendStatus = (evento as any).status?.slug || (evento as any).eventStatus || 'draft';
+    const eventStatus = validStatuses.includes(backendStatus) ? backendStatus : 'draft';
 
     return {
       title: evento.title ?? '',
@@ -223,8 +256,8 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
       locationId: evento.location?.id ?? '',
       thumbnailUrl: evento.thumbnailUrl ?? '',
       eventStatus,
-    }
-  }, [evento])
+    };
+  }, [evento]);
 
   // ── Form ──
 
@@ -232,28 +265,28 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
     resolver: zodResolver(EditarEventoSchema),
     defaultValues,
     values: defaultValues,
-  })
+  });
 
   // Track if form has been modified
-  const [isDirty, setIsDirty] = useState(false)
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
-    const subscription = form.watch(() => setIsDirty(true))
-    return () => subscription.unsubscribe()
-  }, [form])
+    const subscription = form.watch(() => setIsDirty(true));
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   // Sync region from locationId
   useEffect(() => {
-    const locId = form.watch('locationId')
+    const locId = form.watch('locationId');
     if (locId) {
       for (const reg of regiones) {
-        if (reg.locations?.some(l => l.id === locId)) {
-          setSelectedRegionId(reg.id ?? '')
-          return
+        if (reg.locations?.some((l) => l.id === locId)) {
+          setSelectedRegionId(reg.id ?? '');
+          return;
         }
       }
     }
-  }, [form, regiones])
+  }, [form, regiones]);
 
   // ── Mutation ──
 
@@ -261,11 +294,11 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
     mutationFn: (payload: Parameters<typeof eventosApi.update>[1]) =>
       eventosApi.update(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['evento', id] })
-      queryClient.invalidateQueries({ queryKey: ['mis-eventos'] })
-      setIsDirty(false)
+      queryClient.invalidateQueries({ queryKey: ['evento', id] });
+      queryClient.invalidateQueries({ queryKey: ['mis-eventos'] });
+      setIsDirty(false);
     },
-  })
+  });
 
   // ── Handlers ──
 
@@ -279,14 +312,14 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
       locationId: data.locationId || null,
       thumbnailUrl: data.thumbnailUrl || null,
       eventStatus: data.eventStatus,
-    }
+    };
   }
 
   function handleSubmit(data: EditarEventoFormValues) {
-    mutation.mutate(buildPayload(data) as never)
+    mutation.mutate(buildPayload(data) as never);
   }
 
-  const thumbnailUrl = form.watch('thumbnailUrl') ?? ''
+  const thumbnailUrl = form.watch('thumbnailUrl') ?? '';
 
   // ── Render ──
 
@@ -299,7 +332,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
           <p className="text-sm text-muted-foreground">Cargando evento...</p>
         </div>
       </div>
-    )
+    );
   }
 
   // Error loading
@@ -312,10 +345,14 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
           </div>
           <h2 className="text-xl font-bold text-foreground mb-2">Error al cargar</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            {eventoErrorObj instanceof Error ? eventoErrorObj.message : 'No se pudo cargar el evento.'}
+            {eventoErrorObj instanceof Error
+              ? eventoErrorObj.message
+              : 'No se pudo cargar el evento.'}
           </p>
           <div className="flex gap-3 justify-center">
-            <Button variant="outline" onClick={() => router.back()}>Volver</Button>
+            <Button variant="outline" onClick={() => router.back()}>
+              Volver
+            </Button>
             <Button
               className="bg-brand text-brand-foreground hover:bg-brand/90"
               onClick={() => router.refresh()}
@@ -325,7 +362,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Not found
@@ -342,10 +379,10 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
           </Button>
         </div>
       </div>
-    )
+    );
   }
 
-  const isSaving = mutation.isPending
+  const isSaving = mutation.isPending;
 
   return (
     <div className="min-h-screen bg-background">
@@ -364,9 +401,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
             </div>
           </div>
           <Button asChild variant="outline">
-            <Link href={`/user/publicaciones/evento/${id}/aplicaciones`}>
-              Ver aplicaciones
-            </Link>
+            <Link href={`/user/publicaciones/evento/${id}/aplicaciones`}>Ver aplicaciones</Link>
           </Button>
         </div>
 
@@ -376,7 +411,9 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
             {mutation.isError && (
               <div className="flex items-center gap-2 p-4 rounded-md bg-destructive/10 text-destructive text-sm">
                 <AlertCircle className="h-4 w-4 flex-shrink-0" />
-                <span>{mutation.error instanceof Error ? mutation.error.message : 'Error al guardar.'}</span>
+                <span>
+                  {mutation.error instanceof Error ? mutation.error.message : 'Error al guardar.'}
+                </span>
               </div>
             )}
 
@@ -460,7 +497,9 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                         </FormControl>
                         <SelectContent>
                           {categorias.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id ?? ''}>{cat.name}</SelectItem>
+                            <SelectItem key={cat.id} value={cat.id ?? ''}>
+                              {cat.name}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -474,8 +513,8 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                     <label className="text-sm font-medium leading-none">Región</label>
                     <Select
                       onValueChange={(value) => {
-                        setSelectedRegionId(value)
-                        form.setValue('locationId', '')
+                        setSelectedRegionId(value);
+                        form.setValue('locationId', '');
                       }}
                       value={selectedRegionId}
                     >
@@ -484,7 +523,9 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                       </SelectTrigger>
                       <SelectContent>
                         {regiones.map((r) => (
-                          <SelectItem key={r.id} value={r.id ?? ''}>{r.name}</SelectItem>
+                          <SelectItem key={r.id} value={r.id ?? ''}>
+                            {r.name}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -496,15 +537,27 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Ubicación</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value} disabled={!selectedRegionId}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          disabled={!selectedRegionId}
+                        >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder={!selectedRegionId ? 'Primero elegí región' : 'Seleccioná una ubicación'} />
+                              <SelectValue
+                                placeholder={
+                                  !selectedRegionId
+                                    ? 'Primero elegí región'
+                                    : 'Seleccioná una ubicación'
+                                }
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {selectedRegion?.locations?.map((loc) => (
-                              <SelectItem key={loc.id} value={loc.id ?? ''}>{loc.name}</SelectItem>
+                              <SelectItem key={loc.id} value={loc.id ?? ''}>
+                                {loc.name}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -561,7 +614,8 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
               <div className="text-sm text-muted-foreground">
                 {mutation.isError && (
                   <span className="text-destructive">
-                    Error: {mutation.error instanceof Error ? mutation.error.message : 'Error desconocido'}
+                    Error:{' '}
+                    {mutation.error instanceof Error ? mutation.error.message : 'Error desconocido'}
                   </span>
                 )}
                 {mutation.isSuccess && (
@@ -592,5 +646,5 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
         </Form>
       </div>
     </div>
-  )
+  );
 }

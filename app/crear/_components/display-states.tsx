@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { AlertCircle, RefreshCw, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { AlertCircle, RefreshCw, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ErrorDisplayProps {
-  message?: string
-  onRetry?: () => void
-  retryLabel?: string
-  className?: string
+  message?: string;
+  onRetry?: () => void;
+  retryLabel?: string;
+  className?: string;
 }
 
 export function ErrorDisplay({
@@ -29,22 +29,19 @@ export function ErrorDisplay({
         </Button>
       )}
     </div>
-  )
+  );
 }
 
 interface LoadingDisplayProps {
-  message?: string
-  className?: string
+  message?: string;
+  className?: string;
 }
 
-export function LoadingDisplay({
-  message = 'Cargando...',
-  className = '',
-}: LoadingDisplayProps) {
+export function LoadingDisplay({ message = 'Cargando...', className = '' }: LoadingDisplayProps) {
   return (
     <div className={`flex items-center justify-center py-12 px-4 ${className}`}>
       <Loader2 className="h-6 w-6 animate-spin text-muted-foreground mr-2" />
       <span className="text-muted-foreground">{message}</span>
     </div>
-  )
+  );
 }
