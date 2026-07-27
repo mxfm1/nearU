@@ -19,5 +19,5 @@ export function SearchSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }

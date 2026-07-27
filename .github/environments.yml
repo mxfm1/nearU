@@ -1,0 +1,12 @@
+staging:
+  name: staging
+  protection_rules:
+    - required_reviewers: []
+    - wait_timer: 0
+    - branch_policy: protected
+production:
+  name: production
+  protection_rules:
+    - required_reviewers: 1
+    - wait_timer: 0
+    - branch_policy: protected

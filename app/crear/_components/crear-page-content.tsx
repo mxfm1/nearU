@@ -1,26 +1,26 @@
-'use client'
+'use client';
 
-import { useTransition } from 'react'
-import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { Plus, ArrowRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Plus, ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function CrearPageContent() {
-  const router = useRouter()
-  const [isPendingEvent, startTransitionEvent] = useTransition()
-  const [isPendingService, startTransitionService] = useTransition()
+  const router = useRouter();
+  const [isPendingEvent, startTransitionEvent] = useTransition();
+  const [isPendingService, startTransitionService] = useTransition();
 
   function handleNavigateEvent() {
     startTransitionEvent(() => {
-      router.push('/crear/evento')
-    })
+      router.push('/crear/evento');
+    });
   }
 
   function handleNavigateService() {
     startTransitionService(() => {
-      router.push('/crear/servicio')
-    })
+      router.push('/crear/servicio');
+    });
   }
 
   return (
@@ -32,7 +32,8 @@ export function CrearPageContent() {
             Que quieres publicar?
           </h1>
           <p className="text-[18px] leading-[1.7] text-muted-foreground max-w-2xl mx-auto md:text-[20px]">
-            Publica tu servicio o evento en nuestra plataforma, permitiendote conectar con otras personas
+            Publica tu servicio o evento en nuestra plataforma, permitiendote conectar con otras
+            personas
           </p>
         </div>
 
@@ -56,9 +57,7 @@ export function CrearPageContent() {
                 <Plus className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
-            <h2 className="text-2xl font-semibold text-foreground mb-3">
-              Crear un Evento
-            </h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-3">Crear un Evento</h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
               Define toda la información relevante de tu evento
             </p>
@@ -86,9 +85,7 @@ export function CrearPageContent() {
                 <Plus className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
-            <h2 className="text-2xl font-semibold text-foreground mb-3">
-              Crear Servicio
-            </h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-3">Crear Servicio</h2>
             <p className="text-muted-foreground mb-8 leading-relaxed">
               Define toda la información relevante de tu negocio para conectar con otras personas
             </p>
@@ -110,5 +107,5 @@ export function CrearPageContent() {
         </div> */}
       </div>
     </section>
-  )
+  );
 }

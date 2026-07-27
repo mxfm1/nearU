@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 interface CategoryFilterProps {
-  value: string
-  onChange: (value: string) => void
-  type: 'service' | 'event'
+  value: string;
+  onChange: (value: string) => void;
+  type: 'service' | 'event';
 }
 
 const serviceCategories = [
@@ -17,7 +17,7 @@ const serviceCategories = [
   { value: 'decoracion', label: 'Decoración' },
   { value: 'tecnologia', label: 'Tecnología' },
   { value: 'espacios', label: 'Espacios' },
-]
+];
 
 const eventCategories = [
   { value: '', label: 'Todas las categorías' },
@@ -27,23 +27,21 @@ const eventCategories = [
   { value: 'activacion', label: 'Activación' },
   { value: 'lanzamiento', label: 'Lanzamiento' },
   { value: 'networking', label: 'Networking' },
-]
+];
 
 export function CategoryFilter({ value, onChange, type }: CategoryFilterProps) {
-  const categories = type === 'service' ? serviceCategories : eventCategories
+  const categories = type === 'service' ? serviceCategories : eventCategories;
 
   return (
     <div className="space-y-1.5">
-      <label className="text-sm font-medium text-foreground">
-        Categoría
-      </label>
+      <label className="text-sm font-medium text-foreground">Categoría</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={cn(
           'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm',
           'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-          'text-foreground',
+          'text-foreground'
         )}
       >
         {categories.map((cat) => (
@@ -53,5 +51,5 @@ export function CategoryFilter({ value, onChange, type }: CategoryFilterProps) {
         ))}
       </select>
     </div>
-  )
+  );
 }

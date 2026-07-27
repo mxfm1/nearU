@@ -1,404 +1,594 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html class="light" lang="es"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Inbox - NearU Chile</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Tailwind Configuration -->
-<script id="tailwind-config">
+<html class="light" lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Inbox - NearU Chile</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
       tailwind.config = {
-        darkMode: "class",
+        darkMode: 'class',
         theme: {
           extend: {
-            "colors": {
-                    "secondary-fixed-dim": "#c4c7c5",
-                    "on-primary": "#ffffff",
-                    "on-error": "#ffffff",
-                    "secondary-fixed": "#e0e3e1",
-                    "on-surface-variant": "#404944",
-                    "on-error-container": "#93000a",
-                    "tertiary-fixed": "#ffdf9e",
-                    "on-secondary-fixed-variant": "#434846",
-                    "inverse-on-surface": "#edf0ff",
-                    "surface-dim": "#d3daef",
-                    "surface-container": "#e9edff",
-                    "primary-fixed-dim": "#99d3b7",
-                    "surface-container-high": "#e1e8fd",
-                    "outline-variant": "#c0c9c2",
-                    "error": "#ba1a1a",
-                    "tertiary": "#433000",
-                    "secondary": "#5b5f5e",
-                    "on-surface": "#141b2b",
-                    "surface-container-low": "#f1f3ff",
-                    "background": "#f9f9ff",
-                    "on-tertiary-container": "#eab100",
-                    "on-primary-fixed-variant": "#16503b",
-                    "surface-tint": "#326852",
-                    "primary": "#003b29",
-                    "inverse-primary": "#99d3b7",
-                    "surface-variant": "#dce2f7",
-                    "inverse-surface": "#293040",
-                    "on-tertiary-fixed": "#261a00",
-                    "on-tertiary-fixed-variant": "#5b4300",
-                    "on-tertiary": "#ffffff",
-                    "on-secondary-container": "#5f6362",
-                    "on-primary-fixed": "#002115",
-                    "tertiary-fixed-dim": "#fabd00",
-                    "surface-container-highest": "#dce2f7",
-                    "on-primary-container": "#8cc5aa",
-                    "surface": "#f9f9ff",
-                    "error-container": "#ffdad6",
-                    "outline": "#707973",
-                    "surface-bright": "#f9f9ff",
-                    "primary-fixed": "#b5efd3",
-                    "tertiary-container": "#5f4600",
-                    "on-secondary-fixed": "#181c1b",
-                    "on-secondary": "#ffffff",
-                    "on-background": "#141b2b",
-                    "surface-container-lowest": "#ffffff",
-                    "secondary-container": "#dde0de",
-                    "primary-container": "#1a533e"
+            colors: {
+              'secondary-fixed-dim': '#c4c7c5',
+              'on-primary': '#ffffff',
+              'on-error': '#ffffff',
+              'secondary-fixed': '#e0e3e1',
+              'on-surface-variant': '#404944',
+              'on-error-container': '#93000a',
+              'tertiary-fixed': '#ffdf9e',
+              'on-secondary-fixed-variant': '#434846',
+              'inverse-on-surface': '#edf0ff',
+              'surface-dim': '#d3daef',
+              'surface-container': '#e9edff',
+              'primary-fixed-dim': '#99d3b7',
+              'surface-container-high': '#e1e8fd',
+              'outline-variant': '#c0c9c2',
+              error: '#ba1a1a',
+              tertiary: '#433000',
+              secondary: '#5b5f5e',
+              'on-surface': '#141b2b',
+              'surface-container-low': '#f1f3ff',
+              background: '#f9f9ff',
+              'on-tertiary-container': '#eab100',
+              'on-primary-fixed-variant': '#16503b',
+              'surface-tint': '#326852',
+              primary: '#003b29',
+              'inverse-primary': '#99d3b7',
+              'surface-variant': '#dce2f7',
+              'inverse-surface': '#293040',
+              'on-tertiary-fixed': '#261a00',
+              'on-tertiary-fixed-variant': '#5b4300',
+              'on-tertiary': '#ffffff',
+              'on-secondary-container': '#5f6362',
+              'on-primary-fixed': '#002115',
+              'tertiary-fixed-dim': '#fabd00',
+              'surface-container-highest': '#dce2f7',
+              'on-primary-container': '#8cc5aa',
+              surface: '#f9f9ff',
+              'error-container': '#ffdad6',
+              outline: '#707973',
+              'surface-bright': '#f9f9ff',
+              'primary-fixed': '#b5efd3',
+              'tertiary-container': '#5f4600',
+              'on-secondary-fixed': '#181c1b',
+              'on-secondary': '#ffffff',
+              'on-background': '#141b2b',
+              'surface-container-lowest': '#ffffff',
+              'secondary-container': '#dde0de',
+              'primary-container': '#1a533e',
             },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
+            borderRadius: {
+              DEFAULT: '0.25rem',
+              lg: '0.5rem',
+              xl: '0.75rem',
+              full: '9999px',
             },
-            "spacing": {
-                    "container-max": "1280px",
-                    "stack-md": "16px",
-                    "gutter": "24px",
-                    "section-gap": "80px",
-                    "stack-sm": "8px",
-                    "stack-lg": "48px",
-                    "margin-x": "32px"
+            spacing: {
+              'container-max': '1280px',
+              'stack-md': '16px',
+              gutter: '24px',
+              'section-gap': '80px',
+              'stack-sm': '8px',
+              'stack-lg': '48px',
+              'margin-x': '32px',
             },
-            "fontFamily": {
-                    "display-lg-mobile": ["Plus Jakarta Sans"],
-                    "body-lg": ["Plus Jakarta Sans"],
-                    "headline-sm": ["Plus Jakarta Sans"],
-                    "headline-md": ["Plus Jakarta Sans"],
-                    "display-lg": ["Plus Jakarta Sans"],
-                    "label-sm": ["Plus Jakarta Sans"],
-                    "label-md": ["Plus Jakarta Sans"],
-                    "body-md": ["Plus Jakarta Sans"]
+            fontFamily: {
+              'display-lg-mobile': ['Plus Jakarta Sans'],
+              'body-lg': ['Plus Jakarta Sans'],
+              'headline-sm': ['Plus Jakarta Sans'],
+              'headline-md': ['Plus Jakarta Sans'],
+              'display-lg': ['Plus Jakarta Sans'],
+              'label-sm': ['Plus Jakarta Sans'],
+              'label-md': ['Plus Jakarta Sans'],
+              'body-md': ['Plus Jakarta Sans'],
             },
-            "fontSize": {
-                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                    "headline-md": ["30px", {"lineHeight": "1.3", "fontWeight": "700"}],
-                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                    "label-md": ["14px", {"lineHeight": "1.2", "fontWeight": "500"}],
-                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
-            }
+            fontSize: {
+              'display-lg-mobile': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+              'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
+              'headline-sm': ['20px', { lineHeight: '1.4', fontWeight: '600' }],
+              'headline-md': ['30px', { lineHeight: '1.3', fontWeight: '700' }],
+              'display-lg': [
+                '48px',
+                { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' },
+              ],
+              'label-sm': ['12px', { lineHeight: '1', letterSpacing: '0.05em', fontWeight: '600' }],
+              'label-md': ['14px', { lineHeight: '1.2', fontWeight: '500' }],
+              'body-md': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+            },
           },
         },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f9f9ff;
+        color: #141b2b;
+        font-family: 'Plus Jakarta Sans', sans-serif;
       }
-    </script>
-<style>
-        body {
-            background-color: #f9f9ff;
-            color: #141b2b;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .custom-shadow {
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
-        }
-        /* Custom scrollbar for message list */
-        .msg-scroll::-webkit-scrollbar {
-            width: 4px;
-        }
-        .msg-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .msg-scroll::-webkit-scrollbar-thumb {
-            background: #dde0de;
-            border-radius: 10px;
-        }
+      .material-symbols-outlined {
+        font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+      }
+      .custom-shadow {
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+      }
+      /* Custom scrollbar for message list */
+      .msg-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .msg-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .msg-scroll::-webkit-scrollbar-thumb {
+        background: #dde0de;
+        border-radius: 10px;
+      }
     </style>
-</head>
-<body class="flex min-h-screen overflow-hidden">
-<!-- Sidebar Navigation -->
-<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface dark:bg-surface-dim shadow-sm border-r border-outline-variant py-gutter px-4 z-40">
-<div class="mb-10 px-4">
-<h1 class="font-headline-sm text-headline-sm text-primary">NearU Chile</h1>
-<p class="text-label-sm text-secondary">Marketplace B2B</p>
-</div>
-<nav class="flex-1 space-y-2">
-<a class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg" href="#">
-<span class="material-symbols-outlined">home</span>
-<span class="font-label-md text-label-md">Inicio</span>
-</a>
-<a class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg" href="#">
-<span class="material-symbols-outlined">add_circle</span>
-<span class="font-label-md text-label-md">Publicar</span>
-</a>
-<a class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg" href="#">
-<span class="material-symbols-outlined">notifications</span>
-<span class="font-label-md text-label-md">Notificaciones</span>
-</a>
-<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 active:scale-95 transition-all" href="#">
-<span class="material-symbols-outlined">mail</span>
-<span class="font-label-md text-label-md">Inbox</span>
-</a>
-<a class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span class="font-label-md text-label-md">Mis publicaciones</span>
-</a>
-<a class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg" href="#">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label-md text-label-md">Ver Perfil</span>
-</a>
-<a class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-label-md text-label-md">Configuración</span>
-</a>
-</nav>
-<div class="mt-auto pt-6 border-t border-outline-variant space-y-4">
-<button class="w-full bg-primary text-on-primary rounded-lg py-3 font-label-md transition-all active:scale-95">
-                Mejorar Plan
+  </head>
+  <body class="flex min-h-screen overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside
+      class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface dark:bg-surface-dim shadow-sm border-r border-outline-variant py-gutter px-4 z-40"
+    >
+      <div class="mb-10 px-4">
+        <h1 class="font-headline-sm text-headline-sm text-primary">NearU Chile</h1>
+        <p class="text-label-sm text-secondary">Marketplace B2B</p>
+      </div>
+      <nav class="flex-1 space-y-2">
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-md text-label-md">Inicio</span>
+        </a>
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">add_circle</span>
+          <span class="font-label-md text-label-md">Publicar</span>
+        </a>
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="font-label-md text-label-md">Notificaciones</span>
+        </a>
+        <a
+          class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 active:scale-95 transition-all"
+          href="#"
+        >
+          <span class="material-symbols-outlined">mail</span>
+          <span class="font-label-md text-label-md">Inbox</span>
+        </a>
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">analytics</span>
+          <span class="font-label-md text-label-md">Mis publicaciones</span>
+        </a>
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">person</span>
+          <span class="font-label-md text-label-md">Ver Perfil</span>
+        </a>
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-3 hover:bg-secondary-container transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">settings</span>
+          <span class="font-label-md text-label-md">Configuración</span>
+        </a>
+      </nav>
+      <div class="mt-auto pt-6 border-t border-outline-variant space-y-4">
+        <button
+          class="w-full bg-primary text-on-primary rounded-lg py-3 font-label-md transition-all active:scale-95"
+        >
+          Mejorar Plan
+        </button>
+        <a
+          class="flex items-center gap-3 text-secondary px-4 py-2 hover:text-error transition-colors"
+          href="#"
+        >
+          <span class="material-symbols-outlined">logout</span>
+          <span class="font-label-md text-label-md">Cerrar Sesión</span>
+        </a>
+      </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="flex-1 md:ml-64 flex flex-col h-screen bg-background">
+      <!-- Top Navigation Bar -->
+      <header
+        class="bg-surface-container-lowest h-16 flex justify-between items-center px-margin-x sticky top-0 z-30 shadow-sm"
+      >
+        <div class="flex items-center gap-4 flex-1">
+          <div class="relative w-full max-w-md hidden sm:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline"
+              >search</span
+            >
+            <input
+              class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary-container transition-all"
+              placeholder="Explorar eventos y proveedores..."
+              type="text"
+            />
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="hidden lg:flex items-center gap-4">
+            <a
+              class="font-body-md text-on-surface-variant hover:text-primary transition-colors"
+              href="#"
+              >Empresas</a
+            >
+            <a
+              class="font-body-md text-on-surface-variant hover:text-primary transition-colors"
+              href="#"
+              >Servicios</a
+            >
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all"
+            >
+              <span class="material-symbols-outlined">help</span>
             </button>
-<a class="flex items-center gap-3 text-secondary px-4 py-2 hover:text-error transition-colors" href="#">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-label-md text-label-md">Cerrar Sesión</span>
-</a>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="flex-1 md:ml-64 flex flex-col h-screen bg-background">
-<!-- Top Navigation Bar -->
-<header class="bg-surface-container-lowest h-16 flex justify-between items-center px-margin-x sticky top-0 z-30 shadow-sm">
-<div class="flex items-center gap-4 flex-1">
-<div class="relative w-full max-w-md hidden sm:block">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary-container transition-all" placeholder="Explorar eventos y proveedores..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<div class="hidden lg:flex items-center gap-4">
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Empresas</a>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Servicios</a>
-</div>
-<div class="flex items-center gap-3">
-<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
-<span class="material-symbols-outlined">help</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
-<span class="material-symbols-outlined">language</span>
-</button>
-<button class="bg-primary text-on-primary px-5 py-2 rounded-lg font-label-md active:scale-95 transition-all">
-                        Publicar Evento
-                    </button>
-</div>
-</div>
-</header>
-<!-- Inbox Section -->
-<section class="flex-1 flex flex-col overflow-hidden max-w-container-max mx-auto w-full px-margin-x pt-stack-md">
-<!-- Page Header & Filters -->
-<div class="flex flex-col gap-6 mb-gutter">
-<div class="flex justify-between items-end">
-<div>
-<h2 class="font-headline-md text-headline-md text-primary">Mensajes</h2>
-<p class="text-body-md text-secondary mt-1">Gestiona tus comunicaciones con proveedores y socios.</p>
-</div>
-<div class="flex gap-2">
-<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined">tune</span>
-</button>
-<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined">refresh</span>
-</button>
-</div>
-</div>
-<!-- Search and Local Tabs -->
-<div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-<div class="flex bg-secondary-container/30 p-1 rounded-xl">
-<button class="px-6 py-2 bg-white text-primary font-label-md rounded-lg shadow-sm">Todos</button>
-<button class="px-6 py-2 text-secondary font-label-md rounded-lg hover:text-primary transition-colors">No leídos</button>
-<button class="px-6 py-2 text-secondary font-label-md rounded-lg hover:text-primary transition-colors">Eventos</button>
-</div>
-<div class="relative w-full md:w-80">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
-<input class="w-full bg-white border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Filtrar por empresa..." type="text"/>
-</div>
-</div>
-</div>
-<!-- Conversations List -->
-<div class="flex-1 overflow-y-auto msg-scroll space-y-3 pb-gutter">
-<!-- Conversation Card 1 (Unread) -->
-<div class="flex items-center gap-4 p-5 bg-white rounded-xl custom-shadow border-l-4 border-primary cursor-pointer hover:bg-surface-container-low transition-all">
-<div class="relative flex-shrink-0">
-<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-fixed">
-<img class="w-full h-full object-cover" data-alt="A professional headshot of a female account executive from a corporate events company, wearing a dark green blazer against a clean, softly lit office background. The lighting is high-end and minimalist, reflecting a modern B2B aesthetic with sharp focus and professional attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU-rHNzqzf-MLzbbeTCnkM8wVQmcD9EIgZgJLvvGgBeVllc0VGyVdLqJz8M-bmt-4lbHSYqGHCc3WrhYmzyEM-MBbg6HxCU9kSHu_j9ULCoxYLT5tQys62EuwPOdbXa8HZ1eR0W5Y0_6PW1lt2q1_OJWebOqhYhgmIIysrkhqyHr-kJ4eXzLGRePvV04U5lASvmRP_Spyyof1qZ4Gg-3pYpahfc8jUw91ZKyWWVKbAukzmOj7_JjNc"/>
-</div>
-<div class="absolute bottom-0 right-0 w-4 h-4 bg-primary border-2 border-white rounded-full"></div>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start mb-1">
-<h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">Lumina Event Pro</h3>
-<span class="text-label-sm text-primary font-bold whitespace-nowrap">Hace 5 min</span>
-</div>
-<p class="text-body-md text-on-surface font-semibold truncate">Hola, acabamos de enviar el presupuesto detallado para la gala anual...</p>
-<div class="flex gap-2 mt-2">
-<span class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-bold rounded-full flex items-center gap-1 uppercase tracking-wider">
-<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">stars</span> Postulación Aceptada
-                            </span>
-</div>
-</div>
-<div class="flex flex-col items-end gap-3">
-<span class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</span>
-<div class="w-2.5 h-2.5 bg-primary rounded-full"></div>
-</div>
-</div>
-<!-- Conversation Card 2 (Read) -->
-<div class="flex items-center gap-4 p-5 bg-white/70 rounded-xl hover:bg-surface-container-low transition-all border border-transparent hover:border-outline-variant group">
-<div class="relative flex-shrink-0">
-<div class="w-14 h-14 rounded-full overflow-hidden border border-outline-variant">
-<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Logo of a corporate catering company with modern minimalist design, featuring organic shapes in shades of deep green and earth tones. The background is a soft textured linen paper style, emphasizing premium business-to-business services and high-quality production standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxcheAKoKm_rEiH0BiajkUHvDmDcJqIL7a5BREmC02SJLu4TMNISe75tAKQqyJZWvfjunSGKw6fMg69yi5KQEpe9WGBFsEvquadXlQvSEN_65TUcq0-LYg0v7I8N_wE2pgRV8ZZjqLIbwX6CmP6OnnFgbZ1WzuESoGr3uX5ea-aKauuwHwiG3PeCLRTgahT5sUHxv8uOyR9B8S00kiH9Zx1tkPIn0kbYNgoRSlSJTzIT_vlkYltBo_"/>
-</div>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start mb-1">
-<h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">Empresa de Eventos XYZ</h3>
-<span class="text-label-sm text-secondary whitespace-nowrap">Ayer, 14:20</span>
-</div>
-<p class="text-body-md text-secondary truncate">Gracias por la información. Estaremos en contacto durante la próxima semana para coordinar la visita técnica.</p>
-<div class="flex gap-2 mt-2">
-<span class="px-2 py-0.5 bg-secondary-container text-secondary text-[10px] font-bold rounded-full uppercase tracking-wider">
-                                Logística
-                            </span>
-</div>
-</div>
-<div class="flex flex-col items-end">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">more_vert</span>
-</div>
-</div>
-<!-- Conversation Card 3 (Unread) -->
-<div class="flex items-center gap-4 p-5 bg-white rounded-xl custom-shadow border-l-4 border-primary cursor-pointer hover:bg-surface-container-low transition-all">
-<div class="relative flex-shrink-0">
-<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-fixed">
-<img class="w-full h-full object-cover" data-alt="Close-up portrait of a male production manager for sound and lighting services, wearing a professional black polo shirt with a small discreet company logo. High-key studio lighting with a clean off-white background, creating a high-end corporate marketplace aesthetic of reliability and expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP1LInFZKFO7Pjp4VaaAYp-M3rxNEaeWKEkmUFdcL72gdbEFeTyFVrUzaeiaapd1SQX8bYbJbEEGvuC2iJynf1QdZXXdLvmfbPDeBA2cyubvgUB3NuA8H2Tn4glTQV5Fc3A3amP-24l0oJEkPd9Y6lj7SDLE4LnzgUEASYYqJ4gFgFoIAlHebwtwiWzBAC2ZIW1hQtRdH9hGOAuFa4DwXg9GSMDtt9czr9beNYEUaC55x96T0V_AjK"/>
-</div>
-<div class="absolute bottom-0 right-0 w-4 h-4 bg-primary border-2 border-white rounded-full"></div>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start mb-1">
-<h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">Sonido Pro Chile</h3>
-<span class="text-label-sm text-primary font-bold whitespace-nowrap">Ayer, 09:15</span>
-</div>
-<p class="text-body-md text-on-surface font-semibold truncate">¿Podrías confirmarme los requerimientos de potencia eléctrica para el escenario principal?</p>
-<div class="flex gap-2 mt-2">
-<span class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-bold rounded-full uppercase tracking-wider">Producción</span>
-</div>
-</div>
-<div class="flex flex-col items-end gap-3">
-<span class="material-symbols-outlined text-outline hover:text-primary transition-colors">more_vert</span>
-<div class="w-2.5 h-2.5 bg-primary rounded-full"></div>
-</div>
-</div>
-<!-- Conversation Card 4 (Read) -->
-<div class="flex items-center gap-4 p-5 bg-white/70 rounded-xl hover:bg-surface-container-low transition-all border border-transparent hover:border-outline-variant group">
-<div class="relative flex-shrink-0">
-<div class="w-14 h-14 rounded-full overflow-hidden border border-outline-variant">
-<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Abstract corporate brand mark for a high-end venue management firm, featuring geometric architectural lines in forest green and metallic silver. The lighting is soft and diffused, conveying professional luxury and sophisticated business environments for B2B events." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9TU5VqsVmFA8S2VIT3gq-lQcMTrmD0cOT30Ra0EH2RPbvRXsv0Ta63rtT3mTSVtsR1Xc6DWBaBPU_Vpvef_IvODhqgdirb9xA5Ta5x_BxQfYiZ8Y8AWxY4bTtyyO9d8mCLSUOLyiuyuRywiJoBjgjI36qUDRYqyHu3lpVW7Bug_SnaFvfZrO--IN7RTWO9_Wou2YmG-KpTxdRvRR9yZeMmo5JBRLdWZxHTSeAQOoiERC3xpqYpuxj"/>
-</div>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start mb-1">
-<h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">Venu Premium Santiago</h3>
-<span class="text-label-sm text-secondary whitespace-nowrap">2 días atrás</span>
-</div>
-<p class="text-body-md text-secondary truncate">El contrato ha sido firmado digitalmente por ambas partes. Ya puedes descargar la copia desde tu panel.</p>
-<div class="flex gap-2 mt-2">
-<span class="px-2 py-0.5 bg-secondary-container text-secondary text-[10px] font-bold rounded-full uppercase tracking-wider">Contrato</span>
-</div>
-</div>
-<div class="flex flex-col items-end">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">more_vert</span>
-</div>
-</div>
-<!-- Conversation Card 5 (Read) -->
-<div class="flex items-center gap-4 p-5 bg-white/70 rounded-xl hover:bg-surface-container-low transition-all border border-transparent hover:border-outline-variant group">
-<div class="relative flex-shrink-0">
-<div class="w-14 h-14 rounded-full overflow-hidden border border-outline-variant">
-<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A group of corporate colleagues collaborating in a brightly lit, modern office with glass walls and minimalist furniture. The color palette consists of whites, grays, and deep green accents, reflecting a successful business atmosphere and premium professional service standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnLu-veRhYd6wO_suvDrDgRAEtLj5e-ptNNbWnWt3obJXFFttMO9jAb1Pl5FePLZ8Quf9T7bKHNf3cf55fN8HUUY1yuNRuMbTXAjY5I8eYXHMurRd3qsv-AswErrWQe0NgEa5ebRRWXH5XupnCoau5BHbVc2UwstkGl3PBsZsoL1FhlXwRRIc702Y5ivJEeueozERY1iIhN2oKzVcgxmV5yjVPN6nZhSLYHHWjEY8QM91h7DnZfC1A"/>
-</div>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start mb-1">
-<h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">Global Security Solutions</h3>
-<span class="text-label-sm text-secondary whitespace-nowrap">1 semana atrás</span>
-</div>
-<p class="text-body-md text-secondary truncate">Confirmamos la recepción del itinerario de seguridad. El equipo estará listo a las 07:00 AM.</p>
-</div>
-<div class="flex flex-col items-end">
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">more_vert</span>
-</div>
-</div>
-</div>
-</section>
-<!-- Floating Action Button - Only for contextually relevant screens like Home/Dashboard, 
+            <button
+              class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all"
+            >
+              <span class="material-symbols-outlined">language</span>
+            </button>
+            <button
+              class="bg-primary text-on-primary px-5 py-2 rounded-lg font-label-md active:scale-95 transition-all"
+            >
+              Publicar Evento
+            </button>
+          </div>
+        </div>
+      </header>
+      <!-- Inbox Section -->
+      <section
+        class="flex-1 flex flex-col overflow-hidden max-w-container-max mx-auto w-full px-margin-x pt-stack-md"
+      >
+        <!-- Page Header & Filters -->
+        <div class="flex flex-col gap-6 mb-gutter">
+          <div class="flex justify-between items-end">
+            <div>
+              <h2 class="font-headline-md text-headline-md text-primary">Mensajes</h2>
+              <p class="text-body-md text-secondary mt-1">
+                Gestiona tus comunicaciones con proveedores y socios.
+              </p>
+            </div>
+            <div class="flex gap-2">
+              <button
+                class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-all"
+              >
+                <span class="material-symbols-outlined">tune</span>
+              </button>
+              <button
+                class="p-2 border border-outline-variant rounded-lg hover:bg-surface-container transition-all"
+              >
+                <span class="material-symbols-outlined">refresh</span>
+              </button>
+            </div>
+          </div>
+          <!-- Search and Local Tabs -->
+          <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div class="flex bg-secondary-container/30 p-1 rounded-xl">
+              <button class="px-6 py-2 bg-white text-primary font-label-md rounded-lg shadow-sm">
+                Todos
+              </button>
+              <button
+                class="px-6 py-2 text-secondary font-label-md rounded-lg hover:text-primary transition-colors"
+              >
+                No leídos
+              </button>
+              <button
+                class="px-6 py-2 text-secondary font-label-md rounded-lg hover:text-primary transition-colors"
+              >
+                Eventos
+              </button>
+            </div>
+            <div class="relative w-full md:w-80">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]"
+                >search</span
+              >
+              <input
+                class="w-full bg-white border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
+                placeholder="Filtrar por empresa..."
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- Conversations List -->
+        <div class="flex-1 overflow-y-auto msg-scroll space-y-3 pb-gutter">
+          <!-- Conversation Card 1 (Unread) -->
+          <div
+            class="flex items-center gap-4 p-5 bg-white rounded-xl custom-shadow border-l-4 border-primary cursor-pointer hover:bg-surface-container-low transition-all"
+          >
+            <div class="relative flex-shrink-0">
+              <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-fixed">
+                <img
+                  class="w-full h-full object-cover"
+                  data-alt="A professional headshot of a female account executive from a corporate events company, wearing a dark green blazer against a clean, softly lit office background. The lighting is high-end and minimalist, reflecting a modern B2B aesthetic with sharp focus and professional attire."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU-rHNzqzf-MLzbbeTCnkM8wVQmcD9EIgZgJLvvGgBeVllc0VGyVdLqJz8M-bmt-4lbHSYqGHCc3WrhYmzyEM-MBbg6HxCU9kSHu_j9ULCoxYLT5tQys62EuwPOdbXa8HZ1eR0W5Y0_6PW1lt2q1_OJWebOqhYhgmIIysrkhqyHr-kJ4eXzLGRePvV04U5lASvmRP_Spyyof1qZ4Gg-3pYpahfc8jUw91ZKyWWVKbAukzmOj7_JjNc"
+                />
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-4 h-4 bg-primary border-2 border-white rounded-full"
+              ></div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">
+                  Lumina Event Pro
+                </h3>
+                <span class="text-label-sm text-primary font-bold whitespace-nowrap"
+                  >Hace 5 min</span
+                >
+              </div>
+              <p class="text-body-md text-on-surface font-semibold truncate">
+                Hola, acabamos de enviar el presupuesto detallado para la gala anual...
+              </p>
+              <div class="flex gap-2 mt-2">
+                <span
+                  class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-bold rounded-full flex items-center gap-1 uppercase tracking-wider"
+                >
+                  <span
+                    class="material-symbols-outlined text-[12px]"
+                    style="font-variation-settings: 'FILL' 1"
+                    >stars</span
+                  >
+                  Postulación Aceptada
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-3">
+              <span
+                class="material-symbols-outlined text-outline hover:text-primary transition-colors"
+                >more_vert</span
+              >
+              <div class="w-2.5 h-2.5 bg-primary rounded-full"></div>
+            </div>
+          </div>
+          <!-- Conversation Card 2 (Read) -->
+          <div
+            class="flex items-center gap-4 p-5 bg-white/70 rounded-xl hover:bg-surface-container-low transition-all border border-transparent hover:border-outline-variant group"
+          >
+            <div class="relative flex-shrink-0">
+              <div class="w-14 h-14 rounded-full overflow-hidden border border-outline-variant">
+                <img
+                  class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                  data-alt="Logo of a corporate catering company with modern minimalist design, featuring organic shapes in shades of deep green and earth tones. The background is a soft textured linen paper style, emphasizing premium business-to-business services and high-quality production standards."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxcheAKoKm_rEiH0BiajkUHvDmDcJqIL7a5BREmC02SJLu4TMNISe75tAKQqyJZWvfjunSGKw6fMg69yi5KQEpe9WGBFsEvquadXlQvSEN_65TUcq0-LYg0v7I8N_wE2pgRV8ZZjqLIbwX6CmP6OnnFgbZ1WzuESoGr3uX5ea-aKauuwHwiG3PeCLRTgahT5sUHxv8uOyR9B8S00kiH9Zx1tkPIn0kbYNgoRSlSJTzIT_vlkYltBo_"
+                />
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">
+                  Empresa de Eventos XYZ
+                </h3>
+                <span class="text-label-sm text-secondary whitespace-nowrap">Ayer, 14:20</span>
+              </div>
+              <p class="text-body-md text-secondary truncate">
+                Gracias por la información. Estaremos en contacto durante la próxima semana para
+                coordinar la visita técnica.
+              </p>
+              <div class="flex gap-2 mt-2">
+                <span
+                  class="px-2 py-0.5 bg-secondary-container text-secondary text-[10px] font-bold rounded-full uppercase tracking-wider"
+                >
+                  Logística
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-col items-end">
+              <span
+                class="material-symbols-outlined text-outline group-hover:text-primary transition-colors"
+                >more_vert</span
+              >
+            </div>
+          </div>
+          <!-- Conversation Card 3 (Unread) -->
+          <div
+            class="flex items-center gap-4 p-5 bg-white rounded-xl custom-shadow border-l-4 border-primary cursor-pointer hover:bg-surface-container-low transition-all"
+          >
+            <div class="relative flex-shrink-0">
+              <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-fixed">
+                <img
+                  class="w-full h-full object-cover"
+                  data-alt="Close-up portrait of a male production manager for sound and lighting services, wearing a professional black polo shirt with a small discreet company logo. High-key studio lighting with a clean off-white background, creating a high-end corporate marketplace aesthetic of reliability and expertise."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP1LInFZKFO7Pjp4VaaAYp-M3rxNEaeWKEkmUFdcL72gdbEFeTyFVrUzaeiaapd1SQX8bYbJbEEGvuC2iJynf1QdZXXdLvmfbPDeBA2cyubvgUB3NuA8H2Tn4glTQV5Fc3A3amP-24l0oJEkPd9Y6lj7SDLE4LnzgUEASYYqJ4gFgFoIAlHebwtwiWzBAC2ZIW1hQtRdH9hGOAuFa4DwXg9GSMDtt9czr9beNYEUaC55x96T0V_AjK"
+                />
+              </div>
+              <div
+                class="absolute bottom-0 right-0 w-4 h-4 bg-primary border-2 border-white rounded-full"
+              ></div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">
+                  Sonido Pro Chile
+                </h3>
+                <span class="text-label-sm text-primary font-bold whitespace-nowrap"
+                  >Ayer, 09:15</span
+                >
+              </div>
+              <p class="text-body-md text-on-surface font-semibold truncate">
+                ¿Podrías confirmarme los requerimientos de potencia eléctrica para el escenario
+                principal?
+              </p>
+              <div class="flex gap-2 mt-2">
+                <span
+                  class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-bold rounded-full uppercase tracking-wider"
+                  >Producción</span
+                >
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-3">
+              <span
+                class="material-symbols-outlined text-outline hover:text-primary transition-colors"
+                >more_vert</span
+              >
+              <div class="w-2.5 h-2.5 bg-primary rounded-full"></div>
+            </div>
+          </div>
+          <!-- Conversation Card 4 (Read) -->
+          <div
+            class="flex items-center gap-4 p-5 bg-white/70 rounded-xl hover:bg-surface-container-low transition-all border border-transparent hover:border-outline-variant group"
+          >
+            <div class="relative flex-shrink-0">
+              <div class="w-14 h-14 rounded-full overflow-hidden border border-outline-variant">
+                <img
+                  class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                  data-alt="Abstract corporate brand mark for a high-end venue management firm, featuring geometric architectural lines in forest green and metallic silver. The lighting is soft and diffused, conveying professional luxury and sophisticated business environments for B2B events."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9TU5VqsVmFA8S2VIT3gq-lQcMTrmD0cOT30Ra0EH2RPbvRXsv0Ta63rtT3mTSVtsR1Xc6DWBaBPU_Vpvef_IvODhqgdirb9xA5Ta5x_BxQfYiZ8Y8AWxY4bTtyyO9d8mCLSUOLyiuyuRywiJoBjgjI36qUDRYqyHu3lpVW7Bug_SnaFvfZrO--IN7RTWO9_Wou2YmG-KpTxdRvRR9yZeMmo5JBRLdWZxHTSeAQOoiERC3xpqYpuxj"
+                />
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">
+                  Venu Premium Santiago
+                </h3>
+                <span class="text-label-sm text-secondary whitespace-nowrap">2 días atrás</span>
+              </div>
+              <p class="text-body-md text-secondary truncate">
+                El contrato ha sido firmado digitalmente por ambas partes. Ya puedes descargar la
+                copia desde tu panel.
+              </p>
+              <div class="flex gap-2 mt-2">
+                <span
+                  class="px-2 py-0.5 bg-secondary-container text-secondary text-[10px] font-bold rounded-full uppercase tracking-wider"
+                  >Contrato</span
+                >
+              </div>
+            </div>
+            <div class="flex flex-col items-end">
+              <span
+                class="material-symbols-outlined text-outline group-hover:text-primary transition-colors"
+                >more_vert</span
+              >
+            </div>
+          </div>
+          <!-- Conversation Card 5 (Read) -->
+          <div
+            class="flex items-center gap-4 p-5 bg-white/70 rounded-xl hover:bg-surface-container-low transition-all border border-transparent hover:border-outline-variant group"
+          >
+            <div class="relative flex-shrink-0">
+              <div class="w-14 h-14 rounded-full overflow-hidden border border-outline-variant">
+                <img
+                  class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                  data-alt="A group of corporate colleagues collaborating in a brightly lit, modern office with glass walls and minimalist furniture. The color palette consists of whites, grays, and deep green accents, reflecting a successful business atmosphere and premium professional service standards."
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnLu-veRhYd6wO_suvDrDgRAEtLj5e-ptNNbWnWt3obJXFFttMO9jAb1Pl5FePLZ8Quf9T7bKHNf3cf55fN8HUUY1yuNRuMbTXAjY5I8eYXHMurRd3qsv-AswErrWQe0NgEa5ebRRWXH5XupnCoau5BHbVc2UwstkGl3PBsZsoL1FhlXwRRIc702Y5ivJEeueozERY1iIhN2oKzVcgxmV5yjVPN6nZhSLYHHWjEY8QM91h7DnZfC1A"
+                />
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start mb-1">
+                <h3 class="font-headline-sm text-body-md text-on-surface truncate pr-4">
+                  Global Security Solutions
+                </h3>
+                <span class="text-label-sm text-secondary whitespace-nowrap">1 semana atrás</span>
+              </div>
+              <p class="text-body-md text-secondary truncate">
+                Confirmamos la recepción del itinerario de seguridad. El equipo estará listo a las
+                07:00 AM.
+              </p>
+            </div>
+            <div class="flex flex-col items-end">
+              <span
+                class="material-symbols-outlined text-outline group-hover:text-primary transition-colors"
+                >more_vert</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Floating Action Button - Only for contextually relevant screens like Home/Dashboard, 
              Suppressed here as per UX goals, but could be "Nuevo Mensaje" if necessary -->
-</main>
-<!-- Mobile Bottom Navigation (Only visible on mobile) -->
-<div class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest flex justify-around items-center h-16 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50">
-<button class="flex flex-col items-center gap-1 text-secondary">
-<span class="material-symbols-outlined">home</span>
-<span class="text-[10px] font-label-md">Inicio</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-secondary">
-<span class="material-symbols-outlined">search</span>
-<span class="text-[10px] font-label-md">Explorar</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mail</span>
-<span class="text-[10px] font-label-md font-bold">Inbox</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-secondary">
-<span class="material-symbols-outlined">person</span>
-<span class="text-[10px] font-label-md">Perfil</span>
-</button>
-</div>
-<script>
-        // Micro-interactions and tab switching simulation
-        document.querySelectorAll('.flex.bg-secondary-container\\/30 button').forEach(button => {
-            button.addEventListener('click', function() {
-                // Reset all
-                document.querySelectorAll('.flex.bg-secondary-container\\/30 button').forEach(btn => {
-                    btn.classList.remove('bg-white', 'text-primary', 'shadow-sm');
-                    btn.classList.add('text-secondary');
-                });
-                // Activate clicked
-                this.classList.add('bg-white', 'text-primary', 'shadow-sm');
-                this.classList.remove('text-secondary');
-            });
+    </main>
+    <!-- Mobile Bottom Navigation (Only visible on mobile) -->
+    <div
+      class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest flex justify-around items-center h-16 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50"
+    >
+      <button class="flex flex-col items-center gap-1 text-secondary">
+        <span class="material-symbols-outlined">home</span>
+        <span class="text-[10px] font-label-md">Inicio</span>
+      </button>
+      <button class="flex flex-col items-center gap-1 text-secondary">
+        <span class="material-symbols-outlined">search</span>
+        <span class="text-[10px] font-label-md">Explorar</span>
+      </button>
+      <button class="flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
+          >mail</span
+        >
+        <span class="text-[10px] font-label-md font-bold">Inbox</span>
+      </button>
+      <button class="flex flex-col items-center gap-1 text-secondary">
+        <span class="material-symbols-outlined">person</span>
+        <span class="text-[10px] font-label-md">Perfil</span>
+      </button>
+    </div>
+    <script>
+      // Micro-interactions and tab switching simulation
+      document.querySelectorAll('.flex.bg-secondary-container\\/30 button').forEach((button) => {
+        button.addEventListener('click', function () {
+          // Reset all
+          document.querySelectorAll('.flex.bg-secondary-container\\/30 button').forEach((btn) => {
+            btn.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+            btn.classList.add('text-secondary');
+          });
+          // Activate clicked
+          this.classList.add('bg-white', 'text-primary', 'shadow-sm');
+          this.classList.remove('text-secondary');
         });
+      });
 
-        // Search bar interaction
-        const searchInput = document.querySelector('input[placeholder="Filtrar por empresa..."]');
-        searchInput.addEventListener('focus', () => {
-            searchInput.parentElement.classList.add('scale-[1.01]');
-        });
-        searchInput.addEventListener('blur', () => {
-            searchInput.parentElement.classList.remove('scale-[1.01]');
-        });
+      // Search bar interaction
+      const searchInput = document.querySelector('input[placeholder="Filtrar por empresa..."]');
+      searchInput.addEventListener('focus', () => {
+        searchInput.parentElement.classList.add('scale-[1.01]');
+      });
+      searchInput.addEventListener('blur', () => {
+        searchInput.parentElement.classList.remove('scale-[1.01]');
+      });
 
-        // Simulation of card click
-        document.querySelectorAll('.conversations-list > div').forEach(card => {
-            card.addEventListener('click', () => {
-                console.log('Conversación seleccionada');
-                // Intent could be to redirect to a detailed chat view
-            });
+      // Simulation of card click
+      document.querySelectorAll('.conversations-list > div').forEach((card) => {
+        card.addEventListener('click', () => {
+          console.log('Conversación seleccionada');
+          // Intent could be to redirect to a detailed chat view
         });
+      });
     </script>
-</body></html>
+  </body>
+</html>

@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { Children, useRef } from 'react'
-import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import { Children, useRef } from 'react';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface HorizontalScrollProps {
-  title: string
-  seeAllHref: string
-  children: React.ReactNode
-  maxItems?: number
+  title: string;
+  seeAllHref: string;
+  children: React.ReactNode;
+  maxItems?: number;
 }
 
 export function HorizontalScroll({
@@ -19,15 +19,13 @@ export function HorizontalScroll({
   children,
   maxItems = 8,
 }: HorizontalScrollProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const items = Children.toArray(children).slice(0, maxItems)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const items = Children.toArray(children).slice(0, maxItems);
 
   return (
     <section>
       <div className="flex items-center justify-between mb-6 md:mb-8">
-        <h3 className="text-[28px] font-semibold leading-tight text-foreground">
-          {title}
-        </h3>
+        <h3 className="text-[28px] font-semibold leading-tight text-foreground">{title}</h3>
         <Link
           href={seeAllHref}
           className="text-sm font-medium text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
@@ -63,5 +61,5 @@ export function HorizontalScroll({
         <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-background to-transparent pointer-events-none" />
       </div>
     </section>
-  )
+  );
 }

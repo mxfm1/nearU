@@ -1,30 +1,30 @@
-import { Suspense } from 'react'
-import { ResetPasswordForm } from './_components/reset-password-form'
-import { getAuthBaseUrl } from '@/lib/env'
+import { Suspense } from 'react';
+import { ResetPasswordForm } from './_components/reset-password-form';
+import { getAuthBaseUrl } from '@/lib/env';
 
-const BASE_URL = getAuthBaseUrl()
+const BASE_URL = getAuthBaseUrl();
 
 interface Props {
-  searchParams: Promise<{ token?: string }>
+  searchParams: Promise<{ token?: string }>;
 }
 
 async function validateToken(token: string): Promise<boolean> {
   try {
     const res = await fetch(
       `${BASE_URL}/api/auth/verify-reset-token?token=${encodeURIComponent(token)}`,
-      { cache: 'no-store' },
-    )
-    return res.ok
+      { cache: 'no-store' }
+    );
+    return res.ok;
   } catch {
-    return false
+    return false;
   }
 }
 
 export default async function ResetPasswordPage({ searchParams }: Props) {
-  const { token } = await searchParams
+  const { token } = await searchParams;
 
   if (!token) {
-    return <InvalidLink message="Token no proporcionado." />
+    return <InvalidLink message="Token no proporcionado." />;
   }
 
   // const isValid = await validateToken(token)
@@ -43,7 +43,7 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
     >
       <ResetPasswordForm token={token} />
     </Suspense>
-  )
+  );
 }
 
 function InvalidLink({ message }: { message: string }) {
@@ -79,12 +79,16 @@ function InvalidLink({ message }: { message: string }) {
               strokeWidth={1.5}
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+              />
             </svg>
             Volver al inicio de sesión
           </a>
         </div>
       </div>
     </div>
-  )
+  );
 }

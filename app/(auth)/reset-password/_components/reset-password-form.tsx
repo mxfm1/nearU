@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Lock, CircleCheck, AlertTriangle, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Lock, CircleCheck, AlertTriangle, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -15,8 +15,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { authApi } from '@/lib/api-client'
+} from '@/components/ui/form';
+import { authApi } from '@/lib/api-client';
 
 const resetSchema = z
   .object({
@@ -26,20 +26,20 @@ const resetSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Las contraseñas no coinciden',
     path: ['confirmPassword'],
-  })
+  });
 
-type ResetFormValues = z.infer<typeof resetSchema>
+type ResetFormValues = z.infer<typeof resetSchema>;
 
 interface ResetPasswordFormProps {
-  token: string
+  token: string;
 }
 
 export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
-  const [step, setStep] = useState<'form' | 'success' | 'error'>('form')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [step, setStep] = useState<'form' | 'success' | 'error'>('form');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<ResetFormValues>({
     resolver: zodResolver(resetSchema),
@@ -47,19 +47,19 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
       password: '',
       confirmPassword: '',
     },
-  })
+  });
 
   async function onSubmit(values: ResetFormValues) {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      await authApi.resetPassword(token, values.password)
-      setStep('success')
+      await authApi.resetPassword(token, values.password);
+      setStep('success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al restablecer la contraseña')
+      setError(err instanceof Error ? err.message : 'Error al restablecer la contraseña');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -74,19 +74,12 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                   <Lock className="h-7 w-7 text-brand" />
                 </div>
               </div>
-              <h1 className="text-2xl font-bold tracking-tight">
-                Restablecer contraseña
-              </h1>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Ingresa tu nueva contraseña
-              </p>
+              <h1 className="text-2xl font-bold tracking-tight">Restablecer contraseña</h1>
+              <p className="mt-1 text-sm text-muted-foreground">Ingresa tu nueva contraseña</p>
             </div>
 
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                   control={form.control}
                   name="password"
@@ -159,9 +152,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                   )}
                 />
 
-                {error && (
-                  <p className="text-sm text-destructive">{error}</p>
-                )}
+                {error && <p className="text-sm text-destructive">{error}</p>}
 
                 <Button
                   type="submit"
@@ -181,12 +172,10 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10">
                 <CircleCheck className="h-7 w-7 text-brand" />
               </div>
-              <h1 className="mb-2 text-2xl font-bold tracking-tight">
-                Contraseña actualizada
-              </h1>
+              <h1 className="mb-2 text-2xl font-bold tracking-tight">Contraseña actualizada</h1>
               <p className="mb-8 text-sm text-muted-foreground">
-                Tu contraseña se ha restablecido correctamente. Ahora podés
-                iniciar sesión con tu nueva contraseña.
+                Tu contraseña se ha restablecido correctamente. Ahora podés iniciar sesión con tu
+                nueva contraseña.
               </p>
               <Button asChild className="w-full bg-brand text-brand-foreground hover:bg-brand/90">
                 <Link href="/">Ir al inicio</Link>
@@ -201,9 +190,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
                 <AlertTriangle className="h-7 w-7 text-destructive" />
               </div>
-              <h1 className="mb-2 text-2xl font-bold tracking-tight">
-                Enlace inválido
-              </h1>
+              <h1 className="mb-2 text-2xl font-bold tracking-tight">Enlace inválido</h1>
               <p className="mb-8 text-sm text-muted-foreground">
                 {error ?? 'El enlace de recuperación no es válido o ha expirado.'}
               </p>
@@ -218,5 +205,5 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         )}
       </div>
     </div>
-  )
+  );
 }

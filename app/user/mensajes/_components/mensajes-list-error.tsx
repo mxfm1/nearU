@@ -1,29 +1,24 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { AlertTriangle, RefreshCw } from 'lucide-react'
-import { fadeInUp } from './constants'
+import { motion } from 'framer-motion';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { fadeInUp } from './constants';
 
 interface MensajesListErrorProps {
-  error: Error
-  onRetry: () => void
+  error: Error;
+  onRetry: () => void;
 }
 
 export function MensajesListError({ error, onRetry }: MensajesListErrorProps) {
   return (
-    <motion.div
-      {...fadeInUp}
-      className="flex-1 flex items-center justify-center p-4"
-    >
+    <motion.div {...fadeInUp} className="flex-1 flex items-center justify-center p-4">
       <div className="text-center max-w-md">
         <div className="mb-4 flex justify-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
             <AlertTriangle className="h-7 w-7 text-destructive" />
           </div>
         </div>
-        <h2 className="text-xl font-bold text-foreground mb-2">
-          Error al cargar
-        </h2>
+        <h2 className="text-xl font-bold text-foreground mb-2">Error al cargar</h2>
         <p className="text-sm text-muted-foreground mb-6">
           {error.message || 'No se pudieron cargar los mensajes.'}
         </p>
@@ -36,5 +31,5 @@ export function MensajesListError({ error, onRetry }: MensajesListErrorProps) {
         </button>
       </div>
     </motion.div>
-  )
+  );
 }

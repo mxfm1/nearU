@@ -1,46 +1,57 @@
-'use client'
+'use client';
 
-import { useEffect, useMemo, useCallback, useState, useRef } from 'react'
-import Link from 'next/link'
-import { Eye, Loader2 } from 'lucide-react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useDirtyGuard } from '@/hooks/use-dirty-guard'
-import { profileApi } from '@/lib/profile-api'
-import type { Profile } from '@/lib/profile-api'
-import type { Region } from '@/lib/catalogo-api'
-import { ProfileContent } from './profile-content'
+import { useEffect, useMemo, useCallback, useState, useRef } from 'react';
+import Link from 'next/link';
+import { Eye, Loader2 } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useDirtyGuard } from '@/hooks/use-dirty-guard';
+import { profileApi } from '@/lib/profile-api';
+import type { Profile } from '@/lib/profile-api';
+import type { Region } from '@/lib/catalogo-api';
+import { ProfileContent } from './profile-content';
 
 const profileUpdateSchema = z.object({
   regionId: z.string().min(1, 'La región de la empresa es obligatoria'),
-})
+});
 
 interface Draft {
-  bannerUrl: string | null
-  logoUrl: string | null
-  name: string | null
-  description: string | null
-  tags: string[]
-  regionId: string
-  founded: string
-  employees: string
-  website: string | null
-  whatsapp: string | null
-  socialLinks: { id?: string; platform?: string; url?: string; orden?: number }[]
+  bannerUrl: string | null;
+  logoUrl: string | null;
+  name: string | null;
+  description: string | null;
+  tags: string[];
+  regionId: string;
+  founded: string;
+  employees: string;
+  website: string | null;
+  whatsapp: string | null;
+  socialLinks: { id?: string; platform?: string; url?: string; orden?: number }[];
 }
 
 const ALL_FIELDS = [
-  'bannerUrl', 'logoUrl', 'name', 'description', 'tags',
-  'regionId', 'founded', 'employees', 'website', 'whatsapp', 'socialLinks',
-]
+  'bannerUrl',
+  'logoUrl',
+  'name',
+  'description',
+  'tags',
+  'regionId',
+  'founded',
+  'employees',
+  'website',
+  'whatsapp',
+  'socialLinks',
+];
 
 function computeDirtyFields(draft: Draft | null, snapshot: Draft | null): string[] {
-  if (!draft || !snapshot) return []
+  if (!draft || !snapshot) return [];
   return ALL_FIELDS.filter((field) => {
-    return JSON.stringify(draft[field as keyof Draft]) !== JSON.stringify(snapshot[field as keyof Draft])
-  })
+    return (
+      JSON.stringify(draft[field as keyof Draft]) !== JSON.stringify(snapshot[field as keyof Draft])
+    );
+  });
 }
 
 function draftFromProfile(profile: Profile): Draft {
@@ -56,11 +67,11 @@ function draftFromProfile(profile: Profile): Draft {
     website: profile.website ?? null,
     whatsapp: profile.whatsapp ?? null,
     socialLinks: profile.socialLinks ?? [],
-  }
+  };
 }
 
 function draftToPayload(draft: Draft) {
-  const { regionId, ...rest } = draft
+  const { regionId, ...rest } = draft;
   return {
     ...rest,
     regionId: regionId,
@@ -70,85 +81,84 @@ function draftToPayload(draft: Draft) {
     logoUrl: rest.logoUrl ?? undefined,
     website: rest.website ?? undefined,
     whatsapp: rest.whatsapp ?? undefined,
-  }
+  };
 }
 
 interface ProfileEditPageProps {
-  profile: Profile
-  regiones: Region[]
+  profile: Profile;
+  regiones: Region[];
 }
 
 export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
-  const queryClient = useQueryClient()
-  const { setDirty, clearDirty } = useDirtyGuard()
+  const queryClient = useQueryClient();
+  const { setDirty, clearDirty } = useDirtyGuard();
 
-  const [draft, setDraft] = useState<Draft>(() => draftFromProfile(profile))
-  const [initialDraft, setInitialDraft] = useState<Draft>(() => structuredClone(draftFromProfile(profile)))
-  const draftRef = useRef(draft)
-  draftRef.current = draft
-  const [locationError, setLocationError] = useState<string | null>(null)
+  const [draft, setDraft] = useState<Draft>(() => draftFromProfile(profile));
+  const [initialDraft, setInitialDraft] = useState<Draft>(() =>
+    structuredClone(draftFromProfile(profile))
+  );
+  const draftRef = useRef(draft);
+  draftRef.current = draft;
+  const [locationError, setLocationError] = useState<string | null>(null);
 
-  const dirtyFields = useMemo(
-    () => computeDirtyFields(draft, initialDraft),
-    [draft, initialDraft],
-  )
-
-  useEffect(() => {
-    setDirty(dirtyFields)
-  }, [dirtyFields, setDirty])
+  const dirtyFields = useMemo(() => computeDirtyFields(draft, initialDraft), [draft, initialDraft]);
 
   useEffect(() => {
-    if (dirtyFields.length === 0) return
+    setDirty(dirtyFields);
+  }, [dirtyFields, setDirty]);
+
+  useEffect(() => {
+    if (dirtyFields.length === 0) return;
     const handler = (e: BeforeUnloadEvent) => {
-      e.preventDefault()
-    }
-    window.addEventListener('beforeunload', handler)
-    return () => window.removeEventListener('beforeunload', handler)
-  }, [dirtyFields])
+      e.preventDefault();
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [dirtyFields]);
 
   const saveMutation = useMutation({
     mutationFn: (payload: Draft) => {
-      console.log('[SAVE] payload:', JSON.stringify(draftToPayload(payload)))
-      return profileApi.updateMine(draftToPayload(payload))
+      console.log('[SAVE] payload:', JSON.stringify(draftToPayload(payload)));
+      return profileApi.updateMine(draftToPayload(payload));
     },
     onSuccess: (data) => {
-      console.log('[SAVE SUCCESS] data:', JSON.stringify(data))
-      const savedDraft = draftRef.current
-      console.log('[SAVE SUCCESS] savedDraft.regionId:', savedDraft.regionId)
-      setDraft(savedDraft)
-      setInitialDraft(structuredClone(savedDraft))
-      queryClient.invalidateQueries({ queryKey: ['profile-edit'] })
-      clearDirty()
+      console.log('[SAVE SUCCESS] data:', JSON.stringify(data));
+      const savedDraft = draftRef.current;
+      console.log('[SAVE SUCCESS] savedDraft.regionId:', savedDraft.regionId);
+      setDraft(savedDraft);
+      setInitialDraft(structuredClone(savedDraft));
+      queryClient.invalidateQueries({ queryKey: ['profile-edit'] });
+      clearDirty();
     },
     onError: (err) => {
-      console.error('[SAVE ERROR]', err)
+      console.error('[SAVE ERROR]', err);
     },
-  })
+  });
 
   const handleChange = useCallback((field: string, value: unknown) => {
-    setDraft((prev) => ({ ...prev, [field]: value }))
+    setDraft((prev) => ({ ...prev, [field]: value }));
     if (field === 'regionId' && value) {
-      setLocationError(null)
+      setLocationError(null);
     }
-  }, [])
+  }, []);
 
   const handleSave = useCallback(() => {
-    setLocationError(null)
+    setLocationError(null);
 
-    const currentDraft = draftRef.current
-    const result = profileUpdateSchema.safeParse({ regionId: currentDraft.regionId })
+    const currentDraft = draftRef.current;
+    const result = profileUpdateSchema.safeParse({ regionId: currentDraft.regionId });
     if (!result.success) {
-      const errorMessage = result.error.errors[0]?.message || 'Validation failed'
+      const errorMessage = result.error.errors[0]?.message || 'Validation failed';
       if (errorMessage.includes('región')) {
-        setLocationError(errorMessage)
+        setLocationError(errorMessage);
       }
-      return
+      return;
     }
 
-    saveMutation.mutate(currentDraft)
-  }, [saveMutation])
+    saveMutation.mutate(currentDraft);
+  }, [saveMutation]);
 
-  const isSaving = saveMutation.isPending
+  const isSaving = saveMutation.isPending;
 
   return (
     <div className="min-h-screen bg-background">
@@ -182,14 +192,10 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
               </span>
             )}
             {saveMutation.isError && (
-              <span className="text-destructive ml-4">
-                Error al guardar
-              </span>
+              <span className="text-destructive ml-4">Error al guardar</span>
             )}
             {locationError && (
-              <span className="text-destructive ml-4 flex items-center gap-1">
-                {locationError}
-              </span>
+              <span className="text-destructive ml-4 flex items-center gap-1">{locationError}</span>
             )}
             {saveMutation.isSuccess && (
               <span className="text-emerald-600 ml-4">✓ Cambios guardados</span>
@@ -201,7 +207,7 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
             </Button>
             <Button
               className="bg-brand hover:bg-brand/90 text-white"
-              disabled={dirtyFields.length === 0 && !locationError || isSaving}
+              disabled={(dirtyFields.length === 0 && !locationError) || isSaving}
               onClick={handleSave}
             >
               {isSaving ? (
@@ -217,5 +223,5 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

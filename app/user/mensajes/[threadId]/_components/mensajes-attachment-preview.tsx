@@ -1,22 +1,22 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { X, FileText, Image, Loader2 } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import type { Attachment } from '@/lib/mensajes-api'
+import { useState } from 'react';
+import { X, FileText, Image, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import type { Attachment } from '@/lib/mensajes-api';
 
 interface AttachmentPreviewProps {
-  attachments: Attachment[]
-  previews: string[]
-  files: File[]
-  onRemove: (index: number) => void
-  uploading?: boolean
+  attachments: Attachment[];
+  previews: string[];
+  files: File[];
+  onRemove: (index: number) => void;
+  uploading?: boolean;
 }
 
 function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function ImageDialog({ src, onClose }: { src: string; onClose: () => void }) {
@@ -43,7 +43,7 @@ function ImageDialog({ src, onClose }: { src: string; onClose: () => void }) {
         <X className="w-6 h-6 text-white" />
       </button>
     </motion.div>
-  )
+  );
 }
 
 function LocalFilePreview({
@@ -53,23 +53,23 @@ function LocalFilePreview({
   uploading,
   previewUrl,
 }: {
-  file: File
-  index: number
-  onRemove: (index: number) => void
-  uploading: boolean
-  previewUrl: string | null
+  file: File;
+  index: number;
+  onRemove: (index: number) => void;
+  uploading: boolean;
+  previewUrl: string | null;
 }) {
-  const [showImageDialog, setShowImageDialog] = useState(false)
-  const isImage = file.type.startsWith('image/')
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const isImage = file.type.startsWith('image/');
 
   const handleClick = () => {
-    if (uploading) return
+    if (uploading) return;
     if (isImage) {
-      setShowImageDialog(true)
+      setShowImageDialog(true);
     } else {
-      window.open(previewUrl || URL.createObjectURL(file), '_blank')
+      window.open(previewUrl || URL.createObjectURL(file), '_blank');
     }
-  }
+  };
 
   return (
     <>
@@ -90,9 +90,10 @@ function LocalFilePreview({
           onClick={handleClick}
           className={`
             flex items-center gap-2 px-3 py-2 rounded-lg border bg-card cursor-pointer transition-all hover:scale-[1.02]
-            ${isImage
-              ? 'border-primary/30 bg-primary/5 hover:bg-primary/10'
-              : 'border-border bg-muted/50 hover:bg-muted'
+            ${
+              isImage
+                ? 'border-primary/30 bg-primary/5 hover:bg-primary/10'
+                : 'border-border bg-muted/50 hover:bg-muted'
             }
             ${uploading ? 'cursor-not-allowed opacity-70' : ''}
           `}
@@ -100,21 +101,13 @@ function LocalFilePreview({
           {uploading ? (
             <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" />
           ) : isImage && previewUrl ? (
-            <img
-              src={previewUrl}
-              alt={file.name}
-              className="w-8 h-8 rounded object-cover"
-            />
+            <img src={previewUrl} alt={file.name} className="w-8 h-8 rounded object-cover" />
           ) : (
             getFileIcon(file)
           )}
           <div className="flex flex-col">
-            <span className="text-xs font-medium max-w-[100px] truncate">
-              {file.name}
-            </span>
-            <span className="text-[10px] text-muted-foreground">
-              {formatFileSize(file.size)}
-            </span>
+            <span className="text-xs font-medium max-w-[100px] truncate">{file.name}</span>
+            <span className="text-[10px] text-muted-foreground">{formatFileSize(file.size)}</span>
           </div>
         </div>
 
@@ -122,8 +115,8 @@ function LocalFilePreview({
           <button
             type="button"
             onClick={(e) => {
-              e.stopPropagation()
-              onRemove(index)
+              e.stopPropagation();
+              onRemove(index);
             }}
             className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           >
@@ -132,7 +125,7 @@ function LocalFilePreview({
         )}
       </motion.div>
     </>
-  )
+  );
 }
 
 function UploadedAttachmentPreview({
@@ -140,20 +133,20 @@ function UploadedAttachmentPreview({
   index,
   onRemove,
 }: {
-  attachment: Attachment
-  index: number
-  onRemove: (index: number) => void
+  attachment: Attachment;
+  index: number;
+  onRemove: (index: number) => void;
 }) {
-  const [showImageDialog, setShowImageDialog] = useState(false)
-  const isImage = attachment.type === 'IMAGE'
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const isImage = attachment.type === 'IMAGE';
 
   const handleClick = () => {
     if (isImage) {
-      setShowImageDialog(true)
+      setShowImageDialog(true);
     } else {
-      window.open(attachment.url, '_blank')
+      window.open(attachment.url, '_blank');
     }
-  }
+  };
 
   return (
     <>
@@ -174,9 +167,10 @@ function UploadedAttachmentPreview({
           onClick={handleClick}
           className={`
             flex items-center gap-2 px-3 py-2 rounded-lg border bg-card cursor-pointer transition-all hover:scale-[1.02]
-            ${isImage
-              ? 'border-primary/30 bg-primary/5 hover:bg-primary/10'
-              : 'border-border bg-muted/50 hover:bg-muted'
+            ${
+              isImage
+                ? 'border-primary/30 bg-primary/5 hover:bg-primary/10'
+                : 'border-border bg-muted/50 hover:bg-muted'
             }
           `}
         >
@@ -190,9 +184,7 @@ function UploadedAttachmentPreview({
             <FileText className="w-5 h-5 text-muted-foreground" />
           )}
           <div className="flex flex-col">
-            <span className="text-xs font-medium max-w-[100px] truncate">
-              {attachment.name}
-            </span>
+            <span className="text-xs font-medium max-w-[100px] truncate">{attachment.name}</span>
             <span className="text-[10px] text-muted-foreground">
               {formatFileSize(attachment.size)}
             </span>
@@ -202,8 +194,8 @@ function UploadedAttachmentPreview({
         <button
           type="button"
           onClick={(e) => {
-            e.stopPropagation()
-            onRemove(index)
+            e.stopPropagation();
+            onRemove(index);
           }}
           className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
         >
@@ -211,14 +203,14 @@ function UploadedAttachmentPreview({
         </button>
       </motion.div>
     </>
-  )
+  );
 }
 
 function getFileIcon(file: File) {
   if (file.type.startsWith('image/')) {
-    return <Image className="w-5 h-5 text-primary" />
+    return <Image className="w-5 h-5 text-primary" />;
   }
-  return <FileText className="w-5 h-5 text-muted-foreground" />
+  return <FileText className="w-5 h-5 text-muted-foreground" />;
 }
 
 export function AttachmentPreview({
@@ -229,7 +221,7 @@ export function AttachmentPreview({
   uploading = false,
 }: AttachmentPreviewProps) {
   if (files.length === 0 && attachments.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -258,5 +250,5 @@ export function AttachmentPreview({
         </AnimatePresence>
       </div>
     </div>
-  )
+  );
 }

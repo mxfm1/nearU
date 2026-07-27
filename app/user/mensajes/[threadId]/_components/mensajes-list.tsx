@@ -1,52 +1,52 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Download, FileText, CheckCheck, X, Image as ImageIcon } from 'lucide-react'
-import type { Mensaje } from '@/lib/mensajes-api'
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, FileText, CheckCheck, X, Image as ImageIcon } from 'lucide-react';
+import type { Mensaje } from '@/lib/mensajes-api';
 
 interface ExtendedMensaje extends Mensaje {
-  timestamp: string
-  senderAvatar: string | null
-  isFromCurrentUser: boolean
-  isRead: boolean
+  timestamp: string;
+  senderAvatar: string | null;
+  isFromCurrentUser: boolean;
+  isRead: boolean;
 }
 
 const container = {
   animate: { transition: { staggerChildren: 0.1 } },
-}
+};
 
 const item = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-}
+};
 
 interface MensajesListProps {
-  mensajes: ExtendedMensaje[]
+  mensajes: ExtendedMensaje[];
 }
 
 function formatTime(isoString: string): string {
-  const date = new Date(isoString)
+  const date = new Date(isoString);
   return date.toLocaleTimeString('es-AR', {
     hour: '2-digit',
     minute: '2-digit',
-  })
+  });
 }
 
 function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function isToday(isoString: string): boolean {
-  const date = new Date(isoString)
-  const today = new Date()
+  const date = new Date(isoString);
+  const today = new Date();
   return (
     date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&
     date.getFullYear() === today.getFullYear()
-  )
+  );
 }
 
 function SystemMessage({ content, timestamp }: { content: string; timestamp: string }) {
@@ -57,7 +57,7 @@ function SystemMessage({ content, timestamp }: { content: string; timestamp: str
         <span className="text-[10px] text-muted-foreground/70">{formatTime(timestamp)}</span>
       </div>
     </motion.div>
-  )
+  );
 }
 
 function ImageModal({ src, onClose }: { src: string; onClose: () => void }) {
@@ -86,21 +86,19 @@ function ImageModal({ src, onClose }: { src: string; onClose: () => void }) {
         </button>
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }
 
 export function MensajesList({ mensajes }: MensajesListProps) {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const sortedMensajes = [...mensajes].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  )
+  );
 
   return (
     <div className="p-4 md:p-6 bg-muted/20">
-      {selectedImage && (
-        <ImageModal src={selectedImage} onClose={() => setSelectedImage(null)} />
-      )}
+      {selectedImage && <ImageModal src={selectedImage} onClose={() => setSelectedImage(null)} />}
 
       <motion.div
         variants={container}
@@ -116,15 +114,14 @@ export function MensajesList({ mensajes }: MensajesListProps) {
                 content={mensaje.content || 'Mensaje del sistema'}
                 timestamp={mensaje.createdAt}
               />
-            )
+            );
           }
 
           const showDateDivider =
             index === 0 ||
             sortedMensajes[index - 1].messageType === 'SYSTEM' ||
             !isToday(mensaje.createdAt) ||
-            isToday(sortedMensajes[index - 1].createdAt) !==
-              isToday(mensaje.createdAt)
+            isToday(sortedMensajes[index - 1].createdAt) !== isToday(mensaje.createdAt);
 
           return (
             <motion.div key={mensaje.id} variants={item}>
@@ -140,9 +137,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
 
               <div
                 className={`flex gap-3 max-w-[85%] md:max-w-[80%] ${
-                  mensaje.isFromCurrentUser
-                    ? 'self-end flex-row-reverse'
-                    : ''
+                  mensaje.isFromCurrentUser ? 'self-end flex-row-reverse' : ''
                 }`}
               >
                 {!mensaje.isFromCurrentUser && (
@@ -164,9 +159,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
                 )}
 
                 <div
-                  className={`flex flex-col gap-1 ${
-                    mensaje.isFromCurrentUser ? 'items-end' : ''
-                  }`}
+                  className={`flex flex-col gap-1 ${mensaje.isFromCurrentUser ? 'items-end' : ''}`}
                 >
                   <div
                     className={`p-3 md:p-4 rounded-2xl shadow-sm ${
@@ -176,9 +169,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
                     }`}
                   >
                     {mensaje.content && (
-                      <p className="text-sm md:text-base whitespace-pre-wrap">
-                        {mensaje.content}
-                      </p>
+                      <p className="text-sm md:text-base whitespace-pre-wrap">{mensaje.content}</p>
                     )}
 
                     {mensaje.attachments && mensaje.attachments.length > 0 && (
@@ -204,7 +195,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
                                   <ImageIcon className="w-8 h-8 text-white" />
                                 </div>
                               </div>
-                            )
+                            );
                           }
 
                           return (
@@ -265,7 +256,7 @@ export function MensajesList({ mensajes }: MensajesListProps) {
                                 />
                               </div>
                             </a>
-                          )
+                          );
                         })}
                       </div>
                     )}
@@ -289,9 +280,9 @@ export function MensajesList({ mensajes }: MensajesListProps) {
                 </div>
               </div>
             </motion.div>
-          )
+          );
         })}
       </motion.div>
     </div>
-  )
+  );
 }

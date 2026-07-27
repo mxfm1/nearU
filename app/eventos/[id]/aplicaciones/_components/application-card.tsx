@@ -1,13 +1,17 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import { MapPin, Star, CheckCircle } from 'lucide-react'
-import { applicationsApi, type ApplicationStatus, type EventApplication } from '@/lib/applications-api'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation';
+import { MapPin, Star, CheckCircle } from 'lucide-react';
+import {
+  applicationsApi,
+  type ApplicationStatus,
+  type EventApplication,
+} from '@/lib/applications-api';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface ApplicationCardProps {
-  application: EventApplication
+  application: EventApplication;
 }
 
 function getStatusBadge(status?: string) {
@@ -17,36 +21,36 @@ function getStatusBadge(status?: string) {
         <span className="px-4 py-1.5 rounded-full bg-muted text-secondary font-bold text-sm border border-border">
           Pendiente
         </span>
-      )
+      );
     case 'reviewing':
       return (
         <span className="px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 font-bold text-sm border border-blue-200">
           En revisión
         </span>
-      )
+      );
     case 'accepted':
       return (
         <span className="px-4 py-1.5 rounded-full bg-green-100 text-green-700 font-bold text-sm border border-green-200 flex items-center gap-1">
           <CheckCircle className="w-4 h-4" />
           Aprobado
         </span>
-      )
+      );
     case 'rejected':
       return (
         <span className="px-4 py-1.5 rounded-full bg-red-100 text-red-700 font-bold text-sm border border-red-200 flex items-center gap-1">
           Rechazado
         </span>
-      )
+      );
     default:
-      return null
+      return null;
   }
 }
 
 export function ApplicationCard({ application }: ApplicationCardProps) {
-  const router = useRouter()
-  const maxScore = application.score?.maxPossible || 100
-  const totalScore = application.score?.totalScore || 0
-  const scorePercentage = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0
+  const router = useRouter();
+  const maxScore = application.score?.maxPossible || 100;
+  const totalScore = application.score?.totalScore || 0;
+  const scorePercentage = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
 
   return (
     <div
@@ -136,5 +140,5 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

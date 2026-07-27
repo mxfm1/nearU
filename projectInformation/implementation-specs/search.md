@@ -8,8 +8,8 @@
 
 # 2. Objetivo
 
-    Generar una pantalla de descubrimientos con filtros y busqueda de eventos / proveedores 
-    
+    Generar una pantalla de descubrimientos con filtros y busqueda de eventos / proveedores
+
 # 3. UI Reference
 
     /projectInformation/screens/descubrirpage.png
@@ -17,27 +17,27 @@
 # 4. Layout
 
     <Navbar />
-    
+
     <SearchBar />
-    
+
     <ServiceCard />
-    
+
     <EventCard />
-    
+
     <ProfileCard />
-    
+
     <Pagination />
 
 # 5. Funcionalidad
 
-    - La pagina va a crearse con SSR y streaming porque los datos cambian bastante, y streaming para fragmentar los componentes y añadirles fallback 
+    - La pagina va a crearse con SSR y streaming porque los datos cambian bastante, y streaming para fragmentar los componentes y añadirles fallback
 
 # 6. Integración
 
     TBD - Aun no está definido el backend, utiliza mock data pero overall es
 
     el filtro determina qué tipo de endpoints llamar
-    
+
     -> GET /search?query={query}&page={page}&limit={limit}&category={category}&region={region}
 
     GET /providers
@@ -85,7 +85,7 @@
     * deben ser responsivas, y tener un mismo tamaño independiente del contenido *
 
     Implementa solo lo de arriba, lo otro ya está hecho
-    
+
 
     <ProfileCard>
 
@@ -100,16 +100,7 @@
     - Ubicación del perfil
     - Categoría del perfil
 
-
 Implementar segun:
 
     - projectInformation/domain/search.md
     - projectInformation/domain/categories.md
-
-
-
-
-
-    
-    
-    

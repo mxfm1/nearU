@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export function CrearSkeleton() {
   return (
@@ -37,5 +37,5 @@ export function CrearSkeleton() {
         </div>
       </section>
     </div>
-  )
+  );
 }

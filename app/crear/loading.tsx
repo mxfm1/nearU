@@ -1,5 +1,5 @@
-import { CrearSkeleton } from './_components/crear-skeleton'
+import { CrearSkeleton } from './_components/crear-skeleton';
 
 export default function CrearLoading() {
-  return <CrearSkeleton />
+  return <CrearSkeleton />;
 }

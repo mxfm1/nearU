@@ -1,48 +1,51 @@
-'use client'
+'use client';
 
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationProps {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-  className?: string
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  className?: string;
 }
 
 function getPageNumbers(current: number, total: number): (number | '...')[] {
   if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i + 1)
+    return Array.from({ length: total }, (_, i) => i + 1);
   }
 
-  const pages: (number | '...')[] = [1]
+  const pages: (number | '...')[] = [1];
 
   if (current > 3) {
-    pages.push('...')
+    pages.push('...');
   }
 
-  const start = Math.max(2, current - 1)
-  const end = Math.min(total - 1, current + 1)
+  const start = Math.max(2, current - 1);
+  const end = Math.min(total - 1, current + 1);
 
   for (let i = start; i <= end; i++) {
-    pages.push(i)
+    pages.push(i);
   }
 
   if (current < total - 2) {
-    pages.push('...')
+    pages.push('...');
   }
 
-  pages.push(total)
+  pages.push(total);
 
-  return pages
+  return pages;
 }
 
 export function Pagination({ currentPage, totalPages, onPageChange, className }: PaginationProps) {
-  const pages = getPageNumbers(currentPage, totalPages)
+  const pages = getPageNumbers(currentPage, totalPages);
 
   return (
-    <nav className={cn('flex items-center justify-center gap-1', className)} aria-label="Paginación">
+    <nav
+      className={cn('flex items-center justify-center gap-1', className)}
+      aria-label="Paginación"
+    >
       <Button
         variant="outline"
         size="icon"
@@ -66,7 +69,7 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
             size="icon"
             className={cn(
               'h-9 w-9',
-              page === currentPage && 'bg-brand text-white hover:bg-brand/90',
+              page === currentPage && 'bg-brand text-white hover:bg-brand/90'
             )}
             onClick={() => onPageChange(page)}
             aria-label={`Página ${page}`}
@@ -88,5 +91,5 @@ export function Pagination({ currentPage, totalPages, onPageChange, className }:
         <ChevronRight className="h-4 w-4" />
       </Button>
     </nav>
-  )
+  );
 }

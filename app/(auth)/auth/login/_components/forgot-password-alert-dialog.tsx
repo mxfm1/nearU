@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { authApi } from '@/lib/api-client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Mail, ArrowLeft, CircleCheck } from 'lucide-react'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { authApi } from '@/lib/api-client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Mail, ArrowLeft, CircleCheck } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -15,7 +15,7 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from '@/components/ui/alert-dialog';
 import {
   Form,
   FormControl,
@@ -23,18 +23,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
+} from '@/components/ui/form';
 
 const forgotSchema = z.object({
   email: z.string().email('Ingresá un correo válido'),
-})
+});
 
-type ForgotFormValues = z.infer<typeof forgotSchema>
+type ForgotFormValues = z.infer<typeof forgotSchema>;
 
 interface ForgotPasswordAlertDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onBackToLogin?: () => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onBackToLogin?: () => void;
 }
 
 export function ForgotPasswordAlertDialog({
@@ -42,47 +42,47 @@ export function ForgotPasswordAlertDialog({
   onOpenChange,
   onBackToLogin,
 }: ForgotPasswordAlertDialogProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [sent, setSent] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<ForgotFormValues>({
     resolver: zodResolver(forgotSchema),
     defaultValues: { email: '' },
-  })
+  });
 
   async function onSubmit(values: ForgotFormValues) {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
-      await authApi.forgotPassword(values.email)
-      setSent(true)
+      await authApi.forgotPassword(values.email);
+      setSent(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al enviar el correo')
+      setError(err instanceof Error ? err.message : 'Error al enviar el correo');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   function handleBack() {
-    const email = form.getValues('email')
-    form.reset()
-    setSent(false)
-    setError(null)
-    onOpenChange(false)
+    const email = form.getValues('email');
+    form.reset();
+    setSent(false);
+    setError(null);
+    onOpenChange(false);
     if (onBackToLogin) {
-      setTimeout(onBackToLogin, 150)
+      setTimeout(onBackToLogin, 150);
     }
   }
 
   function handleDialogClose(open: boolean) {
     if (!open) {
-      form.reset()
-      setSent(false)
-      setError(null)
+      form.reset();
+      setSent(false);
+      setError(null);
     }
-    onOpenChange(open)
+    onOpenChange(open);
   }
 
   return (
@@ -95,16 +95,12 @@ export function ForgotPasswordAlertDialog({
                 ¿Olvidaste tu contraseña?
               </AlertDialogTitle>
               <AlertDialogDescription>
-                Ingresá tu correo electrónico y te enviaremos un enlace para
-                restablecerla.
+                Ingresá tu correo electrónico y te enviaremos un enlace para restablecerla.
               </AlertDialogDescription>
             </AlertDialogHeader>
 
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                   control={form.control}
                   name="email"
@@ -126,9 +122,7 @@ export function ForgotPasswordAlertDialog({
                   )}
                 />
 
-                {error && (
-                  <p className="text-sm text-destructive">{error}</p>
-                )}
+                {error && <p className="text-sm text-destructive">{error}</p>}
 
                 <Button
                   type="submit"
@@ -163,8 +157,8 @@ export function ForgotPasswordAlertDialog({
                 Revisá tu bandeja de entrada
               </AlertDialogTitle>
               <AlertDialogDescription className="mx-auto max-w-sm">
-                Si existe una cuenta con ese correo, recibirás un enlace para
-                restablecer tu contraseña.
+                Si existe una cuenta con ese correo, recibirás un enlace para restablecer tu
+                contraseña.
               </AlertDialogDescription>
             </AlertDialogHeader>
 
@@ -173,9 +167,9 @@ export function ForgotPasswordAlertDialog({
                 <Button
                   variant="outline"
                   onClick={() => {
-                    form.reset()
-                    setSent(false)
-                    setError(null)
+                    form.reset();
+                    setSent(false);
+                    setError(null);
                   }}
                 >
                   Cerrar
@@ -186,5 +180,5 @@ export function ForgotPasswordAlertDialog({
         )}
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react';
 
 interface InboxErrorProps {
-  error: Error | null
+  error: Error | null;
 }
 
 export function InboxError({ error }: InboxErrorProps) {
@@ -19,5 +19,5 @@ export function InboxError({ error }: InboxErrorProps) {
         </p>
       </div>
     </div>
-  )
+  );
 }

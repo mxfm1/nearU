@@ -59,5 +59,5 @@ export function ApplySkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }

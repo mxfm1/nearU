@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useAuth } from '@/hooks/use-auth'
+import Link from 'next/link';
+import { useAuth } from '@/hooks/use-auth';
 
 const publicLinks = [
   { label: 'Explorar', href: '/descubrir' },
@@ -9,16 +9,14 @@ const publicLinks = [
   { label: 'Eventos', href: '/search?type=eventos' },
   { label: 'Recursos', href: '/recursos' },
   { label: 'Sobre NearU', href: '/about' },
-]
+];
 
-const privateLinks = [
-  { label: 'Descubrir', href: '/descubrir' },
-]
+const privateLinks = [{ label: 'Descubrir', href: '/descubrir' }];
 
 export function NavbarLinks() {
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
 
-  const links = user ? privateLinks : publicLinks
+  const links = user ? privateLinks : publicLinks;
 
   return (
     <div className="flex items-center gap-6">
@@ -32,5 +30,5 @@ export function NavbarLinks() {
         </Link>
       ))}
     </div>
-  )
+  );
 }

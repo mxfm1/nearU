@@ -1,14 +1,7 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import { 
-  Clapperboard, 
-  Music, 
-  UtensilsCrossed, 
-  Camera, 
-  Lightbulb, 
-  LayoutGrid 
-} from 'lucide-react'
+import { useRouter } from 'next/navigation';
+import { Clapperboard, Music, UtensilsCrossed, Camera, Lightbulb, LayoutGrid } from 'lucide-react';
 
 const categories = [
   { name: 'Producción', slug: 'produccion', icon: Clapperboard },
@@ -17,23 +10,23 @@ const categories = [
   { name: 'Fotografía', slug: 'fotografia', icon: Camera },
   { name: 'Iluminación', slug: 'iluminacion', icon: Lightbulb },
   { name: 'Ver todas', slug: 'all', icon: LayoutGrid },
-]
+];
 
 export function HomeCategories() {
-  const router = useRouter()
+  const router = useRouter();
 
   function handleCategoryClick(slug: string) {
     if (slug === 'all') {
-      router.push('/search')
+      router.push('/search');
     } else {
-      router.push(`/search?category=${slug}`)
+      router.push(`/search?category=${slug}`);
     }
   }
 
   return (
     <div className="flex flex-wrap gap-2 sm:gap-2.5">
       {categories.map((category) => {
-        const Icon = category.icon
+        const Icon = category.icon;
         return (
           <button
             key={category.slug}
@@ -43,8 +36,8 @@ export function HomeCategories() {
             <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {category.name}
           </button>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

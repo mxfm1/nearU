@@ -1,39 +1,38 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Mail, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { ProfileAvatar } from './profile-avatar'
-import { ChangeEmailDialog } from './change-email-dialog'
-import { authApi } from '@/lib/api-client'
-import type { User } from '@/lib/api-client'
+import { useState } from 'react';
+import { Mail, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { ProfileAvatar } from './profile-avatar';
+import { ChangeEmailDialog } from './change-email-dialog';
+import { authApi } from '@/lib/api-client';
+import type { User } from '@/lib/api-client';
 
 interface AccountSectionProps {
-  user: User
+  user: User;
 }
 
 export function AccountSection({ user }: AccountSectionProps) {
-  const [isSending, setIsSending] = useState(false)
-  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle')
+  const [isSending, setIsSending] = useState(false);
+  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const isVerified = user.emailVerified
-
+  const isVerified = user.emailVerified;
 
   async function handleSendVerification() {
-    setIsSending(true)
-    setFeedback('idle')
+    setIsSending(true);
+    setFeedback('idle');
 
     try {
-      await authApi.sendVerificationEmail(user.email, window.location.origin)
-      setFeedback('success')
-      setTimeout(() => setFeedback('idle'), 5000)
+      await authApi.sendVerificationEmail(user.email, window.location.origin);
+      setFeedback('success');
+      setTimeout(() => setFeedback('idle'), 5000);
     } catch {
-      setFeedback('error')
+      setFeedback('error');
     } finally {
-      setIsSending(false)
+      setIsSending(false);
     }
   }
 
@@ -106,5 +105,5 @@ export function AccountSection({ user }: AccountSectionProps) {
         </CardContent>
       </Card>
     </section>
-  )
+  );
 }

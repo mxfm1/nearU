@@ -1,10 +1,10 @@
-import { Suspense } from 'react'
-import { ApplicationScoreForm } from '@/app/crear/evento/[id]/_components/application-score-form'
+import { Suspense } from 'react';
+import { ApplicationScoreForm } from '@/app/crear/evento/[id]/_components/application-score-form';
 
 interface ScoreRulesPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function ScoreRulesPage({ params }: ScoreRulesPageProps) {
@@ -12,9 +12,7 @@ export default function ScoreRulesPage({ params }: ScoreRulesPageProps) {
     <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">
-            Configuración de Reglas de Puntaje
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Configuración de Reglas de Puntaje</h1>
         </div>
 
         <Suspense
@@ -28,5 +26,5 @@ export default function ScoreRulesPage({ params }: ScoreRulesPageProps) {
         </Suspense>
       </div>
     </div>
-  )
+  );
 }

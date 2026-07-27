@@ -1,31 +1,31 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { contactosApi } from '@/lib/contactos-api'
-import { InboxSkeleton } from './inbox-skeleton'
-import { InboxError } from './inbox-error'
-import { InboxHeader } from './inbox-header'
-import { InboxList } from './inbox-list'
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { contactosApi } from '@/lib/contactos-api';
+import { InboxSkeleton } from './inbox-skeleton';
+import { InboxError } from './inbox-error';
+import { InboxHeader } from './inbox-header';
+import { InboxList } from './inbox-list';
 
 export function InboxContent() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['contactos-inbox'],
     queryFn: () => contactosApi.inbox(),
-  })
+  });
 
-  const messages = data?.data ?? []
+  const messages = data?.data ?? [];
 
   const handleSearchChange = (value: string) => {
-    setSearchQuery(value)
-    setCurrentPage(1)
-  }
+    setSearchQuery(value);
+    setCurrentPage(1);
+  };
 
-  if (isLoading) return <InboxSkeleton />
-  if (isError) return <InboxError error={error} />
+  if (isLoading) return <InboxSkeleton />;
+  if (isError) return <InboxError error={error} />;
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,5 +39,5 @@ export function InboxContent() {
         />
       </div>
     </div>
-  )
+  );
 }

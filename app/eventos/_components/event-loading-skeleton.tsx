@@ -12,10 +12,7 @@ export function EventLoadingSkeleton() {
             {/* Metrics Row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-card p-4 md:p-6 rounded-2xl border border-border"
-                >
+                <div key={i} className="bg-card p-4 md:p-6 rounded-2xl border border-border">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-muted mb-2 md:mb-3 animate-pulse" />
                   <div className="h-3 w-16 bg-muted rounded mb-1 animate-pulse" />
                   <div className="h-5 w-12 bg-muted rounded animate-pulse" />
@@ -83,5 +80,5 @@ export function EventLoadingSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }

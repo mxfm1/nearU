@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { User } from 'lucide-react'
+import { User } from 'lucide-react';
 
 interface ProfileAvatarProps {
   /** URL de la imagen del usuario. Si es undefined/null, muestra un fallback de usuario vacío. */
-  image?: string | null
+  image?: string | null;
   /** Nombre del usuario para el atributo alt */
-  name?: string
+  name?: string;
 }
 
 /**
@@ -18,11 +18,7 @@ export function ProfileAvatar({ image, name }: ProfileAvatarProps) {
     <div className="relative group cursor-pointer">
       <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center overflow-hidden">
         {image ? (
-          <img
-            src={image}
-            alt={name ?? 'Foto de perfil'}
-            className="w-full h-full object-cover"
-          />
+          <img src={image} alt={name ?? 'Foto de perfil'} className="w-full h-full object-cover" />
         ) : (
           <div className="flex items-center justify-center w-full h-full text-muted-foreground">
             <User className="h-8 w-8" />
@@ -33,5 +29,5 @@ export function ProfileAvatar({ image, name }: ProfileAvatarProps) {
         <span className="text-white text-xs font-medium">Cambiar</span>
       </div>
     </div>
-  )
+  );
 }

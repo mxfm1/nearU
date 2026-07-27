@@ -1,86 +1,85 @@
-'use client'
+'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { Search } from 'lucide-react'
-import type { ConversationListItem } from '@/lib/mensajes-api'
-import { fadeInUp, type FilterType } from './constants'
-import { MensajesListCard } from './mensajes-list-card'
-import { MensajesListError } from './mensajes-list-error'
-import { MensajesListEmpty } from './mensajes-list-empty'
-import { type UseMensajesListResult } from '@/hooks/use-mensajes-list'
-import Loading from './loading'
+import { useRouter, useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Search } from 'lucide-react';
+import type { ConversationListItem } from '@/lib/mensajes-api';
+import { fadeInUp, type FilterType } from './constants';
+import { MensajesListCard } from './mensajes-list-card';
+import { MensajesListError } from './mensajes-list-error';
+import { MensajesListEmpty } from './mensajes-list-empty';
+import { type UseMensajesListResult } from '@/hooks/use-mensajes-list';
+import Loading from './loading';
 
 interface MensajesListContentProps {
-  result: UseMensajesListResult
+  result: UseMensajesListResult;
 }
 
 export function MensajesListContent({ result }: MensajesListContentProps) {
-  const { data, isPending, isError, error, refetch } = result
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const currentFilter = (searchParams.get('filter') as FilterType) || 'all'
-  const searchQuery = searchParams.get('q') || ''
+  const { data, isPending, isError, error, refetch } = result;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentFilter = (searchParams.get('filter') as FilterType) || 'all';
+  const searchQuery = searchParams.get('q') || '';
 
-
-  const conversations = data || []
+  const conversations = data || [];
 
   if (isPending) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (isError) {
     return (
       <MensajesListError
         error={error instanceof Error ? error : new Error('Error desconocido')}
-        onRetry={refetch ?? (() => { })}
+        onRetry={refetch ?? (() => {})}
       />
-    )
+    );
   }
 
   if (conversations.length === 0) {
-    return <MensajesListEmpty />
+    return <MensajesListEmpty />;
   }
 
   // Filtrar conversaciones
   const filteredConversations = conversations.filter((conv) => {
     // Filtro por búsqueda
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      const matchesOrganizer = conv.organizerName.toLowerCase().includes(query)
-      const matchesApplicant = conv.applicantName.toLowerCase().includes(query)
-      const matchesEvent = conv.applicationTitle.toLowerCase().includes(query)
+      const query = searchQuery.toLowerCase();
+      const matchesOrganizer = conv.organizerName.toLowerCase().includes(query);
+      const matchesApplicant = conv.applicantName.toLowerCase().includes(query);
+      const matchesEvent = conv.applicationTitle.toLowerCase().includes(query);
       if (!matchesOrganizer && !matchesApplicant && !matchesEvent) {
-        return false
+        return false;
       }
     }
     // Filtro por tabs
     if (currentFilter === 'unread' && conv.unreadCount === 0) {
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 
   // Actualizar URL con filtros
   const updateFilter = (filter: FilterType) => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString());
     if (filter === 'all') {
-      params.delete('filter')
+      params.delete('filter');
     } else {
-      params.set('filter', filter)
+      params.set('filter', filter);
     }
-    router.replace(`/user/mensajes?${params.toString()}`)
-  }
+    router.replace(`/user/mensajes?${params.toString()}`);
+  };
 
   const updateSearch = (query: string) => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams.toString());
     if (query) {
-      params.set('q', query)
+      params.set('q', query);
     } else {
-      params.delete('q')
+      params.delete('q');
     }
-    router.replace(`/user/mensajes?${params.toString()}`)
-  }
+    router.replace(`/user/mensajes?${params.toString()}`);
+  };
 
   return (
     <motion.div {...fadeInUp} className="flex flex-col h-full">
@@ -100,28 +99,31 @@ export function MensajesListContent({ result }: MensajesListContentProps) {
           <div className="flex bg-muted/50 p-1 rounded-xl w-full md:w-auto">
             <button
               onClick={() => updateFilter('all')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${currentFilter === 'all'
-                ? 'bg-card text-primary shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                currentFilter === 'all'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
               Todos
             </button>
             <button
               onClick={() => updateFilter('unread')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${currentFilter === 'unread'
-                ? 'bg-card text-primary shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                currentFilter === 'unread'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
               No leídos
             </button>
             <button
               onClick={() => updateFilter('events')}
-              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${currentFilter === 'events'
-                ? 'bg-card text-primary shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-                }`}
+              className={`flex-1 md:flex-none px-4 md:px-6 py-2 rounded-lg text-sm font-medium transition-all ${
+                currentFilter === 'events'
+                  ? 'bg-card text-primary shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
               Eventos
             </button>
@@ -151,14 +153,10 @@ export function MensajesListContent({ result }: MensajesListContentProps) {
           </div>
         ) : (
           filteredConversations.map((conversation, index) => (
-            <MensajesListCard
-              key={conversation.id}
-              conversation={conversation}
-              index={index}
-            />
+            <MensajesListCard key={conversation.id} conversation={conversation} index={index} />
           ))
         )}
       </div>
     </motion.div>
-  )
+  );
 }

@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { MapPin, BadgeCheck } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
+import Link from 'next/link';
+import Image from 'next/image';
+import { MapPin, BadgeCheck } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 interface ProviderCardProps {
-  name: string
-  category: string
-  verified: boolean
-  location: string
-  thumbnail: string
-  slug: string
+  name: string;
+  category: string;
+  verified: boolean;
+  location: string;
+  thumbnail: string;
+  slug: string;
 }
 
 export function ProviderCard({
@@ -28,7 +28,7 @@ export function ProviderCard({
       href={`/servicios/${slug}`}
       className={cn(
         'group block w-[300px] bg-card rounded-md overflow-hidden',
-        'shadow-sm hover:shadow-md transition-shadow duration-300',
+        'shadow-sm hover:shadow-md transition-shadow duration-300'
       )}
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
@@ -47,18 +47,14 @@ export function ProviderCard({
             {name}
           </h4>
           {verified && (
-            <Badge
-              className="flex-shrink-0 bg-accent text-accent-foreground border-0 gap-1 text-xs font-medium px-2 py-0.5"
-            >
+            <Badge className="flex-shrink-0 bg-accent text-accent-foreground border-0 gap-1 text-xs font-medium px-2 py-0.5">
               <BadgeCheck className="h-3.5 w-3.5" />
               Verificado
             </Badge>
           )}
         </div>
 
-        <p className="text-[15px] text-muted-foreground leading-snug">
-          {category}
-        </p>
+        <p className="text-[15px] text-muted-foreground leading-snug">{category}</p>
 
         <div className="flex items-center gap-1.5 text-muted-foreground">
           <MapPin className="h-4 w-4 flex-shrink-0" />
@@ -66,5 +62,5 @@ export function ProviderCard({
         </div>
       </div>
     </Link>
-  )
+  );
 }

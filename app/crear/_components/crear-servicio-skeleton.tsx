@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
 const steps = [
   { id: 'brand-essentials', label: 'Información General', number: '01' },
   { id: 'portfolio-narrative', label: 'Detalles del servicio', number: '02' },
   { id: 'service-details', label: 'Contacto', number: '03' },
-]
+];
 
 export function CrearServicioSkeleton() {
   return (
@@ -73,5 +73,5 @@ export function CrearServicioSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -2,28 +2,24 @@
 // Maps backend ruleType → frontend input configuration
 // Used by the application form to dynamically render the correct input type
 
-export type InputType = 'toggle' | 'number' | 'text' | 'select' | 'auto'
+export type InputType = 'toggle' | 'number' | 'text' | 'select' | 'auto';
 
 export type RuleFieldConfig = {
-  ruleType: string
-  inputType: InputType
-  label: string
-  placeholder?: string
-  description?: string
-  group: 'perfil' | 'ubicacion' | 'historial' | 'premium' | 'custom'
-  autoEvaluate: boolean
-  min?: number
-  max?: number
-  step?: number
-  options?: { label: string; value: string | number }[]
-}
+  ruleType: string;
+  inputType: InputType;
+  label: string;
+  placeholder?: string;
+  description?: string;
+  group: 'perfil' | 'ubicacion' | 'historial' | 'premium' | 'custom';
+  autoEvaluate: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  options?: { label: string; value: string | number }[];
+};
 
 // --- Auto-evaluated rules (not rendered in form) ---
-const AUTO_EVALUATED_RULES = new Set([
-  'VERIFIED_PROFILE',
-  'SAME_REGION',
-  'IS_PREMIUM_COMPANY',
-])
+const AUTO_EVALUATED_RULES = new Set(['VERIFIED_PROFILE', 'SAME_REGION', 'IS_PREMIUM_COMPANY']);
 
 // --- Rule configurations ---
 const rulesConfig: Record<string, Omit<RuleFieldConfig, 'ruleType'>> = {
@@ -137,18 +133,18 @@ const rulesConfig: Record<string, Omit<RuleFieldConfig, 'ruleType'>> = {
     group: 'custom',
     autoEvaluate: false,
   },
-}
+};
 
 // --- Helper functions ---
 
 export function isAutoEvaluated(ruleType: string): boolean {
-  return AUTO_EVALUATED_RULES.has(ruleType)
+  return AUTO_EVALUATED_RULES.has(ruleType);
 }
 
 export function getRuleFieldConfig(ruleType: string): RuleFieldConfig {
-  const config = rulesConfig[ruleType]
+  const config = rulesConfig[ruleType];
   if (config) {
-    return { ruleType, ...config }
+    return { ruleType, ...config };
   }
 
   // Fallback for unknown rule types
@@ -159,18 +155,16 @@ export function getRuleFieldConfig(ruleType: string): RuleFieldConfig {
     placeholder: 'Ingresa tu respuesta',
     group: 'custom',
     autoEvaluate: false,
-  }
+  };
 }
 
 export function getRenderableRules(ruleTypes: string[]): RuleFieldConfig[] {
-  return ruleTypes
-    .filter((rt) => !isAutoEvaluated(rt))
-    .map(getRuleFieldConfig)
+  return ruleTypes.filter((rt) => !isAutoEvaluated(rt)).map(getRuleFieldConfig);
 }
 
 function formatRuleType(ruleType: string): string {
   return ruleType
     .split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ')
+    .join(' ');
 }

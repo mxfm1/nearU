@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { Shield, Calendar, Star } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { Shield, Calendar, Star } from 'lucide-react';
 
 const stats = [
   {
@@ -19,7 +19,7 @@ const stats = [
     number: '98%',
     label: 'Satisfacción de clientes',
   },
-]
+];
 
 const containerVariants = {
   initial: {},
@@ -28,16 +28,16 @@ const containerVariants = {
       staggerChildren: 0.15,
     },
   },
-}
+};
 
 const itemVariants = {
   initial: { opacity: 0, y: 20 },
-  animate: { 
-    opacity: 1, 
+  animate: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.5, ease: 'easeOut' as const },
   },
-}
+};
 
 export function HomeStats() {
   return (
@@ -51,7 +51,7 @@ export function HomeStats() {
           viewport={{ once: true, margin: '-50px' }}
         >
           {stats.map((stat, index) => {
-            const Icon = stat.icon
+            const Icon = stat.icon;
             return (
               <motion.div
                 key={index}
@@ -63,14 +63,16 @@ export function HomeStats() {
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-500" />
                 </div>
                 <div>
-                  <div className="text-xl sm:text-2xl font-bold text-text-primary">{stat.number}</div>
+                  <div className="text-xl sm:text-2xl font-bold text-text-primary">
+                    {stat.number}
+                  </div>
                   <div className="text-xs sm:text-sm text-text-secondary">{stat.label}</div>
                 </div>
               </motion.div>
-            )
+            );
           })}
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

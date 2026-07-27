@@ -28,7 +28,10 @@ export function UserEventApplicationsSkeleton() {
 
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-card rounded-xl border border-border p-5 flex items-center gap-6">
+            <div
+              key={i}
+              className="bg-card rounded-xl border border-border p-5 flex items-center gap-6"
+            >
               <div className="w-20 h-20 rounded-xl bg-muted animate-pulse shrink-0" />
               <div className="flex-grow space-y-2">
                 <div className="h-5 w-48 bg-muted rounded animate-pulse" />
@@ -43,5 +46,5 @@ export function UserEventApplicationsSkeleton() {
         </div>
       </main>
     </div>
-  )
+  );
 }

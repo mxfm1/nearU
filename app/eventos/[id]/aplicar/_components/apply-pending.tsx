@@ -1,28 +1,28 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { Clock, Shield, ArrowRight, HelpCircle, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Clock, Shield, ArrowRight, HelpCircle, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ApplyPendingProps {
-  eventId: string
+  eventId: string;
 }
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5, ease: 'easeOut' },
-}
+};
 
 const staggerContainer = {
   animate: { transition: { staggerChildren: 0.1 } },
-}
+};
 
 const staggerItem = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-}
+};
 
 export function ApplyPending({ eventId }: ApplyPendingProps) {
   return (
@@ -56,15 +56,12 @@ export function ApplyPending({ eventId }: ApplyPendingProps) {
               variants={staggerItem}
               className="text-base text-muted-foreground leading-relaxed max-w-lg"
             >
-              Estamos revisando tu perfil y portafolio para asegurar el mejor resultado.
-              Te notificaremos pronto por email y a través de tu panel de control.
+              Estamos revisando tu perfil y portafolio para asegurar el mejor resultado. Te
+              notificaremos pronto por email y a través de tu panel de control.
             </motion.p>
 
             {/* Info Cards */}
-            <motion.div
-              variants={staggerItem}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-            >
+            <motion.div variants={staggerItem} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-start gap-3 p-4 rounded-xl bg-muted/50 border border-border">
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <Clock className="h-5 w-5 text-primary" />
@@ -87,25 +84,14 @@ export function ApplyPending({ eventId }: ApplyPendingProps) {
             </motion.div>
 
             {/* Action Buttons */}
-            <motion.div
-              variants={staggerItem}
-              className="flex flex-col sm:flex-row gap-3 pt-4"
-            >
-              <Button
-                variant="outline"
-                className="flex-1 sm:flex-none"
-                asChild
-              >
+            <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-3 pt-4">
+              <Button variant="outline" className="flex-1 sm:flex-none" asChild>
                 <Link href={`/eventos/${eventId}`}>
                   Ver mi Perfil
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Link>
               </Button>
-              <Button
-                variant="outline"
-                className="flex-1 sm:flex-none"
-                asChild
-              >
+              <Button variant="outline" className="flex-1 sm:flex-none" asChild>
                 {/* <Link href="/soporte">
                   <HelpCircle className="h-4 w-4 mr-2" />
                   Contactar Soporte
@@ -154,9 +140,7 @@ export function ApplyPending({ eventId }: ApplyPendingProps) {
                     <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
                   </div>
 
-                  <h3 className="text-lg font-bold text-foreground mb-2">
-                    EN PROGRESO
-                  </h3>
+                  <h3 className="text-lg font-bold text-foreground mb-2">EN PROGRESO</h3>
                   <p className="text-sm text-muted-foreground text-center">
                     El sistema está analizando tu perfil
                   </p>
@@ -187,5 +171,5 @@ export function ApplyPending({ eventId }: ApplyPendingProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
 export type APIResponse<T> = {
-    success: boolean,
-    data: T
-}
+  success: boolean;
+  data: T;
+};

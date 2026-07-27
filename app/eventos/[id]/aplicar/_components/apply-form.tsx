@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import {
   Loader2,
   AlertCircle,
@@ -15,8 +15,8 @@ import {
   CheckCircle,
   ShieldCheck,
   User,
-} from 'lucide-react'
-import toast from 'react-hot-toast'
+} from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import {
   Form,
@@ -25,70 +25,73 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
-import { Button } from '@/components/ui/button'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
 
-import { ApplicationFormSchema, type ApplicationFormValues } from '@/components/forms/schemas'
-import { applicationsApi } from '@/lib/applications-api'
-import type { RuleFieldConfig } from '@/lib/domain/application-rules'
+import { ApplicationFormSchema, type ApplicationFormValues } from '@/components/forms/schemas';
+import { applicationsApi } from '@/lib/applications-api';
+import type { RuleFieldConfig } from '@/lib/domain/application-rules';
 
-import { ApplyStepper } from './apply-stepper'
-import { ApplyPending } from './apply-pending'
-import { ApplyResult } from './apply-result'
-import type { ApplicationStatus } from '@/lib/applications-api'
+import { ApplyStepper } from './apply-stepper';
+import { ApplyPending } from './apply-pending';
+import { ApplyResult } from './apply-result';
+import type { ApplicationStatus } from '@/lib/applications-api';
 
 interface ApplyFormProps {
-  eventId: string
-  eventTitle: string
+  eventId: string;
+  eventTitle: string;
 }
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.4 },
-}
+};
 
 export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
-  const [submitError, setSubmitError] = useState<string | null>(null)
-  const [currentStep, setCurrentStep] = useState(0)
-  const [applicationId, setApplicationId] = useState<string | null>(null)
-  const [applicationStatus, setApplicationStatus] = useState<ApplicationStatus | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [applicationId, setApplicationId] = useState<string | null>(null);
+  const [applicationStatus, setApplicationStatus] = useState<ApplicationStatus | null>(null);
 
   // Check if user already has an application for this event
   const { data: existingAppRes, isLoading: checkingExisting } = useQuery({
     queryKey: ['my-application', eventId],
     queryFn: () => applicationsApi.getMyApplicationByEventId(eventId),
     retry: false,
-  })
+  });
 
-  const existingApplication = existingAppRes?.data
+  const existingApplication = existingAppRes?.data;
 
   // If application exists, set step based on status
   useEffect(() => {
     if (existingApplication) {
-      setApplicationId(existingApplication.id ?? null)
-      setApplicationStatus((existingApplication.status as ApplicationStatus) ?? null)
+      setApplicationId(existingApplication.id ?? null);
+      setApplicationStatus((existingApplication.status as ApplicationStatus) ?? null);
       if (existingApplication.status === 'pending') {
-        setCurrentStep(1)
+        setCurrentStep(1);
       } else if (existingApplication.status === 'reviewing') {
-        setCurrentStep(2)
-      } else if (existingApplication.status === 'accepted' || existingApplication.status === 'rejected') {
-        setCurrentStep(3) // Result phase
+        setCurrentStep(2);
+      } else if (
+        existingApplication.status === 'accepted' ||
+        existingApplication.status === 'rejected'
+      ) {
+        setCurrentStep(3); // Result phase
       } else {
-        setCurrentStep(2)
+        setCurrentStep(2);
       }
     }
-  }, [existingApplication])
+  }, [existingApplication]);
 
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(ApplicationFormSchema),
     defaultValues: {
       coverLetter: '',
     },
-  })
+  });
 
   // Mutation
   const mutation = useMutation({
@@ -98,23 +101,23 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
         coverLetter: payload.coverLetter || undefined,
       }),
     onSuccess: (res) => {
-      setSubmitError(null)
-      setApplicationId(res.data.id ?? null)
+      setSubmitError(null);
+      setApplicationId(res.data.id ?? null);
       toast.success('¡Postulación enviada con éxito!', {
         duration: 3000,
         icon: '🎉',
-      })
+      });
       setTimeout(() => {
-        setCurrentStep(1)
-      }, 2000)
+        setCurrentStep(1);
+      }, 2000);
     },
     onError: (error: Error) => {
-      setSubmitError(error.message || 'Error al enviar la postulación')
+      setSubmitError(error.message || 'Error al enviar la postulación');
     },
-  })
+  });
 
   function handleSubmit(data: ApplicationFormValues) {
-    mutation.mutate(data)
+    mutation.mutate(data);
   }
 
   if (checkingExisting) {
@@ -122,7 +125,7 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
-    )
+    );
   }
 
   return (
@@ -155,7 +158,9 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
             className="mb-6 p-4 rounded-md bg-amber-50 border border-amber-200"
           >
             <p className="text-sm text-amber-800">
-              <span className="font-medium">Tu postulación depende de cómo esté configurado tu perfil.</span>{' '}
+              <span className="font-medium">
+                Tu postulación depende de cómo esté configurado tu perfil.
+              </span>{' '}
               Te recomendamos completarlo para tener una mejor experiencia.
             </p>
           </motion.div>
@@ -175,8 +180,8 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
                 Postulación al Evento
               </h1>
               <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-                Tus respuestas serán tratadas con reservas y se usarán con ningún otro medio
-                que no sea el de contactarte. Lee nuestros{' '}
+                Tus respuestas serán tratadas con reservas y se usarán con ningún otro medio que no
+                sea el de contactarte. Lee nuestros{' '}
                 <Link href="/terminos" className="text-primary underline">
                   Términos y Condiciones
                 </Link>
@@ -215,7 +220,6 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
                             <FormLabel className="text-sm font-medium text-foreground">
                               Carta de presentación (opcional)
                             </FormLabel>
-
                           </div>
                           <FormControl>
                             <Textarea
@@ -233,7 +237,6 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
                       )}
                     />
                   </motion.div>
-
                 </div>
 
                 {/* Action Buttons */}
@@ -260,7 +263,6 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
                       </>
                     )}
                   </Button>
-
                 </motion.div>
               </form>
             </Form>
@@ -268,9 +270,7 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
         )}
 
         {/* Step 1: Pending / Verification */}
-        {currentStep === 1 && (
-          <ApplyPending eventId={eventId} />
-        )}
+        {currentStep === 1 && <ApplyPending eventId={eventId} />}
 
         {/* Step 2: Reviewing */}
         {currentStep === 2 && (
@@ -283,12 +283,10 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 mx-auto mb-6">
               <CheckCircle className="h-8 w-8 text-emerald-600" />
             </div>
-            <h2 className="text-xl font-bold text-foreground mb-2">
-              ¡Postulación completada!
-            </h2>
+            <h2 className="text-xl font-bold text-foreground mb-2">¡Postulación completada!</h2>
             <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-              Tu postulación fue evaluada. El organizador del evento revisará tu perfil
-              y te contactará si sos seleccionado.
+              Tu postulación fue evaluada. El organizador del evento revisará tu perfil y te
+              contactará si sos seleccionado.
             </p>
             <Button variant="outline" asChild>
               <Link href={`/eventos/${eventId}`}>
@@ -301,11 +299,7 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
 
         {/* Step 3: Result (accepted/rejected) */}
         {currentStep === 3 && applicationStatus && (
-          <ApplyResult
-            status={applicationStatus}
-            eventTitle={eventTitle}
-            eventId={eventId}
-          />
+          <ApplyResult status={applicationStatus} eventTitle={eventTitle} eventId={eventId} />
         )}
 
         {/* Trust Badges - only on step 0 */}
@@ -342,18 +336,18 @@ export function ApplyForm({ eventId, eventTitle }: ApplyFormProps) {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 // --- Individual Rule Field Component ---
 
 interface RuleFieldProps {
-  rule: RuleFieldConfig
-  form: ReturnType<typeof useForm<ApplicationFormValues>>
+  rule: RuleFieldConfig;
+  form: ReturnType<typeof useForm<ApplicationFormValues>>;
 }
 
 function RuleField({ rule, form }: RuleFieldProps) {
-  const fieldName = `scoringFieldValues.${rule.ruleType}` as keyof ApplicationFormValues
+  const fieldName = `scoringFieldValues.${rule.ruleType}` as keyof ApplicationFormValues;
 
   switch (rule.inputType) {
     case 'toggle':
@@ -364,23 +358,18 @@ function RuleField({ rule, form }: RuleFieldProps) {
           render={({ field }) => (
             <FormItem className="flex items-center justify-between rounded-lg border border-border p-4">
               <div className="space-y-0.5">
-                <FormLabel className="text-sm font-medium text-foreground">
-                  {rule.label}
-                </FormLabel>
+                <FormLabel className="text-sm font-medium text-foreground">{rule.label}</FormLabel>
                 {rule.description && (
                   <p className="text-xs text-muted-foreground">{rule.description}</p>
                 )}
               </div>
               <FormControl>
-                <Switch
-                  checked={!!field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Switch checked={!!field.value} onCheckedChange={field.onChange} />
               </FormControl>
             </FormItem>
           )}
         />
-      )
+      );
 
     case 'number':
       return (
@@ -389,9 +378,7 @@ function RuleField({ rule, form }: RuleFieldProps) {
           name={fieldName}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-medium text-foreground">
-                {rule.label}
-              </FormLabel>
+              <FormLabel className="text-sm font-medium text-foreground">{rule.label}</FormLabel>
               <FormControl>
                 <Input
                   type="text"
@@ -399,13 +386,13 @@ function RuleField({ rule, form }: RuleFieldProps) {
                   placeholder={rule.placeholder}
                   value={!field.value ? '' : String(field.value)}
                   onChange={(e) => {
-                    const val = e.target.value
+                    const val = e.target.value;
                     if (val === '') {
-                      field.onChange('' as never)
+                      field.onChange('' as never);
                     } else {
-                      const num = Number(val)
+                      const num = Number(val);
                       if (!isNaN(num)) {
-                        field.onChange(num as never)
+                        field.onChange(num as never);
                       }
                     }
                   }}
@@ -415,7 +402,7 @@ function RuleField({ rule, form }: RuleFieldProps) {
             </FormItem>
           )}
         />
-      )
+      );
 
     case 'text':
     default:
@@ -425,9 +412,7 @@ function RuleField({ rule, form }: RuleFieldProps) {
           name={fieldName}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm font-medium text-foreground">
-                {rule.label}
-              </FormLabel>
+              <FormLabel className="text-sm font-medium text-foreground">{rule.label}</FormLabel>
               <FormControl>
                 <Input
                   type="text"
@@ -440,6 +425,6 @@ function RuleField({ rule, form }: RuleFieldProps) {
             </FormItem>
           )}
         />
-      )
+      );
   }
 }

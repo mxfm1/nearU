@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { Search, Shield, Calendar } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { Search, Shield, Calendar } from 'lucide-react';
 
 const steps = [
   {
@@ -22,7 +22,7 @@ const steps = [
     description: 'Coordina, reserva y haz de tu evento un momento inolvidable.',
     icon: Calendar,
   },
-]
+];
 
 const containerVariants = {
   initial: {},
@@ -31,30 +31,30 @@ const containerVariants = {
       staggerChildren: 0.2,
     },
   },
-}
+};
 
 const itemVariants = {
   initial: { opacity: 0, y: 30 },
-  animate: { 
-    opacity: 1, 
+  animate: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.6, ease: 'easeOut' as const },
   },
-}
+};
 
 const iconVariants = {
   initial: { scale: 0, rotate: -180 },
-  animate: { 
-    scale: 1, 
+  animate: {
+    scale: 1,
     rotate: 0,
-    transition: { 
-      type: 'spring' as const, 
-      stiffness: 200, 
+    transition: {
+      type: 'spring' as const,
+      stiffness: 200,
       damping: 15,
       delay: 0.3,
     },
   },
-}
+};
 
 export function HomeHowItWorks() {
   return (
@@ -94,15 +94,11 @@ export function HomeHowItWorks() {
           >
             <div className="w-full h-full border-t-2 border-dashed border-brand-300" />
           </motion.div>
-          
+
           {steps.map((step, index) => {
-            const Icon = step.icon
+            const Icon = step.icon;
             return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="text-center relative"
-              >
+              <motion.div key={index} variants={itemVariants} className="text-center relative">
                 {/* Icon circle */}
                 <motion.div
                   variants={iconVariants}
@@ -110,7 +106,7 @@ export function HomeHowItWorks() {
                 >
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-brand-500" />
                 </motion.div>
-                
+
                 {/* Step number and title */}
                 <div className="mb-2 sm:mb-3">
                   <h3 className="text-base sm:text-lg font-bold text-text-primary">
@@ -118,16 +114,16 @@ export function HomeHowItWorks() {
                     {step.title}
                   </h3>
                 </div>
-                
+
                 {/* Description */}
                 <p className="text-xs sm:text-sm text-text-secondary max-w-xs mx-auto">
                   {step.description}
                 </p>
               </motion.div>
-            )
+            );
           })}
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

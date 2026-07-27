@@ -1,41 +1,39 @@
-'use client'
+'use client';
 
-import { useState, useRef } from 'react'
-import Image from 'next/image'
-import {
-  Loader2, AlertCircle, CheckCircle2, Camera, ImageIcon,
-} from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { uploadFiles } from '@/lib/uploadthing'
-import { cn } from '@/lib/utils'
+import { useState, useRef } from 'react';
+import Image from 'next/image';
+import { Loader2, AlertCircle, CheckCircle2, Camera, ImageIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { uploadFiles } from '@/lib/uploadthing';
+import { cn } from '@/lib/utils';
 
-export type UploadRoute = 'eventThumbnail' | 'eventBanner'
+export type UploadRoute = 'eventThumbnail' | 'eventBanner';
 
 interface SingleImageUploadProps {
-  label: string
-  value: string
-  onChange: (url: string) => void
-  route: UploadRoute
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  route: UploadRoute;
 }
 
 export function SingleImageUpload({ label, value, onChange, route }: SingleImageUploadProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [uploading, setUploading] = useState(false)
-  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle')
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [feedback, setFeedback] = useState<'idle' | 'success' | 'error'>('idle');
 
   async function handleUpload(file: File) {
-    setUploading(true)
-    setFeedback('idle')
+    setUploading(true);
+    setFeedback('idle');
     try {
-      const [result] = await uploadFiles(route, { files: [file] })
-      onChange(result.url)
-      setFeedback('success')
-      setTimeout(() => setFeedback('idle'), 3000)
+      const [result] = await uploadFiles(route, { files: [file] });
+      onChange(result.url);
+      setFeedback('success');
+      setTimeout(() => setFeedback('idle'), 3000);
     } catch {
-      setFeedback('error')
+      setFeedback('error');
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
@@ -46,7 +44,7 @@ export function SingleImageUpload({ label, value, onChange, route }: SingleImage
         className={cn(
           'relative rounded-xl overflow-hidden border-2 border-dashed transition-all duration-200',
           'group cursor-pointer',
-          value ? 'border-border' : 'border-muted-foreground/20 hover:border-primary/50',
+          value ? 'border-border' : 'border-muted-foreground/20 hover:border-primary/50'
         )}
         onClick={() => !uploading && inputRef.current?.click()}
       >
@@ -90,15 +88,17 @@ export function SingleImageUpload({ label, value, onChange, route }: SingleImage
           accept="image/*"
           disabled={uploading}
           onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) handleUpload(file)
-            e.target.value = ''
+            const file = e.target.files?.[0];
+            if (file) handleUpload(file);
+            e.target.value = '';
           }}
         />
       </div>
       {value && (
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground truncate max-w-[200px]">Imagen subida</span>
+          <span className="text-xs text-muted-foreground truncate max-w-[200px]">
+            Imagen subida
+          </span>
           <Button
             type="button"
             variant="ghost"
@@ -111,5 +111,5 @@ export function SingleImageUpload({ label, value, onChange, route }: SingleImage
         </div>
       )}
     </div>
-  )
+  );
 }

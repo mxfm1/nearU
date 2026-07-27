@@ -1,149 +1,146 @@
-'use client'
+'use client';
 
-import { useState, useRef } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
-import { Send, Paperclip, Image } from 'lucide-react'
-import { uploadFiles } from '@/lib/uploadthing'
-import { mensajesApi, type Attachment, type MessageType } from '@/lib/mensajes-api'
-import { AttachmentPreview } from './mensajes-attachment-preview'
+import { useState, useRef } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { Send, Paperclip, Image } from 'lucide-react';
+import { uploadFiles } from '@/lib/uploadthing';
+import { mensajesApi, type Attachment, type MessageType } from '@/lib/mensajes-api';
+import { AttachmentPreview } from './mensajes-attachment-preview';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5 },
-}
+};
 
 interface MensajesInputProps {
-  threadId: string
+  threadId: string;
 }
 
 interface PendingFile {
-  file: File
-  preview: string
+  file: File;
+  preview: string;
 }
 
 export function MensajesInput({ threadId }: MensajesInputProps) {
-  const [message, setMessage] = useState('')
-  const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([])
-  const [uploadedAttachments, setUploadedAttachments] = useState<Attachment[]>([])
-  const queryClient = useQueryClient()
-  const textInputRef = useRef<HTMLInputElement>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const imageInputRef = useRef<HTMLInputElement>(null)
+  const [message, setMessage] = useState('');
+  const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([]);
+  const [uploadedAttachments, setUploadedAttachments] = useState<Attachment[]>([]);
+  const queryClient = useQueryClient();
+  const textInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const sendMutation = useMutation({
     mutationFn: async () => {
-      let attachments = [...uploadedAttachments]
+      let attachments = [...uploadedAttachments];
 
       if (pendingFiles.length > 0) {
-        const filesToUpload = pendingFiles.map((pf) => pf.file)
-        
-        const imageFiles = filesToUpload.filter((f) => f.type.startsWith('image/'))
-        const docFiles = filesToUpload.filter((f) => !f.type.startsWith('image/'))
+        const filesToUpload = pendingFiles.map((pf) => pf.file);
+
+        const imageFiles = filesToUpload.filter((f) => f.type.startsWith('image/'));
+        const docFiles = filesToUpload.filter((f) => !f.type.startsWith('image/'));
 
         if (imageFiles.length > 0) {
-          const imageResults = await uploadFiles('messageImage', { files: imageFiles })
+          const imageResults = await uploadFiles('messageImage', { files: imageFiles });
           const newAttachments = imageResults.map((r) => ({
             url: r.url,
             type: 'IMAGE' as const,
             mimeType: r.type || 'image/jpeg',
             size: r.size || 0,
             name: r.name || 'image',
-          }))
-          attachments = [...attachments, ...newAttachments]
+          }));
+          attachments = [...attachments, ...newAttachments];
         }
 
         if (docFiles.length > 0) {
-          const docResults = await uploadFiles('messageFile', { files: docFiles })
+          const docResults = await uploadFiles('messageFile', { files: docFiles });
           const newAttachments = docResults.map((r) => ({
             url: r.url,
             type: 'FILE' as const,
             mimeType: r.type || 'application/octet-stream',
             size: r.size || 0,
             name: r.name || 'file',
-          }))
-          attachments = [...attachments, ...newAttachments]
+          }));
+          attachments = [...attachments, ...newAttachments];
         }
       }
 
-      let messageType: MessageType = 'TEXT'
+      let messageType: MessageType = 'TEXT';
       if (attachments.length > 0 && message.trim()) {
-        messageType = 'MIXED'
+        messageType = 'MIXED';
       } else if (attachments.length > 0) {
-        const firstAttachment = attachments[0]
-        messageType = firstAttachment.type === 'IMAGE' ? 'IMAGE' : 'FILE'
+        const firstAttachment = attachments[0];
+        messageType = firstAttachment.type === 'IMAGE' ? 'IMAGE' : 'FILE';
       }
 
       const payload = {
         content: message.trim() || null,
         messageType,
         attachments: attachments.length > 0 ? attachments : undefined,
-      }
+      };
 
-      return mensajesApi.sendMessage(threadId, payload)
+      return mensajesApi.sendMessage(threadId, payload);
     },
     onSuccess: () => {
-      setMessage('')
-      setPendingFiles([])
-      setUploadedAttachments([])
-      queryClient.invalidateQueries({ queryKey: ['thread-messages', threadId] })
+      setMessage('');
+      setPendingFiles([]);
+      setUploadedAttachments([]);
+      queryClient.invalidateQueries({ queryKey: ['thread-messages', threadId] });
     },
-  })
+  });
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    if (files.length === 0) return
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
     const newPendingFiles = files.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
-    }))
+    }));
 
-    setPendingFiles((prev) => [...prev, ...newPendingFiles])
-    e.target.value = ''
-  }
+    setPendingFiles((prev) => [...prev, ...newPendingFiles]);
+    e.target.value = '';
+  };
 
   const handleRemovePendingFile = (index: number) => {
     setPendingFiles((prev) => {
-      const newFiles = [...prev]
-      URL.revokeObjectURL(newFiles[index].preview)
-      newFiles.splice(index, 1)
-      return newFiles
-    })
-  }
+      const newFiles = [...prev];
+      URL.revokeObjectURL(newFiles[index].preview);
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
+  };
 
   const handleRemoveUploadedAttachment = (index: number) => {
     setUploadedAttachments((prev) => {
-      const newAttachments = [...prev]
-      newAttachments.splice(index, 1)
-      return newAttachments
-    })
-  }
+      const newAttachments = [...prev];
+      newAttachments.splice(index, 1);
+      return newAttachments;
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (sendMutation.isPending) return
-    if (!message.trim() && pendingFiles.length === 0 && uploadedAttachments.length === 0) return
-    sendMutation.mutate()
-  }
+    e.preventDefault();
+    if (sendMutation.isPending) return;
+    if (!message.trim() && pendingFiles.length === 0 && uploadedAttachments.length === 0) return;
+    sendMutation.mutate();
+  };
 
-  const isEmpty = !message.trim() && pendingFiles.length === 0 && uploadedAttachments.length === 0
+  const isEmpty = !message.trim() && pendingFiles.length === 0 && uploadedAttachments.length === 0;
 
   return (
-    <motion.div
-      {...fadeInUp}
-      className="p-3 md:p-4 bg-card border-t border-border"
-    >
+    <motion.div {...fadeInUp} className="p-3 md:p-4 bg-card border-t border-border">
       <AttachmentPreview
         attachments={uploadedAttachments}
         previews={pendingFiles.map((pf) => pf.preview)}
         files={pendingFiles.map((pf) => pf.file)}
         onRemove={(index) => {
           if (index < pendingFiles.length) {
-            handleRemovePendingFile(index)
+            handleRemovePendingFile(index);
           } else {
-            handleRemoveUploadedAttachment(index - pendingFiles.length)
+            handleRemoveUploadedAttachment(index - pendingFiles.length);
           }
         }}
         uploading={sendMutation.isPending}
@@ -217,5 +214,5 @@ export function MensajesInput({ threadId }: MensajesInputProps) {
         </motion.button>
       </form>
     </motion.div>
-  )
+  );
 }

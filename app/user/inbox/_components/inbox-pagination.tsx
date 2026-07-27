@@ -1,13 +1,18 @@
-import { Pagination } from '@/components/ui/pagination'
+import { Pagination } from '@/components/ui/pagination';
 
 interface InboxPaginationProps {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-  className?: string
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  className?: string;
 }
 
-export function InboxPagination({ currentPage, totalPages, onPageChange, className }: InboxPaginationProps) {
+export function InboxPagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+  className,
+}: InboxPaginationProps) {
   return (
     <Pagination
       currentPage={currentPage}
@@ -15,5 +20,5 @@ export function InboxPagination({ currentPage, totalPages, onPageChange, classNa
       onPageChange={onPageChange}
       className={className}
     />
-  )
+  );
 }

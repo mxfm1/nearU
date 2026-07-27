@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { AlertTriangle, RefreshCw } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5 },
-}
+};
 
 interface MensajesErrorProps {
-  error: Error
-  onRetry: () => void
+  error: Error;
+  onRetry: () => void;
 }
 
 export function MensajesError({ error, onRetry }: MensajesErrorProps) {
@@ -26,9 +26,7 @@ export function MensajesError({ error, onRetry }: MensajesErrorProps) {
             <AlertTriangle className="h-7 w-7 text-destructive" />
           </div>
         </div>
-        <h2 className="text-xl font-bold text-foreground mb-2">
-          Error al cargar
-        </h2>
+        <h2 className="text-xl font-bold text-foreground mb-2">Error al cargar</h2>
         <p className="text-sm text-muted-foreground mb-6">
           {error.message || 'No se pudieron cargar los mensajes.'}
         </p>
@@ -41,5 +39,5 @@ export function MensajesError({ error, onRetry }: MensajesErrorProps) {
         </button>
       </div>
     </motion.div>
-  )
+  );
 }

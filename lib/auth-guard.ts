@@ -1,12 +1,16 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_RAW_URL || process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || ''
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_RAW_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.API_URL ||
+  '';
 
 export async function requireAuth(): Promise<void> {
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
 
-  let res: Response
+  let res: Response;
 
   try {
     res = await fetch(`${API_BASE}/api/auth/me`, {
@@ -14,13 +18,13 @@ export async function requireAuth(): Promise<void> {
         Cookie: cookieStore.toString(),
       },
       cache: 'no-store',
-    })
+    });
   } catch (error) {
-    console.error('Auth check failed:', error)
-    redirect('/')
+    console.error('Auth check failed:', error);
+    redirect('/');
   }
 
   if (!res.ok) {
-    redirect('/')
+    redirect('/');
   }
 }

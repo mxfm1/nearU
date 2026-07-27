@@ -1,40 +1,37 @@
-'use client'
+'use client';
 
-import type { Region } from '@/lib/catalogo-api'
-import { ProfileBanner } from './profile-banner'
-import { ProfileLogo } from './profile-logo'
-import { GeneralInfo } from './general-info'
-import { ProfileDetails } from './profile-details'
-import { DigitalPresence } from './digital-presence'
+import type { Region } from '@/lib/catalogo-api';
+import { ProfileBanner } from './profile-banner';
+import { ProfileLogo } from './profile-logo';
+import { GeneralInfo } from './general-info';
+import { ProfileDetails } from './profile-details';
+import { DigitalPresence } from './digital-presence';
 
 interface Draft {
-  bannerUrl: string | null
-  logoUrl: string | null
-  name: string | null
-  description: string | null
-  tags: string[]
-  regionId: string
-  founded: string
-  employees: string
-  website: string | null
-  whatsapp: string | null
-  socialLinks: { id?: string; platform?: string; url?: string; orden?: number }[]
+  bannerUrl: string | null;
+  logoUrl: string | null;
+  name: string | null;
+  description: string | null;
+  tags: string[];
+  regionId: string;
+  founded: string;
+  employees: string;
+  website: string | null;
+  whatsapp: string | null;
+  socialLinks: { id?: string; platform?: string; url?: string; orden?: number }[];
 }
 
 interface ProfileContentProps {
-  data: Draft
-  regiones: Region[]
-  onChange: (field: string, value: unknown) => void
-  locationError?: string | null
+  data: Draft;
+  regiones: Region[];
+  onChange: (field: string, value: unknown) => void;
+  locationError?: string | null;
 }
 
 export function ProfileContent({ data, regiones, onChange, locationError }: ProfileContentProps) {
   return (
     <>
-      <ProfileBanner
-        bannerUrl={data.bannerUrl}
-        onChange={(url) => onChange('bannerUrl', url)}
-      />
+      <ProfileBanner bannerUrl={data.bannerUrl} onChange={(url) => onChange('bannerUrl', url)} />
 
       <ProfileLogo
         logoUrl={data.logoUrl}
@@ -71,5 +68,5 @@ export function ProfileContent({ data, regiones, onChange, locationError }: Prof
         onChange={onChange}
       />
     </>
-  )
+  );
 }

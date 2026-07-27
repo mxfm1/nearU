@@ -1,17 +1,17 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
-    console.error('[user/perfil] Error:', error)
-  }, [error])
+    console.error('[user/perfil] Error:', error);
+  }, [error]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
@@ -28,5 +28,5 @@ export default function Error({
         </button>
       </div>
     </div>
-  )
+  );
 }

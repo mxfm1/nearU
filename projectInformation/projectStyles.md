@@ -5,10 +5,11 @@
 ### Primary Font
 
 **Font Family**
+
 - Inter (o una variante muy cercana)
 
 ```css
-font-family: "Inter", sans-serif;
+font-family: 'Inter', sans-serif;
 ```
 
 ---
@@ -94,7 +95,7 @@ letter-spacing: 0.02em;
 ## Primary
 
 ```css
---primary: #1B1B1B;
+--primary: #1b1b1b;
 ```
 
 Color principal para títulos y botones.
@@ -114,7 +115,7 @@ Texto secundario.
 ## Accent
 
 ```css
---accent: #B68C5A;
+--accent: #b68c5a;
 ```
 
 Color utilizado para detalles y elementos destacados.
@@ -124,7 +125,7 @@ Color utilizado para detalles y elementos destacados.
 ## Background
 
 ```css
---background: #F8F7F4;
+--background: #f8f7f4;
 ```
 
 Color principal del fondo.
@@ -134,7 +135,7 @@ Color principal del fondo.
 ## Surface
 
 ```css
---surface: #FFFFFF;
+--surface: #ffffff;
 ```
 
 Tarjetas y secciones.
@@ -144,7 +145,7 @@ Tarjetas y secciones.
 ## Border
 
 ```css
---border: #E5E5E5;
+--border: #e5e5e5;
 ```
 
 Bordes.
@@ -162,7 +163,7 @@ Bordes.
 ## Text Secondary
 
 ```css
---text-secondary: #6D6D6D;
+--text-secondary: #6d6d6d;
 ```
 
 ---
@@ -170,7 +171,7 @@ Bordes.
 ## Success
 
 ```css
---success: #2F855A;
+--success: #2f855a;
 ```
 
 ---
@@ -178,7 +179,7 @@ Bordes.
 ## Error
 
 ```css
---error: #D64545;
+--error: #d64545;
 ```
 
 ---
@@ -242,7 +243,7 @@ Text
 Hover
 
 ```css
-background: #F2F2F2;
+background: #f2f2f2;
 ```
 
 ---
@@ -328,28 +329,26 @@ Grid Gap
 # Design Tokens
 
 ```css
-:root{
+:root {
+  --primary: #1b1b1b;
+  --secondary: #444444;
+  --accent: #b68c5a;
 
---primary:#1B1B1B;
---secondary:#444444;
---accent:#B68C5A;
+  --background: #f8f7f4;
+  --surface: #ffffff;
 
---background:#F8F7F4;
---surface:#FFFFFF;
+  --border: #e5e5e5;
 
---border:#E5E5E5;
+  --text-primary: #222222;
+  --text-secondary: #6d6d6d;
 
---text-primary:#222222;
---text-secondary:#6D6D6D;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 
---radius-sm:8px;
---radius-md:12px;
---radius-lg:20px;
---radius-xl:28px;
-
---shadow-sm:0 2px 10px rgba(0,0,0,.05);
---shadow-md:0 10px 30px rgba(0,0,0,.08);
---shadow-lg:0 20px 60px rgba(0,0,0,.12);
-
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
 }
 ```

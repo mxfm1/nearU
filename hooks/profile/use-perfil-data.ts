@@ -1,16 +1,16 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { profileApi, type Profile } from '@/lib/profile-api'
-import type { paths } from '@/types/contracts/api-contracts-types'
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { profileApi, type Profile } from '@/lib/profile-api';
+import type { paths } from '@/types/contracts/api-contracts-types';
 
-const API_URL = process.env.API_URL || ''
+const API_URL = process.env.API_URL || '';
 
 type User = NonNullable<
   paths['/api/auth/me']['get']['responses']['200']['content']['application/json']['data']
->['user']
+>['user'];
 
 export interface PerfilData {
-  profile: Profile
+  profile: Profile;
 }
 
 export async function getPerfilData(): Promise<PerfilData> {
@@ -47,5 +47,5 @@ export async function getPerfilData(): Promise<PerfilData> {
   // const profileRes = await profileApi.getByUserId(user.id)
   // const profile: Profile = profileRes.data
 
-  return { profile: {} as Profile }
+  return { profile: {} as Profile };
 }

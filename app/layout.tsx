@@ -1,11 +1,11 @@
-import type { Metadata } from 'next'
-import { Toaster } from 'react-hot-toast'
-import './globals.css'
-import { QueryProvider } from '@/lib/query-provider'
-import { AuthProvider } from '@/hooks/use-auth'
-import { LayoutWrapper } from '@/components/layout/layout-wrapper'
-import { ErrorBoundary } from '@/components/error-boundary'
-import * as Sentry from "@sentry/nextjs";
+import type { Metadata } from 'next';
+import { Toaster } from 'react-hot-toast';
+import './globals.css';
+import { QueryProvider } from '@/lib/query-provider';
+import { AuthProvider } from '@/hooks/use-auth';
+import { LayoutWrapper } from '@/components/layout/layout-wrapper';
+import { ErrorBoundary } from '@/components/error-boundary';
+import * as Sentry from '@sentry/nextjs';
 
 export function generateMetadata(): Metadata {
   return {
@@ -14,28 +14,22 @@ export function generateMetadata(): Metadata {
     other: {
       ...Sentry.getTraceData(),
     },
-  }
+  };
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body className="bg-background text-foreground antialiased">
         <ErrorBoundary>
           <QueryProvider>
             <AuthProvider>
-              <LayoutWrapper>
-                {children}
-              </LayoutWrapper>
+              <LayoutWrapper>{children}</LayoutWrapper>
               <Toaster position="bottom-right" />
             </AuthProvider>
           </QueryProvider>
         </ErrorBoundary>
       </body>
     </html>
-  )
+  );
 }

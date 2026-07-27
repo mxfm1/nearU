@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useForm, useFieldArray } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Loader2,
   AlertCircle,
@@ -15,63 +15,57 @@ import {
   ExternalLink,
   Calendar,
   CheckCircle,
-} from 'lucide-react'
+} from 'lucide-react';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
 
 import {
   ScoringRulesFormSchema,
   type ScoringRuleFormValues,
   type ScoringRulesFormValues,
-} from '@/components/forms/schemas'
-import { scoringRulesApi, type ScoringRuleOption } from '@/lib/scoring-rules-api'
-import { eventosApi, type EventoDetalle } from '@/lib/eventos-api'
-import { getRuleName, getRuleDescription, getRuleIcon, getRuleColors } from '@/lib/domain/rules'
-import { RuleCard } from './rule-card'
+} from '@/components/forms/schemas';
+import { scoringRulesApi, type ScoringRuleOption } from '@/lib/scoring-rules-api';
+import { eventosApi, type EventoDetalle } from '@/lib/eventos-api';
+import { getRuleName, getRuleDescription, getRuleIcon, getRuleColors } from '@/lib/domain/rules';
+import { RuleCard } from './rule-card';
 
 // --- Props ---
 
 interface ApplicationScoreFormProps {
-  eventId: string
+  eventId: string;
 }
 
 // --- Main Component ---
 
 export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
-  const [showRuleSelector, setShowRuleSelector] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [showRuleSelector, setShowRuleSelector] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Fetch event details
   const { data: eventRes, isLoading: eventLoading } = useQuery({
     queryKey: ['evento', eventId],
     queryFn: () => eventosApi.getById(eventId),
-  })
+  });
 
   // Fetch available rules (cached)
   const { data: availableRulesRes, isLoading: rulesLoading } = useQuery({
     queryKey: ['scoring-rules', 'available'],
     queryFn: () => scoringRulesApi.getAvailableRules(),
-  })
+  });
 
   // Fetch current rules for this event
   const { data: currentRulesRes, isLoading: currentLoading } = useQuery({
     queryKey: ['scoring-rules', eventId],
     queryFn: () => scoringRulesApi.getByEventId(eventId),
-  })
+  });
 
-  const event = eventRes?.data
-  const availableRules = availableRulesRes?.data ?? []
-  const currentRules = currentRulesRes?.data ?? []
+  const event = eventRes?.data;
+  const availableRules = availableRulesRes?.data ?? [];
+  const currentRules = currentRulesRes?.data ?? [];
 
   // Build catalog lookup map from ruleType → catalog entry
-  const catalogMap = new Map(availableRules.map((r) => [r.ruleType, r]))
+  const catalogMap = new Map(availableRules.map((r) => [r.ruleType, r]));
 
   // Form
   const form = useForm<ScoringRulesFormValues>({
@@ -79,18 +73,18 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
     defaultValues: {
       rules: [],
     },
-  })
+  });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'rules',
-  })
+  });
 
   // Watch rules for validation
-  const watchedRules = form.watch('rules')
+  const watchedRules = form.watch('rules');
 
   // Compute total weight
-  const totalWeight = watchedRules.reduce((sum, rule) => sum + (Number(rule.weight) || 0), 0)
+  const totalWeight = watchedRules.reduce((sum, rule) => sum + (Number(rule.weight) || 0), 0);
 
   // Initialize form with current rules
   useEffect(() => {
@@ -100,35 +94,35 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
           ruleType: rule.ruleType,
           weight: rule.weight,
           config: rule.config,
-        })
-      })
+        });
+      });
     }
-  }, [currentRules, fields.length, append])
+  }, [currentRules, fields.length, append]);
 
   // Clear submit error when rules change
   useEffect(() => {
     if (submitError && watchedRules.length > 0) {
-      setSubmitError(null)
+      setSubmitError(null);
     }
-  }, [watchedRules.length, submitError])
+  }, [watchedRules.length, submitError]);
 
   // Mutation
   const mutation = useMutation({
     mutationFn: (payload: { ruleType: string; weight: number }[]) =>
       scoringRulesApi.create(eventId, payload),
     onSuccess: () => {
-      setSubmitError(null)
+      setSubmitError(null);
     },
     onError: (error: Error) => {
-      setSubmitError(error.message || 'Error al guardar las reglas')
+      setSubmitError(error.message || 'Error al guardar las reglas');
     },
-  })
+  });
 
   // Handlers
   function handleAddRule(ruleType: string) {
-    append({ ruleType, weight: 1, config: null })
-    setShowRuleSelector(false)
-    setSubmitError(null)
+    append({ ruleType, weight: 1, config: null });
+    setShowRuleSelector(false);
+    setSubmitError(null);
   }
 
   function handleDiscard() {
@@ -138,28 +132,26 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
         weight: r.weight,
         config: r.config,
       })),
-    })
-    setSubmitError(null)
+    });
+    setSubmitError(null);
   }
 
   function handleSubmit() {
-    const formRules = form.getValues('rules')
+    const formRules = form.getValues('rules');
     if (formRules.length === 0) {
-      setSubmitError('Debe agregar al menos una regla de puntaje')
-      return
+      setSubmitError('Debe agregar al menos una regla de puntaje');
+      return;
     }
     const payload = formRules.map((r) => ({
       ruleType: String(r.ruleType),
       weight: Number(r.weight),
-    }))
-    mutation.mutate(payload)
+    }));
+    mutation.mutate(payload);
   }
 
   // Get available rules that aren't added yet
-  const addedRuleTypes = fields.map((f) => f.ruleType)
-  const availableToAdd = availableRules.filter(
-    (rule) => !addedRuleTypes.includes(rule.ruleType)
-  )
+  const addedRuleTypes = fields.map((f) => f.ruleType);
+  const availableToAdd = availableRules.filter((rule) => !addedRuleTypes.includes(rule.ruleType));
 
   // Loading state
   if (eventLoading || currentLoading) {
@@ -167,7 +159,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
-    )
+    );
   }
 
   return (
@@ -180,7 +172,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
             {event.thumbnailUrl ? (
               <Image
                 src={event.thumbnailUrl}
-                alt={event.title ?? ""}
+                alt={event.title ?? ''}
                 fill
                 className="object-cover"
                 sizes="64px"
@@ -266,13 +258,11 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
             {/* Left Sidebar */}
             <aside className="w-full lg:w-[280px] lg:sticky lg:top-24 lg:self-start space-y-4">
               <div>
-                <h2 className="text-lg font-semibold text-foreground mb-2">
-                  Reglas de Seleccion
-                </h2>
+                <h2 className="text-lg font-semibold text-foreground mb-2">Reglas de Seleccion</h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Define cómo se clasificarán automáticamente los aplicantes. Asigna
-                  puntajes positivos o negativos a diferentes criterios para priorizar a los
-                  mejores candidatos.
+                  Define cómo se clasificarán automáticamente los aplicantes. Asigna puntajes
+                  positivos o negativos a diferentes criterios para priorizar a los mejores
+                  candidatos.
                 </p>
                 <p className="text-xs text-muted-foreground mt-2 italic">
                   El puntaje de ponderación fluctúa entre 0 y 100.
@@ -291,8 +281,9 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
                     Agregar Nueva Regla
                   </span>
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform ${showRuleSelector ? 'rotate-180' : ''
-                      }`}
+                    className={`h-4 w-4 transition-transform ${
+                      showRuleSelector ? 'rotate-180' : ''
+                    }`}
                   />
                 </Button>
 
@@ -301,8 +292,8 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
                   <div className="absolute z-10 w-full mt-1 bg-background border border-border rounded-lg shadow-lg">
                     {availableToAdd.length > 0 ? (
                       availableToAdd.map((rule) => {
-                        const Icon = getRuleIcon(rule.ruleType)
-                        const { bgColor, borderColor } = getRuleColors(rule.ruleType)
+                        const Icon = getRuleIcon(rule.ruleType);
+                        const { bgColor, borderColor } = getRuleColors(rule.ruleType);
                         return (
                           <button
                             key={rule.ruleType}
@@ -324,7 +315,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
                               </p>
                             </div>
                           </button>
-                        )
+                        );
                       })
                     ) : (
                       <div className="p-3 text-center text-sm text-muted-foreground">
@@ -339,9 +330,8 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
               <div className="flex items-start gap-3 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700">
                 <Info className="h-5 w-5 flex-shrink-0 mt-0.5" />
                 <p className="text-sm">
-                  Los puntajes se suman en tiempo real cuando un proveedor aplica a
-                  tu evento. Un puntaje mayor asegura que aparezca en la parte
-                  superior de tu lista de revisados.
+                  Los puntajes se suman en tiempo real cuando un proveedor aplica a tu evento. Un
+                  puntaje mayor asegura que aparezca en la parte superior de tu lista de revisados.
                 </p>
               </div>
             </aside>
@@ -350,9 +340,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
             <div className="flex-1 space-y-4">
               {/* Rules Header */}
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Reglas Configuradas
-                </h3>
+                <h3 className="text-lg font-semibold text-foreground">Reglas Configuradas</h3>
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-muted text-muted-foreground">
                   {fields.length} {fields.length === 1 ? 'Regla' : 'Reglas'}
                 </span>
@@ -361,7 +349,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
               {/* Rules List */}
               <div className="space-y-3">
                 {fields.map((field, index) => {
-                  const catalogEntry = catalogMap.get(field.ruleType)
+                  const catalogEntry = catalogMap.get(field.ruleType);
                   return (
                     <RuleCard
                       key={field.id}
@@ -372,7 +360,7 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
                       fields={fields}
                       remove={remove}
                     />
-                  )
+                  );
                 })}
 
                 {fields.length === 0 && (
@@ -384,15 +372,18 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
 
               {/* Total Weight Info */}
               {fields.length > 0 && (
-                <div className={`flex items-start gap-3 p-4 rounded-lg border ${totalWeight === 100
-                    ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                    : 'bg-amber-50 border-amber-200 text-amber-700'
-                  }`}>
+                <div
+                  className={`flex items-start gap-3 p-4 rounded-lg border ${
+                    totalWeight === 100
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                      : 'bg-amber-50 border-amber-200 text-amber-700'
+                  }`}
+                >
                   <Info className="h-5 w-5 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
                     <p>
-                      La suma de los puntajes debe ser <strong>100</strong>. Actualmente
-                      suman <strong>{totalWeight}</strong>.
+                      La suma de los puntajes debe ser <strong>100</strong>. Actualmente suman{' '}
+                      <strong>{totalWeight}</strong>.
                     </p>
                     {totalWeight === 100 && (
                       <p className="mt-1 text-emerald-600 font-medium">
@@ -445,5 +436,5 @@ export function ApplicationScoreForm({ eventId }: ApplicationScoreFormProps) {
         </div>
       </Form>
     </div>
-  )
+  );
 }

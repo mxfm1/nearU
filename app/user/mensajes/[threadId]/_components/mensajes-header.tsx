@@ -1,28 +1,28 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { User, Building2, ArrowLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { User, Building2, ArrowLeft } from 'lucide-react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5 },
-}
+};
 
 interface Empresa {
-  id: string
-  name: string
-  logoUrl: string | null
+  id: string;
+  name: string;
+  logoUrl: string | null;
 }
 
 interface MensajesHeaderProps {
-  empresa: Empresa
-  eventTitle: string
+  empresa: Empresa;
+  eventTitle: string;
 }
 
 export function MensajesHeader({ empresa, eventTitle }: MensajesHeaderProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <motion.div
@@ -52,12 +52,8 @@ export function MensajesHeader({ empresa, eventTitle }: MensajesHeaderProps) {
           <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-card" />
         </div>
         <div>
-          <h3 className="text-base md:text-lg font-semibold text-primary">
-            {empresa.name}
-          </h3>
-          <p className="text-xs md:text-sm text-muted-foreground">
-            {eventTitle}
-          </p>
+          <h3 className="text-base md:text-lg font-semibold text-primary">{empresa.name}</h3>
+          <p className="text-xs md:text-sm text-muted-foreground">{eventTitle}</p>
         </div>
       </div>
       <button className="flex items-center gap-2 px-3 md:px-4 py-2 bg-card border border-primary/20 rounded-full text-xs md:text-sm font-medium text-primary hover:bg-primary/5 transition-colors">
@@ -65,5 +61,5 @@ export function MensajesHeader({ empresa, eventTitle }: MensajesHeaderProps) {
         <span className="hidden sm:inline">Ver Perfil</span>
       </button>
     </motion.div>
-  )
+  );
 }

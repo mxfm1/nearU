@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { Trash2, AlertTriangle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent } from '@/components/ui/card'
-import { useState } from 'react'
-import { authApi, User } from '@/lib/api-client'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/use-auth'
-import toast from 'react-hot-toast'
+import { Trash2, AlertTriangle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
+import { useState } from 'react';
+import { authApi, User } from '@/lib/api-client';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/use-auth';
+import toast from 'react-hot-toast';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,38 +18,38 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
+} from '@/components/ui/alert-dialog';
 
-const CONFIRMATION_TEXT = 'confirmar'
+const CONFIRMATION_TEXT = 'confirmar';
 
 interface DangerZoneProps {
-  user: User
+  user: User;
 }
 
 export function DangerZone({ user }: DangerZoneProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [confirmation, setConfirmation] = useState('')
-  const router = useRouter()
-  const { logout } = useAuth()
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [confirmation, setConfirmation] = useState('');
+  const router = useRouter();
+  const { logout } = useAuth();
 
-  const canDelete = confirmation.toLowerCase() === CONFIRMATION_TEXT
+  const canDelete = confirmation.toLowerCase() === CONFIRMATION_TEXT;
 
   const handleDeleteAccount = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      await authApi.deleteUser(user.id)
-      logout()
-      toast.success('Cuenta eliminada exitosamente')
-      setOpen(false)
-      router.push('/')
+      await authApi.deleteUser(user.id);
+      logout();
+      toast.success('Cuenta eliminada exitosamente');
+      setOpen(false);
+      router.push('/');
     } catch {
-      toast.error('Ocurrió un error inesperado. Intentalo de nuevo.')
+      toast.error('Ocurrió un error inesperado. Intentalo de nuevo.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <section>
@@ -65,7 +65,8 @@ export function DangerZone({ user }: DangerZoneProps) {
             <div className="flex-1">
               <p className="font-medium text-foreground">Borrar Cuenta</p>
               <p className="text-sm text-muted-foreground mb-4">
-                Una vez eliminada la cuenta, no habrá marcha atrás. Se perderán todos tus eventos y datos personales.
+                Una vez eliminada la cuenta, no habrá marcha atrás. Se perderán todos tus eventos y
+                datos personales.
               </p>
               <AlertDialog open={open} onOpenChange={setOpen}>
                 <AlertDialogTrigger asChild>
@@ -83,13 +84,18 @@ export function DangerZone({ user }: DangerZoneProps) {
                       <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
                     </div>
                     <AlertDialogDescription className="pt-2">
-                      Esta acción es irreversible. Se eliminarán permanentemente tu cuenta, eventos y datos personales.
+                      Esta acción es irreversible. Se eliminarán permanentemente tu cuenta, eventos
+                      y datos personales.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
 
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      Escribí <span className="font-semibold text-foreground">&quot;{CONFIRMATION_TEXT}&quot;</span> para confirmar:
+                      Escribí{' '}
+                      <span className="font-semibold text-foreground">
+                        &quot;{CONFIRMATION_TEXT}&quot;
+                      </span>{' '}
+                      para confirmar:
                     </p>
                     <Input
                       value={confirmation}
@@ -117,5 +123,5 @@ export function DangerZone({ user }: DangerZoneProps) {
         </CardContent>
       </Card>
     </section>
-  )
+  );
 }

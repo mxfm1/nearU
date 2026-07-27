@@ -10,24 +10,24 @@ Todos los módulos que requieran representar o filtrar una ubicación (Servicios
 
 Las regiones soportadas corresponden a las divisiones administrativas oficiales de Chile.
 
-| Label | Value |
-|--------|-------|
-| Arica y Parinacota | `arica-y-parinacota` |
-| Tarapacá | `tarapaca` |
-| Antofagasta | `antofagasta` |
-| Atacama | `atacama` |
-| Coquimbo | `coquimbo` |
-| Valparaíso | `valparaiso` |
-| Metropolitana de Santiago | `metropolitana` |
-| O'Higgins | `ohiggins` |
-| Maule | `maule` |
-| Ñuble | `nuble` |
-| Biobío | `biobio` |
-| La Araucanía | `araucania` |
-| Los Ríos | `los-rios` |
-| Los Lagos | `los-lagos` |
-| Aysén | `aysen` |
-| Magallanes y de la Antártica Chilena | `magallanes` |
+| Label                                | Value                |
+| ------------------------------------ | -------------------- |
+| Arica y Parinacota                   | `arica-y-parinacota` |
+| Tarapacá                             | `tarapaca`           |
+| Antofagasta                          | `antofagasta`        |
+| Atacama                              | `atacama`            |
+| Coquimbo                             | `coquimbo`           |
+| Valparaíso                           | `valparaiso`         |
+| Metropolitana de Santiago            | `metropolitana`      |
+| O'Higgins                            | `ohiggins`           |
+| Maule                                | `maule`              |
+| Ñuble                                | `nuble`              |
+| Biobío                               | `biobio`             |
+| La Araucanía                         | `araucania`          |
+| Los Ríos                             | `los-rios`           |
+| Los Lagos                            | `los-lagos`          |
+| Aysén                                | `aysen`              |
+| Magallanes y de la Antártica Chilena | `magallanes`         |
 
 ---
 
@@ -35,22 +35,22 @@ Las regiones soportadas corresponden a las divisiones administrativas oficiales 
 
 ```ts
 type Region =
-    | "arica-y-parinacota"
-    | "tarapaca"
-    | "antofagasta"
-    | "atacama"
-    | "coquimbo"
-    | "valparaiso"
-    | "metropolitana"
-    | "ohiggins"
-    | "maule"
-    | "nuble"
-    | "biobio"
-    | "araucania"
-    | "los-rios"
-    | "los-lagos"
-    | "aysen"
-    | "magallanes";
+  | 'arica-y-parinacota'
+  | 'tarapaca'
+  | 'antofagasta'
+  | 'atacama'
+  | 'coquimbo'
+  | 'valparaiso'
+  | 'metropolitana'
+  | 'ohiggins'
+  | 'maule'
+  | 'nuble'
+  | 'biobio'
+  | 'araucania'
+  | 'los-rios'
+  | 'los-lagos'
+  | 'aysen'
+  | 'magallanes';
 ```
 
 ---
@@ -70,7 +70,7 @@ type Region =
 
 ```ts
 location: {
-    region: Region;
+  region: Region;
 }
 ```
 
@@ -78,7 +78,7 @@ location: {
 
 ```ts
 location: {
-    region: Region;
+  region: Region;
 }
 ```
 
@@ -86,7 +86,7 @@ location: {
 
 ```ts
 location: {
-    region: Region;
+  region: Region;
 }
 ```
 

@@ -1,38 +1,33 @@
-'use client'
+'use client';
 
-import { useRef, useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Inbox, Bell } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Inbox, Bell } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function NotificationDropdown() {
-  const [isOpen, setIsOpen] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const open = () => {
-    clearTimeout(timeoutRef.current)
-    setIsOpen(true)
-  }
+    clearTimeout(timeoutRef.current);
+    setIsOpen(true);
+  };
 
   const close = () => {
     timeoutRef.current = setTimeout(() => {
-      setIsOpen(false)
-    }, 200)
-  }
+      setIsOpen(false);
+    }, 200);
+  };
 
   useEffect(() => {
-    return () => clearTimeout(timeoutRef.current)
-  }, [])
+    return () => clearTimeout(timeoutRef.current);
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative"
-      onMouseEnter={open}
-      onMouseLeave={close}
-    >
+    <div ref={containerRef} className="relative" onMouseEnter={open} onMouseLeave={close}>
       <Button variant="ghost" size="icon" aria-label="Notificaciones">
         <Inbox className="h-5 w-5" />
       </Button>
@@ -69,5 +64,5 @@ export function NotificationDropdown() {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

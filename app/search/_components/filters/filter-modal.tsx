@@ -1,38 +1,38 @@
-'use client'
+'use client';
 
-import { X } from 'lucide-react'
+import { X } from 'lucide-react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from '@/components/ui/dialog'
-import { CategoryFilter } from './category-filter'
-import { RegionFilter } from './region-filter'
-import { DateFilter } from './date-filter'
+} from '@/components/ui/dialog';
+import { CategoryFilter } from './category-filter';
+import { RegionFilter } from './region-filter';
+import { DateFilter } from './date-filter';
 
 interface FilterModalProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  type: string
-  category: string
-  region: string
-  dateFrom: string
-  dateTo: string
-  onTypeChange: (type: string) => void
-  onFilterChange: (updates: Record<string, string>) => void
-  onClear: () => void
-  onApply: () => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  type: string;
+  category: string;
+  region: string;
+  dateFrom: string;
+  dateTo: string;
+  onTypeChange: (type: string) => void;
+  onFilterChange: (updates: Record<string, string>) => void;
+  onClear: () => void;
+  onApply: () => void;
 }
 
 const typeOptions = [
   { value: '', label: 'Todos' },
   { value: 'proveedores', label: 'Proveedores' },
   { value: 'eventos', label: 'Eventos' },
-]
+];
 
 export function FilterModal({
   open,
@@ -47,16 +47,16 @@ export function FilterModal({
   onClear,
   onApply,
 }: FilterModalProps) {
-  const categoryType = type === 'eventos' ? 'event' : 'service'
-  const showDateFilter = type === 'eventos'
+  const categoryType = type === 'eventos' ? 'event' : 'service';
+  const showDateFilter = type === 'eventos';
 
   function handleTypeClick(value: string) {
-    onTypeChange(value)
+    onTypeChange(value);
   }
 
   function handleApply() {
-    onApply()
-    onOpenChange(false)
+    onApply();
+    onOpenChange(false);
   }
 
   return (
@@ -72,9 +72,7 @@ export function FilterModal({
 
         <div className="space-y-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-foreground mr-1">
-              Tipo:
-            </span>
+            <span className="text-sm font-medium text-foreground mr-1">Tipo:</span>
             {typeOptions.map((opt) => (
               <button
                 key={opt.value}
@@ -83,7 +81,7 @@ export function FilterModal({
                   'px-3 py-1.5 text-sm rounded-full border transition-colors',
                   type === opt.value
                     ? 'bg-primary text-primary-foreground border-primary'
-                    : 'border-border bg-card text-foreground hover:bg-muted',
+                    : 'border-border bg-card text-foreground hover:bg-muted'
                 )}
               >
                 {opt.label}
@@ -97,10 +95,7 @@ export function FilterModal({
             type={categoryType}
           />
 
-          <RegionFilter
-            value={region}
-            onChange={(value) => onFilterChange({ region: value })}
-          />
+          <RegionFilter value={region} onChange={(value) => onFilterChange({ region: value })} />
 
           {showDateFilter && (
             <DateFilter
@@ -130,5 +125,5 @@ export function FilterModal({
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

@@ -1,36 +1,44 @@
-'use client'
+'use client';
 
-import { useQuery } from '@tanstack/react-query'
-import { scoringRulesApi } from '@/lib/scoring-rules-api'
-import { eventosApi } from '@/lib/eventos-api'
-import { ApplyForm } from './apply-form'
-import { ApplySkeleton } from './apply-skeleton'
-import { AlertTriangle } from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { useQuery } from '@tanstack/react-query';
+import { scoringRulesApi } from '@/lib/scoring-rules-api';
+import { eventosApi } from '@/lib/eventos-api';
+import { ApplyForm } from './apply-form';
+import { ApplySkeleton } from './apply-skeleton';
+import { AlertTriangle } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 interface ApplyContentProps {
-  eventId: string
+  eventId: string;
 }
 
 export function ApplyContent({ eventId }: ApplyContentProps) {
   // Fetch event details
-  const { data: eventRes, isLoading: eventLoading, isError: eventError } = useQuery({
+  const {
+    data: eventRes,
+    isLoading: eventLoading,
+    isError: eventError,
+  } = useQuery({
     queryKey: ['evento', eventId],
     queryFn: () => eventosApi.getById(eventId),
-  })
+  });
 
   // Fetch scoring rules for this event (public endpoint)
-  const { data: rulesRes, isLoading: rulesLoading, isError: rulesError } = useQuery({
+  const {
+    data: rulesRes,
+    isLoading: rulesLoading,
+    isError: rulesError,
+  } = useQuery({
     queryKey: ['scoring-rules', eventId],
     queryFn: () => scoringRulesApi.getByEventId(eventId),
-  })
+  });
 
-  const isLoading = eventLoading || rulesLoading
-  const isError = eventError || rulesError
+  const isLoading = eventLoading || rulesLoading;
+  const isError = eventError || rulesError;
 
   if (isLoading) {
-    return <ApplySkeleton />
+    return <ApplySkeleton />;
   }
 
   if (isError) {
@@ -51,11 +59,11 @@ export function ApplyContent({ eventId }: ApplyContentProps) {
           </Button>
         </div>
       </div>
-    )
+    );
   }
 
-  const event = eventRes?.data
-  const scoringRules = rulesRes?.data ?? []
+  const event = eventRes?.data;
+  const scoringRules = rulesRes?.data ?? [];
 
   if (!event) {
     return (
@@ -70,13 +78,8 @@ export function ApplyContent({ eventId }: ApplyContentProps) {
           </Button>
         </div>
       </div>
-    )
+    );
   }
 
-  return (
-    <ApplyForm
-      eventId={eventId}
-      eventTitle={event.title ?? ''}
-    />
-  )
+  return <ApplyForm eventId={eventId} eventTitle={event.title ?? ''} />;
 }

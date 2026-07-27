@@ -1,15 +1,15 @@
-import { Suspense } from 'react'
-import { VerifyEmailForm } from './_components/verify-email-form'
+import { Suspense } from 'react';
+import { VerifyEmailForm } from './_components/verify-email-form';
 
 interface Props {
-  searchParams: Promise<{ token?: string }>
+  searchParams: Promise<{ token?: string }>;
 }
 
 export default async function VerifyEmailPage({ searchParams }: Props) {
-  const { token } = await searchParams
+  const { token } = await searchParams;
 
   if (!token) {
-    return <InvalidLink message="Token no proporcionado." />
+    return <InvalidLink message="Token no proporcionado." />;
   }
 
   return (
@@ -22,7 +22,7 @@ export default async function VerifyEmailPage({ searchParams }: Props) {
     >
       <VerifyEmailForm token={token} />
     </Suspense>
-  )
+  );
 }
 
 function InvalidLink({ message }: { message: string }) {
@@ -56,5 +56,5 @@ function InvalidLink({ message }: { message: string }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

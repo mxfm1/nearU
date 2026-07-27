@@ -8,15 +8,12 @@
 
 // export default function TestSearchBar() {
 
-
 //     const [temporalStore, setTemporalStore] = useState<MockProvider[]>(mockProviders)
 
 //     const handleSubmit = (e) => {
 
-
 //         const value = e.target.value
 //         console.log("INITIAL STORE", temporalStore)
-
 
 //         if (value == "") return;
 

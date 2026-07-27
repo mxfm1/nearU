@@ -1,13 +1,16 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { AlertTriangle, SearchX, Lock, ServerCrash, WifiOff, Ban } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { AlertTriangle, SearchX, Lock, ServerCrash, WifiOff, Ban } from 'lucide-react';
 
 interface ErrorStateProps {
-  error: string
+  error: string;
 }
 
-const errorMessages: Record<string, { title: string; message: string; icon: typeof AlertTriangle }> = {
+const errorMessages: Record<
+  string,
+  { title: string; message: string; icon: typeof AlertTriangle }
+> = {
   NOT_FOUND: {
     title: 'Servicio no encontrado',
     message: 'El servicio que buscas no existe o ha sido eliminado.',
@@ -38,17 +41,17 @@ const errorMessages: Record<string, { title: string; message: string; icon: type
     message: 'Has realizado demasiadas solicitudes. Espera unos minutos e intenta de nuevo.',
     icon: AlertTriangle,
   },
-}
+};
 
 const defaultError = {
   title: 'Algo salió mal',
   message: 'Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.',
   icon: AlertTriangle,
-}
+};
 
 export function ErrorState({ error }: ErrorStateProps) {
-  const config = errorMessages[error] ?? defaultError
-  const Icon = config.icon
+  const config = errorMessages[error] ?? defaultError;
+  const Icon = config.icon;
 
   return (
     <motion.div
@@ -58,10 +61,8 @@ export function ErrorState({ error }: ErrorStateProps) {
       className="flex flex-col items-center justify-center py-20 px-4 text-center"
     >
       <Icon className="h-16 w-16 text-muted-foreground/40 mb-6" />
-      <h2 className="text-2xl font-semibold text-foreground mb-2">
-        {config.title}
-      </h2>
+      <h2 className="text-2xl font-semibold text-foreground mb-2">{config.title}</h2>
       <p className="text-muted-foreground max-w-md">{config.message}</p>
     </motion.div>
-  )
+  );
 }

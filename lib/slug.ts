@@ -1,4 +1,4 @@
-import slugifyLib from 'slugify'
+import slugifyLib from 'slugify';
 
 /**
  * Genera un slug seguro a partir de un texto.
@@ -9,5 +9,5 @@ export function generateSlug(text: string): string {
     lower: true,
     strict: true,
     trim: true,
-  })
+  });
 }

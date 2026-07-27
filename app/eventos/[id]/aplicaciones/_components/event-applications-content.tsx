@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { ArrowLeft, Filter } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { EventInfoSection } from './event-info-section'
-import { ApplicationListSection } from './application-list-section'
-import { useEvent } from '@/hooks/use-event'
-import { useEventApplications } from '@/hooks/applications/applications-queries'
-import type { ApplicationStatus } from '@/lib/applications-api'
+import Link from 'next/link';
+import { ArrowLeft, Filter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { EventInfoSection } from './event-info-section';
+import { ApplicationListSection } from './application-list-section';
+import { useEvent } from '@/hooks/use-event';
+import { useEventApplications } from '@/hooks/applications/applications-queries';
+import type { ApplicationStatus } from '@/lib/applications-api';
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'Todos' },
@@ -15,14 +15,14 @@ const STATUS_OPTIONS = [
   { value: 'reviewing', label: 'En revisión' },
   { value: 'accepted', label: 'Aprobado' },
   { value: 'rejected', label: 'Rechazado' },
-]
+];
 
 interface EventApplicationsContentProps {
-  eventId: string
-  statusFilter: string
-  currentPage: number
-  onStatusChange: (status: string) => void
-  onPageChange: (page: number) => void
+  eventId: string;
+  statusFilter: string;
+  currentPage: number;
+  onStatusChange: (status: string) => void;
+  onPageChange: (page: number) => void;
 }
 
 export function EventApplicationsContent({
@@ -32,23 +32,23 @@ export function EventApplicationsContent({
   onStatusChange,
   onPageChange,
 }: EventApplicationsContentProps) {
-  const { event, isLoading: eventLoading } = useEvent(eventId)
+  const { event, isLoading: eventLoading } = useEvent(eventId);
   const { data, isLoading, isError, refetch } = useEventApplications(eventId, {
     status: statusFilter as ApplicationStatus | 'all',
     page: currentPage,
     limit: 10,
-  })
+  });
 
-  const applications = data || []
-  const total = applications.length
-  const totalPages = Math.ceil(total / 10) || 1
+  const applications = data || [];
+  const total = applications.length;
+  const totalPages = Math.ceil(total / 10) || 1;
 
   if (eventLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -130,5 +130,5 @@ export function EventApplicationsContent({
         />
       </main>
     </div>
-  )
+  );
 }

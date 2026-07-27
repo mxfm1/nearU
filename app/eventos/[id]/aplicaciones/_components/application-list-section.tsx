@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { Loader2, Search } from 'lucide-react'
-import { ApplicationCard } from './application-card'
-import type { EventApplication } from '@/lib/applications-api'
+import { Loader2, Search } from 'lucide-react';
+import { ApplicationCard } from './application-card';
+import type { EventApplication } from '@/lib/applications-api';
 
 interface ApplicationListSectionProps {
-  applications: EventApplication[]
-  isPending: boolean
-  isError: boolean
-  onRefetch: () => void
-  total: number
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
+  applications: EventApplication[];
+  isPending: boolean;
+  isError: boolean;
+  onRefetch: () => void;
+  total: number;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 export function ApplicationListSection({
@@ -42,7 +42,7 @@ export function ApplicationListSection({
           </div>
         ))}
       </div>
-    )
+    );
   }
 
   if (isError) {
@@ -56,18 +56,16 @@ export function ApplicationListSection({
           Reintentar
         </button>
       </div>
-    )
+    );
   }
 
   if (applications.length === 0) {
     return (
       <div className="text-center py-12 bg-card rounded-xl border border-border">
         <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <p className="text-muted-foreground">
-          No hay aplicaciones para este evento.
-        </p>
+        <p className="text-muted-foreground">No hay aplicaciones para este evento.</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -93,9 +91,7 @@ export function ApplicationListSection({
               key={page}
               onClick={() => onPageChange(page)}
               className={`px-3 py-1 border rounded ${
-                page === currentPage
-                  ? 'bg-primary text-white border-primary'
-                  : 'hover:bg-muted'
+                page === currentPage ? 'bg-primary text-white border-primary' : 'hover:bg-muted'
               }`}
             >
               {page}
@@ -111,5 +107,5 @@ export function ApplicationListSection({
         </div>
       )}
     </>
-  )
+  );
 }

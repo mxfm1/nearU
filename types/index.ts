@@ -1,8 +1,4 @@
-export type {
-  PaginationParams,
-  PaginatedResponse,
-  ApiResponseWrapper,
-} from './api'
+export type { PaginationParams, PaginatedResponse, ApiResponseWrapper } from './api';
 
 export type {
   User,
@@ -23,4 +19,4 @@ export type {
   ServicePortfolioMedia,
   EventMedia,
   EventPortfolioMedia,
-} from './domain'
+} from './domain';

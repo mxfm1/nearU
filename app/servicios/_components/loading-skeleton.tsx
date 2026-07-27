@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export function LoadingSkeleton() {
   return (
@@ -43,12 +43,12 @@ export function LoadingSkeleton() {
               key={i}
               className={cn(
                 'flex-shrink-0 w-[280px] sm:w-[320px]',
-                'aspect-video rounded-lg bg-muted',
+                'aspect-video rounded-lg bg-muted'
               )}
             />
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

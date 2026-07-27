@@ -1,42 +1,40 @@
-'use client'
+'use client';
 
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form'
-import { Trash2 } from 'lucide-react'
-import { getRuleName, getRuleDescription, getRuleIcon, getRuleColors } from '@/lib/domain/rules'
-import type { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form'
-import type { ScoringRulesFormValues } from '@/components/forms/schemas'
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Trash2 } from 'lucide-react';
+import { getRuleName, getRuleDescription, getRuleIcon, getRuleColors } from '@/lib/domain/rules';
+import type { UseFieldArrayReturn, UseFormReturn } from 'react-hook-form';
+import type { ScoringRulesFormValues } from '@/components/forms/schemas';
 
 interface RuleCardProps {
-  index: number
-  ruleType: string
-  catalogDescription?: string
-  form: UseFormReturn<ScoringRulesFormValues>
-  fields: UseFieldArrayReturn<ScoringRulesFormValues, 'rules', 'id'>['fields']
-  remove: UseFieldArrayReturn<ScoringRulesFormValues, 'rules', 'id'>['remove']
+  index: number;
+  ruleType: string;
+  catalogDescription?: string;
+  form: UseFormReturn<ScoringRulesFormValues>;
+  fields: UseFieldArrayReturn<ScoringRulesFormValues, 'rules', 'id'>['fields'];
+  remove: UseFieldArrayReturn<ScoringRulesFormValues, 'rules', 'id'>['remove'];
 }
 
-export function RuleCard({ index, ruleType, catalogDescription, form, fields, remove }: RuleCardProps) {
-  const name = getRuleName(ruleType)
-  const description = catalogDescription ?? getRuleDescription(ruleType)
-  const Icon = getRuleIcon(ruleType)
-  const { bgColor, borderColor } = getRuleColors(ruleType)
+export function RuleCard({
+  index,
+  ruleType,
+  catalogDescription,
+  form,
+  fields,
+  remove,
+}: RuleCardProps) {
+  const name = getRuleName(ruleType);
+  const description = catalogDescription ?? getRuleDescription(ruleType);
+  const Icon = getRuleIcon(ruleType);
+  const { bgColor, borderColor } = getRuleColors(ruleType);
 
   return (
     <div className={`flex items-center gap-4 p-4 rounded-lg border ${bgColor} ${borderColor}`}>
       {/* Icon */}
       <div className="flex-shrink-0">
-        {Icon ? (
-          <Icon className="h-5 w-5" />
-        ) : (
-          <div className="h-5 w-5 rounded-full bg-gray-300" />
-        )}
+        {Icon ? <Icon className="h-5 w-5" /> : <div className="h-5 w-5 rounded-full bg-gray-300" />}
       </div>
 
       {/* Info */}
@@ -47,9 +45,7 @@ export function RuleCard({ index, ruleType, catalogDescription, form, fields, re
 
       {/* Score Input */}
       <div className="flex items-center gap-2">
-        <span className="text-xs font-medium text-muted-foreground uppercase">
-          Puntaje
-        </span>
+        <span className="text-xs font-medium text-muted-foreground uppercase">Puntaje</span>
         <FormField
           control={form.control}
           name={`rules.${index}.weight`}
@@ -65,13 +61,13 @@ export function RuleCard({ index, ruleType, catalogDescription, form, fields, re
                   {...weightField}
                   value={weightField.value === 0 ? '' : weightField.value}
                   onChange={(e) => {
-                    const val = e.target.value
+                    const val = e.target.value;
                     if (val === '') {
-                      weightField.onChange(0)
+                      weightField.onChange(0);
                     } else {
-                      const num = parseInt(val)
+                      const num = parseInt(val);
                       if (!isNaN(num) && num <= 100) {
-                        weightField.onChange(num)
+                        weightField.onChange(num);
                       }
                     }
                   }}
@@ -94,5 +90,5 @@ export function RuleCard({ index, ruleType, catalogDescription, form, fields, re
         <Trash2 className="h-4 w-4" />
       </Button>
     </div>
-  )
+  );
 }

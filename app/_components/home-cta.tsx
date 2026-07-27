@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { Megaphone } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Megaphone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function HomeCta() {
   return (
@@ -18,7 +18,7 @@ export function HomeCta() {
         >
           {/* Lighter green gradient at top */}
           <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/10 to-transparent" />
-          
+
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
             {/* Left content */}
             <motion.div
@@ -36,11 +36,12 @@ export function HomeCta() {
                   ¿Ofreces servicios para eventos?
                 </h3>
                 <p className="text-sm sm:text-base text-white/80">
-                  Regístrate y publica tu empresa para llegar a miles de personas que organizan eventos cada día.
+                  Regístrate y publica tu empresa para llegar a miles de personas que organizan
+                  eventos cada día.
                 </p>
               </div>
             </motion.div>
-            
+
             {/* Right buttons */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -70,5 +71,5 @@ export function HomeCta() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

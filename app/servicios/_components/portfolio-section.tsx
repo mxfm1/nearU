@@ -1,41 +1,41 @@
-'use client'
+'use client';
 
-import { useCallback, useRef } from 'react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, ImageOff } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import type { PortfolioImage } from '@/lib/servicios-api'
+import { useCallback, useRef } from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import type { PortfolioImage } from '@/lib/servicios-api';
 
 interface PortfolioSectionProps {
-  portfolio: PortfolioImage[]
+  portfolio: PortfolioImage[];
 }
 
 function usePortfolioImages(images: PortfolioImage[]) {
   return useQuery({
     queryKey: ['portfolio-images'],
     queryFn: async () => {
-      await new Promise((r) => setTimeout(r, 200))
-      return images
+      await new Promise((r) => setTimeout(r, 200));
+      return images;
     },
     enabled: true,
-  })
+  });
 }
 
 export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const { data: images, isLoading } = usePortfolioImages(portfolio)
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const { data: images, isLoading } = usePortfolioImages(portfolio);
 
   const scroll = useCallback((direction: 'left' | 'right') => {
-    if (!scrollRef.current) return
-    const amount = scrollRef.current.clientWidth * 0.8
+    if (!scrollRef.current) return;
+    const amount = scrollRef.current.clientWidth * 0.8;
     scrollRef.current.scrollBy({
       left: direction === 'left' ? -amount : amount,
       behavior: 'smooth',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <motion.section
@@ -45,9 +45,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
       className="px-4 sm:px-6 mt-8 space-y-4 pb-8"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-xl sm:text-2xl font-semibold text-foreground">
-          Trabajos Realizados
-        </h2>
+        <h2 className="text-xl sm:text-2xl font-semibold text-foreground">Trabajos Realizados</h2>
 
         {portfolio.length > 0 && (
           <div className="flex items-center gap-2">
@@ -78,7 +76,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
               key={i}
               className={cn(
                 'flex-shrink-0 w-[85vw] sm:w-[420px]',
-                'aspect-video rounded-lg bg-muted animate-pulse',
+                'aspect-video rounded-lg bg-muted animate-pulse'
               )}
             />
           ))}
@@ -100,10 +98,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
       ) : (
         <div
           ref={scrollRef}
-          className={cn(
-            'flex gap-6 overflow-x-auto snap-x snap-mandatory',
-            'scrollbar-hide pb-2',
-          )}
+          className={cn('flex gap-6 overflow-x-auto snap-x snap-mandatory', 'scrollbar-hide pb-2')}
           style={{ scrollbarWidth: 'none' }}
         >
           {images?.map((image, index) => (
@@ -115,7 +110,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
               className={cn(
                 'flex-shrink-0 w-[85vw] sm:w-[420px]',
                 'aspect-video rounded-lg overflow-hidden',
-                'snap-center bg-muted relative group cursor-pointer',
+                'snap-center bg-muted relative group cursor-pointer'
               )}
             >
               <Image
@@ -125,7 +120,7 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
                 height={240}
                 className={cn(
                   'object-cover h-full w-full',
-                  'transition-transform duration-500 group-hover:scale-105',
+                  'transition-transform duration-500 group-hover:scale-105'
                 )}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -142,5 +137,5 @@ export function PortfolioSection({ portfolio }: PortfolioSectionProps) {
         </div>
       )}
     </motion.section>
-  )
+  );
 }

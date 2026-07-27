@@ -1,37 +1,38 @@
-'use client'
+'use client';
 
-import { Card, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { AlertCircle } from 'lucide-react'
-import { type Region } from '@/lib/catalogo-api'
+} from '@/components/ui/select';
+import { AlertCircle } from 'lucide-react';
+import { type Region } from '@/lib/catalogo-api';
 
-const EMPLOYEE_SIZES = [
-  '1-10',
-  '10-50',
-  '51-200',
-  '201-500',
-  '500+',
-]
+const EMPLOYEE_SIZES = ['1-10', '10-50', '51-200', '201-500', '500+'];
 
 interface ProfileDetailsProps {
-  regionId: string
-  founded: string
-  employees: string
-  regiones: Region[]
-  onChange: (field: string, value: unknown) => void
-  locationError?: string | null
+  regionId: string;
+  founded: string;
+  employees: string;
+  regiones: Region[];
+  onChange: (field: string, value: unknown) => void;
+  locationError?: string | null;
 }
 
-export function ProfileDetails({ regionId, founded, employees, regiones, onChange, locationError }: ProfileDetailsProps) {
+export function ProfileDetails({
+  regionId,
+  founded,
+  employees,
+  regiones,
+  onChange,
+  locationError,
+}: ProfileDetailsProps) {
   return (
     <Card className="h-full">
       <CardContent className="p-6">
@@ -43,7 +44,9 @@ export function ProfileDetails({ regionId, founded, employees, regiones, onChang
               Región <span className="text-destructive">*</span>
             </Label>
             <Select value={regionId} onValueChange={(v) => onChange('regionId', v)}>
-              <SelectTrigger className={locationError ? 'border-destructive focus:ring-destructive/20' : ''}>
+              <SelectTrigger
+                className={locationError ? 'border-destructive focus:ring-destructive/20' : ''}
+              >
                 <SelectValue placeholder="Seleccionar región" />
               </SelectTrigger>
               <SelectContent>
@@ -66,10 +69,7 @@ export function ProfileDetails({ regionId, founded, employees, regiones, onChang
             <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
               Año de Fundación
             </Label>
-            <Input
-              value={founded}
-              onChange={(e) => onChange('founded', e.target.value)}
-            />
+            <Input value={founded} onChange={(e) => onChange('founded', e.target.value)} />
           </div>
 
           <div>
@@ -101,5 +101,5 @@ export function ProfileDetails({ regionId, founded, employees, regiones, onChang
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

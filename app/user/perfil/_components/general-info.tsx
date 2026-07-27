@@ -1,35 +1,38 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { X } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react';
+import { X } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface GeneralInfoProps {
-  name: string
-  description: string
-  tags: string[]
-  onChange: (field: string, value: unknown) => void
+  name: string;
+  description: string;
+  tags: string[];
+  onChange: (field: string, value: unknown) => void;
 }
 
 export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoProps) {
-  const [newTag, setNewTag] = useState('')
+  const [newTag, setNewTag] = useState('');
 
   const handleAddTag = () => {
-    const trimmed = newTag.trim()
+    const trimmed = newTag.trim();
     if (trimmed && !tags.includes(trimmed)) {
-      onChange('tags', [...tags, trimmed])
-      setNewTag('')
+      onChange('tags', [...tags, trimmed]);
+      setNewTag('');
     }
-  }
+  };
 
   const handleRemoveTag = (tag: string) => {
-    onChange('tags', tags.filter((t) => t !== tag))
-  }
+    onChange(
+      'tags',
+      tags.filter((t) => t !== tag)
+    );
+  };
 
   return (
     <Card className="h-full">
@@ -43,10 +46,7 @@ export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoPr
           <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
             Nombre de la Empresa
           </Label>
-          <Input
-            value={name}
-            onChange={(e) => onChange('name', e.target.value)}
-          />
+          <Input value={name} onChange={(e) => onChange('name', e.target.value)} />
         </div>
 
         <div className="mb-4">
@@ -72,7 +72,10 @@ export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoPr
                 className="bg-brand/10 text-brand hover:bg-brand/20"
               >
                 {tag}
-                <button onClick={() => handleRemoveTag(tag)} className="ml-1 hover:text-destructive">
+                <button
+                  onClick={() => handleRemoveTag(tag)}
+                  className="ml-1 hover:text-destructive"
+                >
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -93,5 +96,5 @@ export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoPr
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

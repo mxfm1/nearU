@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export function ServicioSkeleton() {
   return (
@@ -69,5 +69,5 @@ export function ServicioSkeleton() {
         </div>
       </section>
     </div>
-  )
+  );
 }

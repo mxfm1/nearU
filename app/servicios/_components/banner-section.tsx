@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface BannerSectionProps {
-  src?: string
-  alt: string
+  src?: string;
+  alt: string;
 }
 
 export function BannerSection({ src, alt }: BannerSectionProps) {
@@ -30,10 +30,10 @@ export function BannerSection({ src, alt }: BannerSectionProps) {
         <div
           className={cn(
             'h-full w-full',
-            'bg-gradient-to-br from-primary/20 via-primary/10 to-muted',
+            'bg-gradient-to-br from-primary/20 via-primary/10 to-muted'
           )}
         />
       )}
     </motion.div>
-  )
+  );
 }
