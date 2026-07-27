@@ -6,6 +6,8 @@
     "dev": "next dev -p 3001",
     "api:load": "tsx ./scripts/generate-api-contracts.ts",
     "api:generate": "openapi-typescript ./api/api-spec.yaml -o ./src/types/contracts/api-contracts-types.ts",
+    "validate": "pnpm lint && pnpm typecheck && pnpm test",
+    "ci": "pnpm validate && pnpm build && pnpm test:integration",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
