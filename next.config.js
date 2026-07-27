@@ -5,10 +5,11 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const API_BASE =
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'develop'
     ? process.env.NEXT_PUBLIC_LOCAL_API_URL || 'http://localhost:3000'
-    : process.env.NEXT_PUBLIC_API_RAW_URL;
+    : process.env.NEXT_PUBLIC_API_RAW_URL || 'http://localhost:3001';
 
 const nextConfig = {
   async rewrites() {
+    if (!API_BASE) return [];
     return [
       {
         source: '/api/:path*',
