@@ -97,7 +97,7 @@ jobs:
         with:
           publish-dir: ./.next
           production-deploy: false
-          deploy-message: "Deploy from GitHub Actions - Staging"
+          deploy-message: 'Deploy from GitHub Actions - Staging'
           enable-pull-request-comment: false
           enable-commit-comment: true
         env:
@@ -118,7 +118,7 @@ jobs:
         with:
           publish-dir: ./.next
           production-deploy: true
-          deploy-message: "Deploy from GitHub Actions - Production v${{ needs.version-and-tag.outputs.new_version }}"
+          deploy-message: 'Deploy from GitHub Actions - Production v${{ needs.version-and-tag.outputs.new_version }}'
           enable-pull-request-comment: false
           enable-commit-comment: true
         env:
