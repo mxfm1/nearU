@@ -12,7 +12,7 @@ export type User = {
   name: string;
   email: string;
   emailVerified: boolean;
-  image: string | null;
+  image?: string | null;
   createdAt: string;
   updatedAt: string;
 };

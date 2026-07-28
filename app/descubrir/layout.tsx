@@ -1,7 +1,5 @@
-import { requireAuth } from '@/lib/auth-guard';
+import { AuthGuard } from '@/components/auth/auth-guard';
 
-export default async function DescubrirLayout({ children }: { children: React.ReactNode }) {
-  await requireAuth();
-
-  return <>{children}</>;
+export default function DescubrirLayout({ children }: { children: React.ReactNode }) {
+  return <AuthGuard>{children}</AuthGuard>;
 }
