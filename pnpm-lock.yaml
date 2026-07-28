@@ -57,7 +57,7 @@ importers:
         specifier: ^10.5.0
         version: 10.5.4(postcss@8.5.22)
       better-auth:
-        specifier: ^1.6.16
+        specifier: ^1.6.25
         version: 1.6.25(@opentelemetry/api@1.9.1)(next@16.2.11(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       class-variance-authority:
         specifier: ^0.7.1
