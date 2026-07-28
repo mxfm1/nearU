@@ -28,7 +28,7 @@ export function NavbarActions() {
         <Button variant="default" asChild>
           <Link href="/crear">
             <Plus className="h-4 w-4" />
-            Crear
+            <span className="hidden sm:inline">Crear</span>
           </Link>
         </Button>
       )}
@@ -36,8 +36,11 @@ export function NavbarActions() {
       {/* Logged in: Avatar + notifications */}
       {!loading && user ? (
         <>
-          <NotificationDropdown />
-          <DropdownMenu modal={false}>
+          {/* Notifications - hidden on mobile */}
+          <div className="hidden sm:block">
+            <NotificationDropdown />
+          </div>
+          {/* <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
@@ -80,7 +83,7 @@ export function NavbarActions() {
                 Cerrar Sesión
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </>
       ) : !loading ? (
         <>
@@ -88,14 +91,16 @@ export function NavbarActions() {
           <LoginDialog>
             <Button
               variant="outline"
-              className="border-border text-text-primary hover:bg-muted font-medium"
+              size="sm"
+              className="border-border text-text-primary hover:bg-muted font-medium h-8 sm:h-9 text-xs sm:text-sm"
             >
               Iniciar sesión
             </Button>
           </LoginDialog>
           <Button
             asChild
-            className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-brand"
+            size="sm"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-brand h-8 sm:h-9 text-xs sm:text-sm"
           >
             <Link href="/auth/register">Registrarse</Link>
           </Button>
