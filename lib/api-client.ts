@@ -90,12 +90,14 @@ export const authApi = {
     apiFetch<{ user: User; session: Session }>('/auth/sign-in/email', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
+      credentials: 'include'
     }),
 
   signUp: (name: string, email: string, password: string) =>
     apiFetch<{ success: boolean; data: User }>('/users', {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
+      credentials: 'include'
     }),
 
   signOut: () => apiFetch<void>('/auth/sign-out', { method: 'POST' }),
