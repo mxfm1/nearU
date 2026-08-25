@@ -114,7 +114,7 @@ export function HomeCategoryGrid() {
             </p>
           </div>
           <Link
-            href="/search"
+            href="/explorar"
             className="text-primary font-semibold hover:text-primary/80 transition-colors flex items-center gap-1 text-sm sm:text-base"
           >
             Ver todas →
@@ -134,7 +134,7 @@ export function HomeCategoryGrid() {
             return (
               <motion.div key={category.slug} variants={itemVariants}>
                 <Link
-                  href={`/search?category=${category.slug}`}
+                  href={`/explorar?category=${category.slug}`}
                   className="group relative block aspect-[4/3] sm:aspect-[3/2] rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300"
                 >
                   <motion.img
@@ -181,7 +181,7 @@ export function HomeCategoryGrid() {
             return (
               <motion.div key={category.slug} variants={itemVariants}>
                 <Link
-                  href={`/search?category=${category.slug}`}
+                  href={`/explorar?category=${category.slug}`}
                   className="group relative block aspect-square rounded-xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-300"
                 >
                   <motion.img

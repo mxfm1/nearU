@@ -6,12 +6,18 @@ import { Eye, Loader2 } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useDirtyGuard } from '@/hooks/use-dirty-guard';
+import { useRequests } from '@/hooks/requests/request-queries';
 import { profileApi } from '@/lib/profile-api';
+import {
+  getLatestProfileVerificationRequest,
+  getProfileVerificationState,
+} from '@/lib/requests-utils';
 import type { Profile } from '@/lib/profile-api';
 import type { Region } from '@/lib/catalogo-api';
 import { ProfileContent } from './profile-content';
+import { ProfileValidationRequestDialog } from './profile-validation-request-dialog';
+import { ProfileVerificationStateScreen } from './profile-verification-state-screen';
 
 const profileUpdateSchema = z.object({
   regionId: z.string().min(1, 'La región de la empresa es obligatoria'),
@@ -63,7 +69,10 @@ function draftFromProfile(profile: Profile): Draft {
     tags: profile.tags ?? [],
     regionId: (profile as { region?: { id?: string } }).region?.id ?? '',
     founded: profile.founded ?? '',
-    employees: profile.employees ?? '',
+    employees:
+      profile.employees === null || profile.employees === undefined
+        ? ''
+        : String(profile.employees),
     website: profile.website ?? null,
     whatsapp: profile.whatsapp ?? null,
     socialLinks: profile.socialLinks ?? [],
@@ -75,6 +84,7 @@ function draftToPayload(draft: Draft) {
   return {
     ...rest,
     regionId: regionId,
+    employees: rest.employees ? Number(rest.employees) : null,
     name: rest.name ?? undefined,
     description: rest.description ?? undefined,
     bannerUrl: rest.bannerUrl ?? undefined,
@@ -92,6 +102,7 @@ interface ProfileEditPageProps {
 export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
   const queryClient = useQueryClient();
   const { setDirty, clearDirty } = useDirtyGuard();
+  const requestsQuery = useRequests();
 
   const [draft, setDraft] = useState<Draft>(() => draftFromProfile(profile));
   const [initialDraft, setInitialDraft] = useState<Draft>(() =>
@@ -100,6 +111,7 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
   const draftRef = useRef(draft);
   draftRef.current = draft;
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [validationDialogOpen, setValidationDialogOpen] = useState(false);
 
   const dirtyFields = useMemo(() => computeDirtyFields(draft, initialDraft), [draft, initialDraft]);
 
@@ -117,14 +129,9 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
   }, [dirtyFields]);
 
   const saveMutation = useMutation({
-    mutationFn: (payload: Draft) => {
-      console.log('[SAVE] payload:', JSON.stringify(draftToPayload(payload)));
-      return profileApi.updateMine(draftToPayload(payload));
-    },
-    onSuccess: (data) => {
-      console.log('[SAVE SUCCESS] data:', JSON.stringify(data));
+    mutationFn: (payload: Draft) => profileApi.updateMine(draftToPayload(payload)),
+    onSuccess: () => {
       const savedDraft = draftRef.current;
-      console.log('[SAVE SUCCESS] savedDraft.regionId:', savedDraft.regionId);
       setDraft(savedDraft);
       setInitialDraft(structuredClone(savedDraft));
       queryClient.invalidateQueries({ queryKey: ['profile-edit'] });
@@ -159,29 +166,43 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
   }, [saveMutation]);
 
   const isSaving = saveMutation.isPending;
+  const requests = requestsQuery.data?.data ?? [];
+  const latestProfileVerificationRequest = getLatestProfileVerificationRequest(requests);
+  const verificationState = getProfileVerificationState(requests, profile.isVerified);
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between gap-4 mb-8">
           <h1 className="text-2xl font-bold text-foreground">Editar Perfil de Empresa</h1>
-          <div className="relative w-64">
+          {/* <div className="relative w-64">
             <Input placeholder="Buscar..." className="pl-9" />
-          </div>
+          </div> */}
+          <Button asChild className="bg-brand hover:bg-brand/90 text-white">
+            <Link href="/user/perfil-preview">
+              <Eye className="h-4 w-4 mr-2" />
+              Ver Perfil
+            </Link>
+          </Button>
         </div>
 
-        <Button asChild className="mb-6 bg-brand hover:bg-brand/90 text-white">
-          <Link href="/user/perfil-preview">
-            <Eye className="h-4 w-4 mr-2" />
-            Ver Perfil
-          </Link>
-        </Button>
+        {verificationState !== 'none' && !requestsQuery.isLoading ? (
+          <ProfileVerificationStateScreen
+            state={verificationState}
+            request={latestProfileVerificationRequest}
+            onRetryRequest={() => setValidationDialogOpen(true)}
+          />
+        ) : null}
 
         <ProfileContent
           data={draft}
           regiones={regiones}
           onChange={handleChange}
           locationError={locationError}
+          isVerified={profile.isVerified}
+          verificationState={verificationState}
+          isVerificationStateLoading={requestsQuery.isLoading}
+          onValidateProfile={() => setValidationDialogOpen(true)}
         />
 
         <div className="flex items-center justify-between gap-3 mt-8 pt-6 border-t">
@@ -221,6 +242,11 @@ export function ProfileEditPage({ profile, regiones }: ProfileEditPageProps) {
             </Button>
           </div>
         </div>
+
+        <ProfileValidationRequestDialog
+          open={validationDialogOpen}
+          onOpenChange={setValidationDialogOpen}
+        />
       </div>
     </div>
   );

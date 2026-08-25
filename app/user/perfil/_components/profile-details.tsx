@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -11,8 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ShieldCheck } from 'lucide-react';
 import { type Region } from '@/lib/catalogo-api';
+import type { ProfileVerificationState } from '@/lib/requests-utils';
 
 const EMPLOYEE_SIZES = ['1-10', '10-50', '51-200', '201-500', '500+'];
 
@@ -23,6 +25,10 @@ interface ProfileDetailsProps {
   regiones: Region[];
   onChange: (field: string, value: unknown) => void;
   locationError?: string | null;
+  isVerified?: boolean;
+  verificationState?: ProfileVerificationState;
+  isVerificationStateLoading?: boolean;
+  onValidateProfile?: () => void;
 }
 
 export function ProfileDetails({
@@ -32,6 +38,10 @@ export function ProfileDetails({
   regiones,
   onChange,
   locationError,
+  isVerified,
+  verificationState = 'none',
+  isVerificationStateLoading,
+  onValidateProfile,
 }: ProfileDetailsProps) {
   return (
     <Card className="h-full">
@@ -94,9 +104,29 @@ export function ProfileDetails({
             <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
               Estado de Verificación
             </Label>
-            <Badge className="bg-brand text-white">
-              <span className="mr-1">✓</span> Empresa Verificada
-            </Badge>
+            {isVerificationStateLoading ? (
+              <Badge variant="outline" className="border-muted bg-muted text-muted-foreground">
+                Consultando estado...
+              </Badge>
+            ) : isVerified || verificationState === 'approved' ? (
+              <Badge className="bg-brand text-white">
+                <span className="mr-1">✓</span> Empresa Verificada
+              </Badge>
+            ) : verificationState === 'in_process' ? (
+              <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-800">
+                Solicitud en proceso
+              </Badge>
+            ) : (
+              <Button
+                type="button"
+                size="sm"
+                className="bg-emerald-700 text-white hover:bg-emerald-800"
+                onClick={onValidateProfile}
+              >
+                <ShieldCheck className="h-4 w-4 mr-2" />
+                Validar mi perfil
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>

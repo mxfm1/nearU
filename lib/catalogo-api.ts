@@ -1,7 +1,7 @@
 import { apiFetch } from './api-client';
-import type { Categoria, Region } from '@/types/contracts/catalog-types';
+import type { Categoria, Region, Ubicacion } from '@/types/contracts/catalog-types';
 
-export type { Categoria, Region };
+export type { Categoria, Region, Ubicacion };
 
 export const catalogoApi = {
   categorias: (type?: 'service' | 'event') => {
@@ -11,11 +11,7 @@ export const catalogoApi = {
 
   regiones: () => apiFetch<{ success: boolean; data: Region[] }>('/regiones'),
 
-  ubicaciones: () =>
-    apiFetch<{
-      success: boolean;
-      data: { id: string; name: string; region: { id: string; name: string; slug: string } }[];
-    }>('/ubicaciones'),
+  ubicaciones: () => apiFetch<{ success: boolean; data: Ubicacion[] }>('/ubicaciones'),
 
   intenciones: () => apiFetch<{ success: boolean; data: string[] }>('/contactos/intenciones'),
 };

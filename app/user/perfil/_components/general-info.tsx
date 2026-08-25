@@ -60,7 +60,7 @@ export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoPr
           />
         </div>
 
-        <div>
+        {/* <div>
           <Label className="text-xs font-medium text-muted-foreground mb-1.5 block uppercase">
             Etiquetas / Keywords
           </Label>
@@ -93,7 +93,7 @@ export function GeneralInfo({ name, description, tags, onChange }: GeneralInfoPr
               Agregar
             </Button>
           </div>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

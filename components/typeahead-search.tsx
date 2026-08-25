@@ -1,54 +1,52 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useMemo, type FormEvent } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+  type FormEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, SearchX, Building2, Briefcase, Calendar, Tags, Loader2 } from 'lucide-react';
+import {
+  Search,
+  SearchX,
+  Building2,
+  Briefcase,
+  Calendar,
+  Loader2,
+  AlertCircle,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { serviciosApi } from '@/lib/servicios-api';
-import { eventosApi } from '@/lib/eventos-api';
+import { ProfilesQueryOptions } from '@/queries/profile.queries';
+import { ServicesQueryOptions } from '@/queries/service.queries';
+import { EventsQueryOptions } from '@/queries/event.queries';
 
 /* -------------------------------------------------------------------------- */
 /*  Constants                                                                 */
 /* -------------------------------------------------------------------------- */
 
-const SERVICE_CATEGORIES = [
-  'Producción',
-  'Audiovisual',
-  'Catering',
-  'Seguridad',
-  'Decoración',
-  'Tecnología',
-  'Espacios',
-];
-
-const EVENT_CATEGORIES = [
-  'Congreso',
-  'Seminario',
-  'Feria',
-  'Activación',
-  'Lanzamiento',
-  'Networking',
-];
-
-const TYPE_ORDER = ['empresa', 'servicio', 'evento', 'categoria'] as const;
+const TYPE_ORDER = ['empresa', 'servicio', 'evento'] as const;
 
 const TYPE_LABELS: Record<(typeof TYPE_ORDER)[number], string> = {
   empresa: 'Empresas',
   servicio: 'Servicios',
   evento: 'Eventos',
-  categoria: 'Categorías',
 };
 
 const TYPE_ICONS = {
   empresa: Building2,
   servicio: Briefcase,
   evento: Calendar,
-  categoria: Tags,
 } as const;
 
-const MAX_RESULTS = 8;
+const DEBOUNCE_MS = 250;
+const MIN_QUERY_LENGTH = 1;
+const MAX_RESULTS_PER_GROUP = 4;
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -62,6 +60,8 @@ interface SearchResult {
   description: string;
   type: ResultType;
   href: string;
+  eyebrow?: string;
+  imageUrl?: string | null;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -74,6 +74,33 @@ function normalize(text: string): string {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .trim();
+}
+
+function useDebouncedValue(value: string, delayMs: number): string {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setDebounced(value), delayMs);
+    return () => window.clearTimeout(timeoutId);
+  }, [delayMs, value]);
+
+  return debounced;
+}
+
+function includesQuery(value: string | null | undefined, query: string): boolean {
+  return normalize(value ?? '').includes(query);
+}
+
+function sortResults(a: SearchResult, b: SearchResult, query: string): number {
+  const aNorm = normalize(a.label);
+  const bNorm = normalize(b.label);
+  const aExact = aNorm === query;
+  const bExact = bNorm === query;
+  if (aExact !== bExact) return aExact ? -1 : 1;
+  const aStartsWith = aNorm.startsWith(query);
+  const bStartsWith = bNorm.startsWith(query);
+  if (aStartsWith !== bStartsWith) return aStartsWith ? -1 : 1;
+  return a.label.localeCompare(b.label);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -99,69 +126,73 @@ export function TypeaheadSearch({
   const listRef = useRef<HTMLDivElement>(null);
 
   const normalizedQuery = normalize(query);
+  const debouncedQuery = useDebouncedValue(normalizedQuery, DEBOUNCE_MS);
+  const isSearchReady = isFocused && debouncedQuery.length >= MIN_QUERY_LENGTH;
+
+  const searchParams = useMemo(
+    () => ({ search: debouncedQuery, sort: 'relevance' as const }),
+    [debouncedQuery]
+  );
 
   // ── Queries ──
-  const { data: serviciosRes, isLoading: serviciosLoading } = useQuery({
-    queryKey: ['servicios'],
-    queryFn: () => serviciosApi.list(),
+  const profilesQuery = useQuery({
+    ...ProfilesQueryOptions(searchParams),
+    queryKey: ['typeahead', 'profiles', searchParams],
+    enabled: isSearchReady,
   });
 
-  const { data: eventosRes, isLoading: eventosLoading } = useQuery({
-    queryKey: ['eventos'],
-    queryFn: () => eventosApi.list(),
+  const servicesQuery = useQuery({
+    ...ServicesQueryOptions(searchParams),
+    queryKey: ['typeahead', 'services', searchParams],
+    enabled: isSearchReady,
   });
 
-  const serviciosPublicados = useMemo(
-    () => (serviciosRes?.data ?? []).filter((s) => s.status?.slug === 'published'),
-    [serviciosRes]
-  );
+  const eventsQuery = useQuery({
+    ...EventsQueryOptions(searchParams),
+    queryKey: ['typeahead', 'events', searchParams],
+    enabled: isSearchReady,
+  });
 
-  const eventosPublicados = useMemo(
-    () => (eventosRes?.data ?? []).filter((e) => (e as any).eventStatus === 'published'),
-    [eventosRes]
-  );
-
-  const isLoading = serviciosLoading || eventosLoading;
+  const isLoading = profilesQuery.isFetching || servicesQuery.isFetching || eventsQuery.isFetching;
+  const hasError = profilesQuery.isError || servicesQuery.isError || eventsQuery.isError;
 
   /* ------ Flattened results for keyboard navigation ------ */
   const flatResults = useMemo<SearchResult[]>(() => {
-    if (!normalizedQuery) return [];
+    if (!isSearchReady) return [];
 
     const results: SearchResult[] = [];
 
-    // Empresas (agrupadas por marca única)
-    const seenEmpresas = new Set<string>();
-    serviciosPublicados.forEach((s) => {
-      const name = s.marca || s.title || '';
-      if (!normalize(name).includes(normalizedQuery)) return;
-      if (seenEmpresas.has(name)) return;
-      seenEmpresas.add(name);
+    profilesQuery.data?.forEach((profile) => {
+      const name = profile.name ?? '';
+      if (!includesQuery(name, debouncedQuery)) return;
       results.push({
-        id: `empresa-${s.slug ?? ''}`,
+        id: `empresa-${profile.id ?? profile.userId ?? name}`,
         label: name,
-        description: s.category?.name ?? 'Proveedor',
+        description: profile.industry ?? profile.location ?? 'Empresa',
         type: 'empresa',
-        href: `/servicios/${s.slug ?? ''}`,
+        href: `/explorar?scope=organizations&q=${encodeURIComponent(name)}`,
+        eyebrow: profile.isVerified ? 'Empresa verificada' : 'Empresa',
+        imageUrl: profile.logoUrl ?? profile.bannerUrl,
       });
     });
 
-    // Servicios
-    serviciosPublicados.forEach((s) => {
+    servicesQuery.data?.forEach((s) => {
       const title = s.title || '';
-      if (!normalize(title).includes(normalizedQuery)) return;
+      if (!includesQuery(title, debouncedQuery) && !includesQuery(s.marca, debouncedQuery)) return;
       results.push({
         id: `servicio-${s.id ?? ''}`,
         label: title,
         description: s.marca || s.category?.name || 'Servicio',
         type: 'servicio',
-        href: `/servicios/${s.slug ?? ''}`,
+        href: `/servicios/${s.slug ?? s.id ?? ''}`,
+        eyebrow: s.category?.name ?? 'Servicio',
+        imageUrl: s.logoUrl ?? s.thumbnailUrl ?? s.bannerUrl,
       });
     });
 
-    // Eventos
-    eventosPublicados.forEach((e) => {
+    eventsQuery.data?.forEach((e) => {
       const title = e.title || '';
-      if (!normalize(title).includes(normalizedQuery)) return;
+      if (!includesQuery(title, debouncedQuery)) return;
       const dateStr = e.startAt
         ? new Date(e.startAt).toLocaleDateString('es-ES', {
             day: 'numeric',
@@ -174,48 +205,19 @@ export function TypeaheadSearch({
         label: title,
         description: dateStr || e.location?.name || 'Evento',
         type: 'evento',
-        href: `/search?q=${encodeURIComponent(e.title ?? '')}&type=eventos`,
+        href: `/eventos/${e.slug ?? e.id ?? ''}`,
+        eyebrow: e.category?.name ?? 'Evento',
+        imageUrl: e.thumbnailUrl ?? e.bannerUrl,
       });
     });
 
-    // Categorías de servicio
-    SERVICE_CATEGORIES.forEach((c) => {
-      if (normalize(c).includes(normalizedQuery)) {
-        results.push({
-          id: `cat-servicio-${c}`,
-          label: c,
-          description: 'Categoría de servicio',
-          type: 'categoria',
-          href: `/search?type=proveedores&category=${encodeURIComponent(c)}`,
-        });
-      }
-    });
-
-    // Categorías de evento
-    EVENT_CATEGORIES.forEach((c) => {
-      if (normalize(c).includes(normalizedQuery)) {
-        results.push({
-          id: `cat-evento-${c}`,
-          label: c,
-          description: 'Categoría de evento',
-          type: 'categoria',
-          href: `/search?type=eventos&category=${encodeURIComponent(c)}`,
-        });
-      }
-    });
-
-    // Sort: exact matches first, then alphabetical
-    results.sort((a, b) => {
-      const aNorm = normalize(a.label);
-      const bNorm = normalize(b.label);
-      const aExact = aNorm === normalizedQuery ? -1 : 0;
-      const bExact = bNorm === normalizedQuery ? -1 : 0;
-      if (aExact !== bExact) return aExact - bExact;
-      return a.label.localeCompare(b.label);
-    });
-
-    return results.slice(0, MAX_RESULTS);
-  }, [normalizedQuery, serviciosPublicados, eventosPublicados]);
+    return TYPE_ORDER.flatMap((type) =>
+      results
+        .filter((result) => result.type === type)
+        .sort((a, b) => sortResults(a, b, debouncedQuery))
+        .slice(0, MAX_RESULTS_PER_GROUP)
+    );
+  }, [debouncedQuery, eventsQuery.data, isSearchReady, profilesQuery.data, servicesQuery.data]);
 
   /* ------ Grouped results for display ------ */
   const groupedResults = useMemo(() => {
@@ -263,7 +265,7 @@ export function TypeaheadSearch({
 
   /* ------ Close on Escape ------ */
   useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
+    function handleKeyDown(e: globalThis.KeyboardEvent) {
       if (e.key === 'Escape' && showDropdown) {
         setIsFocused(false);
         inputRef.current?.blur();
@@ -303,14 +305,14 @@ export function TypeaheadSearch({
       if (trimmed) {
         setIsFocused(false);
         setQuery('');
-        router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+        router.push(`/explorar?q=${encodeURIComponent(trimmed)}`);
       }
     },
     [query, highlightedIndex, flatResults, handleSelect, router]
   );
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
+    (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (!showDropdown) return;
 
       switch (e.key) {
@@ -396,19 +398,31 @@ export function TypeaheadSearch({
                           onMouseEnter={() => setHighlightedIndex(flatIdx)}
                           onClick={() => handleSelect(result)}
                           className={cn(
-                            'w-full flex items-start gap-3 px-3 py-2 text-left transition-colors duration-150',
+                            'w-full flex items-start gap-3 px-3 py-2.5 text-left transition-colors duration-150',
                             isHighlighted ? 'bg-muted' : 'hover:bg-muted/50'
                           )}
                         >
-                          <Icon
-                            className={cn(
-                              'h-4 w-4 mt-0.5 shrink-0',
-                              result.type === 'categoria' ? 'text-primary' : 'text-muted-foreground'
+                          <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-muted-foreground">
+                            {result.imageUrl ? (
+                              <span
+                                aria-hidden="true"
+                                className="h-full w-full bg-cover bg-center"
+                                style={{ backgroundImage: `url(${result.imageUrl})` }}
+                              />
+                            ) : (
+                              <Icon className="h-4 w-4" />
                             )}
-                          />
+                          </div>
                           <div className="min-w-0 flex-1">
-                            <div className="text-sm font-medium text-foreground truncate">
-                              {result.label}
+                            <div className="flex items-center gap-2">
+                              <span className="truncate text-sm font-medium text-foreground">
+                                {result.label}
+                              </span>
+                              {result.eyebrow ? (
+                                <span className="hidden shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary sm:inline">
+                                  {result.eyebrow}
+                                </span>
+                              ) : null}
                             </div>
                             <div className="text-xs text-muted-foreground truncate">
                               {result.description}
@@ -419,6 +433,11 @@ export function TypeaheadSearch({
                     })}
                   </div>
                 ))}
+              </div>
+            ) : hasError ? (
+              <div className="flex items-center gap-3 px-4 py-6 text-sm text-muted-foreground">
+                <AlertCircle className="h-4 w-4 shrink-0 text-destructive" />
+                <span>No pudimos cargar sugerencias. Probá buscar igual con Enter.</span>
               </div>
             ) : (
               /* ---- Empty state ---- */

@@ -20,6 +20,7 @@ import {
   LogOut,
   FolderOpen,
   MessageCircle,
+  ClipboardList,
 } from 'lucide-react';
 
 const navItems = [
@@ -29,6 +30,7 @@ const navItems = [
   { label: 'Inbox', icon: Mail, href: '/user/inbox' },
   { label: 'Mensajes', icon: MessageCircle, href: '/user/mensajes' },
   { label: 'Mis publicaciones', icon: FolderOpen, href: '/user/publicaciones' },
+  { label: 'Solicitudes', icon: ClipboardList, href: '/solicitudes' },
 ];
 
 const bottomItems = [

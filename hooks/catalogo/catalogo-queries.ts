@@ -1,7 +1,15 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { catalogoApi, type Region } from '@/lib/catalogo-api';
+import { catalogoApi } from '@/lib/catalogo-api';
+
+export function useCategorias() {
+  return useQuery({
+    queryKey: ['categorias'],
+    queryFn: () => catalogoApi.categorias(),
+    select: (res) => res?.data,
+  });
+}
 
 export function useRegiones() {
   return useQuery({

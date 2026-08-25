@@ -1,25 +1,26 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useUserSession } from '@/hooks/auth/user-session';
 
 interface AuthGuardProps {
   children: React.ReactNode;
   fallback?: React.ReactNode;
+  redirectTo?: string;
 }
 
-export function AuthGuard({ children, fallback }: AuthGuardProps) {
+export function AuthGuard({ children, fallback, redirectTo = '/' }: AuthGuardProps) {
   const router = useRouter();
-  const { isAuthenticated, isPending, user, session } = useUserSession();
-
-  console.log("user", user, session)
+  const searchParams = useSearchParams();
+  const { isAuthenticated, isPending } = useUserSession();
 
   useEffect(() => {
     if (!isPending && !isAuthenticated) {
-      router.push('/');
+      const query = searchParams.toString();
+      router.replace(query ? `${redirectTo}?${query}` : redirectTo);
     }
-  }, [isPending, isAuthenticated, router]);
+  }, [isPending, isAuthenticated, redirectTo, router, searchParams]);
 
   if (isPending) {
     return fallback ?? <AuthGuardSkeleton />;

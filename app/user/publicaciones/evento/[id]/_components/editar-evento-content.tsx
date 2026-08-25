@@ -36,7 +36,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent } from '@/components/ui/card';
-import { eventosApi, type EventoDetalle } from '@/lib/eventos-api';
+import { eventosApi, type UpdateEventoPayload } from '@/lib/eventos-api';
 import { catalogoApi } from '@/lib/catalogo-api';
 import { uploadFiles } from '@/lib/uploadthing';
 import { generateSlug } from '@/lib/slug';
@@ -50,6 +50,11 @@ const EditarEventoSchema = z.object({
   title: z.string().min(1, 'El título es requerido'),
   slug: z.string().optional().or(z.literal('')),
   description: z.string().optional().or(z.literal('')),
+  requirements: z
+    .string()
+    .max(5000, 'Los requisitos no pueden superar los 5000 caracteres')
+    .optional()
+    .or(z.literal('')),
   startAt: z.string().optional().or(z.literal('')),
   categoryId: z.string().optional().or(z.literal('')),
   locationId: z.string().optional().or(z.literal('')),
@@ -235,6 +240,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
         title: '',
         slug: '',
         description: '',
+        requirements: '',
         startAt: '',
         categoryId: '',
         locationId: '',
@@ -251,6 +257,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
       title: evento.title ?? '',
       slug: evento.slug ?? '',
       description: evento.description ?? '',
+      requirements: evento.requirements ?? '',
       startAt: evento.startAt ?? '',
       categoryId: evento.category?.id ?? '',
       locationId: evento.location?.id ?? '',
@@ -291,8 +298,7 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
   // ── Mutation ──
 
   const mutation = useMutation({
-    mutationFn: (payload: Parameters<typeof eventosApi.update>[1]) =>
-      eventosApi.update(id, payload),
+    mutationFn: (payload: UpdateEventoPayload) => eventosApi.update(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['evento', id] });
       queryClient.invalidateQueries({ queryKey: ['mis-eventos'] });
@@ -302,21 +308,22 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
 
   // ── Handlers ──
 
-  function buildPayload(data: EditarEventoFormValues) {
+  function buildPayload(data: EditarEventoFormValues): UpdateEventoPayload {
     return {
       slug: data.slug || generateSlug(data.title),
       title: data.title,
-      description: data.description || null,
-      startAt: data.startAt || null,
-      categoryId: data.categoryId || null,
-      locationId: data.locationId || null,
-      thumbnailUrl: data.thumbnailUrl || null,
+      description: data.description || undefined,
+      requirements: data.requirements ?? '',
+      startAt: data.startAt || undefined,
+      categoryId: data.categoryId || undefined,
+      locationId: data.locationId || undefined,
+      thumbnailUrl: data.thumbnailUrl || undefined,
       eventStatus: data.eventStatus,
     };
   }
 
   function handleSubmit(data: EditarEventoFormValues) {
-    mutation.mutate(buildPayload(data) as never);
+    mutation.mutate(buildPayload(data));
   }
 
   const thumbnailUrl = form.watch('thumbnailUrl') ?? '';
@@ -471,6 +478,27 @@ export function EditarEventoContent({ id }: EditarEventoContentProps) {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="requirements"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Requisitos del evento</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Describí los requisitos que deben cumplir los postulantes..."
+                          className="min-h-[120px] resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <p className="text-xs text-muted-foreground">
+                        Indicá qué necesitan los candidatos para postularse
+                      </p>
                       <FormMessage />
                     </FormItem>
                   )}

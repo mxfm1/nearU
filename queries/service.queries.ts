@@ -1,9 +1,9 @@
 import { queryOptions } from '@tanstack/react-query';
-import { serviciosApi } from '@/lib/servicios-api';
+import { serviciosApi, type ServiciosListParams } from '@/lib/servicios-api';
 
-export const ServicesQueryOptions = () =>
+export const ServicesQueryOptions = (params?: ServiciosListParams) =>
   queryOptions({
-    queryKey: ['servicios'],
-    queryFn: serviciosApi.list,
+    queryKey: ['servicios', params],
+    queryFn: () => serviciosApi.list(params),
     select: (res) => res?.data,
   });

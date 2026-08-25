@@ -39,17 +39,17 @@ export function AccountSection({ user }: AccountSectionProps) {
   return (
     <section>
       <h2 className="text-lg font-semibold text-foreground mb-1">Cuenta</h2>
-      <p className="text-sm text-muted-foreground mb-4">Información personal y perfil público.</p>
+      {/* <p className="text-sm text-muted-foreground mb-4">Información personal y perfil público.</p> */}
 
-      <Card>
-        <CardContent className="p-6">
+      <div>
+        <div className="">
           <div className="flex items-start gap-6">
-            <ProfileAvatar image={user.image} name={user.name} />
+            {/* <ProfileAvatar image={user.image} name={user.name} />
 
             <div>
               <p className="font-medium text-foreground">Cambiar foto de perfil</p>
               <p className="text-xs text-muted-foreground">Recomendado: 400x400px, JPG & PNG.</p>
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-6">
@@ -102,8 +102,8 @@ export function AccountSection({ user }: AccountSectionProps) {
               </ChangeEmailDialog> */}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   );
 }

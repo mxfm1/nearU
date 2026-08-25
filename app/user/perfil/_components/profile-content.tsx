@@ -6,6 +6,7 @@ import { ProfileLogo } from './profile-logo';
 import { GeneralInfo } from './general-info';
 import { ProfileDetails } from './profile-details';
 import { DigitalPresence } from './digital-presence';
+import type { ProfileVerificationState } from '@/lib/requests-utils';
 
 interface Draft {
   bannerUrl: string | null;
@@ -26,9 +27,22 @@ interface ProfileContentProps {
   regiones: Region[];
   onChange: (field: string, value: unknown) => void;
   locationError?: string | null;
+  isVerified?: boolean;
+  verificationState?: ProfileVerificationState;
+  isVerificationStateLoading?: boolean;
+  onValidateProfile?: () => void;
 }
 
-export function ProfileContent({ data, regiones, onChange, locationError }: ProfileContentProps) {
+export function ProfileContent({
+  data,
+  regiones,
+  onChange,
+  locationError,
+  isVerified,
+  verificationState,
+  isVerificationStateLoading,
+  onValidateProfile,
+}: ProfileContentProps) {
   return (
     <>
       <ProfileBanner bannerUrl={data.bannerUrl} onChange={(url) => onChange('bannerUrl', url)} />
@@ -57,6 +71,10 @@ export function ProfileContent({ data, regiones, onChange, locationError }: Prof
             regiones={regiones}
             onChange={onChange}
             locationError={locationError}
+            isVerified={isVerified}
+            verificationState={verificationState}
+            isVerificationStateLoading={isVerificationStateLoading}
+            onValidateProfile={onValidateProfile}
           />
         </div>
       </div>

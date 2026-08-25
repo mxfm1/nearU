@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es">
+
+<head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Solicitud en Proceso - ProVerify</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <script id="tailwind-config">
+                tailwind.config = {
+                        darkMode: "class",
+                        theme: {
+                                extend: {
+                                        "colors": {
+                                                "inverse-surface": "#2a313d",
+                                                "on-primary-fixed": "#002115",
+                                                "on-secondary-fixed-variant": "#733600",
+                                                "surface-tint": "#436556",
+                                                "on-tertiary-fixed-variant": "#444746",
+                                                "primary-fixed-dim": "#aacfbb",
+                                                "primary-fixed": "#c5ebd7",
+                                                "surface-dim": "#d3daea",
+                                                "surface": "#f9f9ff",
+                                                "on-error": "#ffffff",
+                                                "surface-container-high": "#e2e8f8",
+                                                "on-primary-fixed-variant": "#2c4d3f",
+                                                "secondary": "#974800",
+                                                "inverse-on-surface": "#ebf1ff",
+                                                "secondary-fixed-dim": "#ffb688",
+                                                "surface-container": "#e7eefe",
+                                                "error": "#ba1a1a",
+                                                "error-container": "#ffdad6",
+                                                "on-primary": "#ffffff",
+                                                "primary": "#03271a",
+                                                "on-tertiary-container": "#9da09e",
+                                                "secondary-container": "#ff9243",
+                                                "tertiary-fixed": "#e1e3e1",
+                                                "surface-container-lowest": "#ffffff",
+                                                "background": "#f9f9ff",
+                                                "primary-container": "#1b3d2f",
+                                                "tertiary": "#1e2221",
+                                                "on-tertiary": "#ffffff",
+                                                "inverse-primary": "#aacfbb",
+                                                "secondary-fixed": "#ffdbc7",
+                                                "on-tertiary-fixed": "#191c1b",
+                                                "tertiary-fixed-dim": "#c5c7c5",
+                                                "on-background": "#151c27",
+                                                "on-error-container": "#93000a",
+                                                "surface-bright": "#f9f9ff",
+                                                "outline": "#727974",
+                                                "on-secondary-fixed": "#311300",
+                                                "on-secondary": "#ffffff",
+                                                "surface-container-low": "#f0f3ff",
+                                                "outline-variant": "#c1c8c2",
+                                                "surface-container-highest": "#dce2f3",
+                                                "on-primary-container": "#84a895",
+                                                "on-surface": "#151c27",
+                                                "on-surface-variant": "#414844",
+                                                "tertiary-container": "#343736",
+                                                "on-secondary-container": "#6b3100",
+                                                "surface-variant": "#dce2f3"
+                                        },
+                                        "borderRadius": {
+                                                "DEFAULT": "0.25rem",
+                                                "lg": "0.5rem",
+                                                "xl": "0.75rem",
+                                                "full": "9999px"
+                                        },
+                                        "spacing": {
+                                                "xl": "32px",
+                                                "unit": "4px",
+                                                "sm": "8px",
+                                                "2xl": "48px",
+                                                "xs": "4px",
+                                                "md": "16px",
+                                                "gutter": "24px",
+                                                "lg": "24px",
+                                                "margin": "24px"
+                                        },
+                                        "fontFamily": {
+                                                "label-sm": [
+                                                        "Inter"
+                                                ],
+                                                "body-lg": [
+                                                        "Inter"
+                                                ],
+                                                "body-md": [
+                                                        "Inter"
+                                                ],
+                                                "display-lg-mobile": [
+                                                        "Plus Jakarta Sans"
+                                                ],
+                                                "headline-md": [
+                                                        "Plus Jakarta Sans"
+                                                ],
+                                                "display-lg": [
+                                                        "Plus Jakarta Sans"
+                                                ]
+                                        },
+                                        "fontSize": {
+                                                "label-sm": [
+                                                        "14px",
+                                                        {
+                                                                "lineHeight": "1",
+                                                                "letterSpacing": "0.05em",
+                                                                "fontWeight": "600"
+                                                        }
+                                                ],
+                                                "body-lg": [
+                                                        "18px",
+                                                        {
+                                                                "lineHeight": "1.6",
+                                                                "fontWeight": "400"
+                                                        }
+                                                ],
+                                                "body-md": [
+                                                        "16px",
+                                                        {
+                                                                "lineHeight": "1.5",
+                                                                "fontWeight": "400"
+                                                        }
+                                                ],
+                                                "display-lg-mobile": [
+                                                        "32px",
+                                                        {
+                                                                "lineHeight": "1.2",
+                                                                "fontWeight": "700"
+                                                        }
+                                                ],
+                                                "headline-md": [
+                                                        "24px",
+                                                        {
+                                                                "lineHeight": "1.4",
+                                                                "fontWeight": "600"
+                                                        }
+                                                ],
+                                                "display-lg": [
+                                                        "48px",
+                                                        {
+                                                                "lineHeight": "1.2",
+                                                                "letterSpacing": "-0.02em",
+                                                                "fontWeight": "700"
+                                                        }
+                                                ]
+                                        }
+                                },
+                        },
+                }
+        </script>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <style>
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap');
+        </style>
+</head>
+
+<body class="bg-background text-on-background h-full font-body-md flex overflow-hidden">
+        <!-- JSON SideNavBar (Web ONLY) -->
+        <nav
+                class="h-screen w-64 hidden lg:flex flex-col bg-surface-container dark:bg-surface-container-high fixed left-0 top-0 pt-20 pb-8 px-4 z-40">
+                <!-- Header -->
+                <div class="mb-xl flex items-center gap-md">
+                        <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest">
+                                <img alt="User profile" class="w-full h-full object-cover"
+                                        data-alt="A professional headshot of a user against a neutral grey background, high resolution, soft studio lighting, Corporate Modern aesthetic with a subtle organic touch. Focus on clarity and approachability."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGFAowAHaBl-ja66GI_CzEHYhi74SFHlmcoq2E6u9b6sBNnjZ-D5_9ax6-7viER0ZKQm4V5aml6tA6sy79f1E24ODl2D1TKwh98swl-ncCq2qxOCUi3C0A8xF6HxbfusNTEREPA1g2L3sVA9TNC3i3TRbmswrcuziOHhGWCoQmAs7Yqnhxx5tf3-Q9-WiV0Z29ztd4cEyGJxLeyqTeSgKwlxFKqxKPHMiehC-5vOIW5NjdruyZGGVEMA" />
+                        </div>
+                        <div>
+                                <h3
+                                        class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">
+                                        ProVerify</h3>
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Verification Pending</p>
+                        </div>
+                </div>
+                <!-- Links -->
+                <div class="flex-1 space-y-sm">
+                        <a class="flex items-center gap-md text-on-surface-variant dark:text-on-tertiary-container px-md py-sm hover:bg-surface-container-highest dark:hover:bg-inverse-surface rounded-lg transition-all duration-200 ease-in-out"
+                                href="#">
+                                <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                                <span class="font-label-sm text-label-sm">Overview</span>
+                        </a>
+                        <a class="flex items-center gap-md bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-lg px-md py-sm transition-all duration-200 ease-in-out"
+                                href="#">
+                                <span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                                <span class="font-label-sm text-label-sm">Verification</span>
+                        </a>
+                        <a class="flex items-center gap-md text-on-surface-variant dark:text-on-tertiary-container px-md py-sm hover:bg-surface-container-highest dark:hover:bg-inverse-surface rounded-lg transition-all duration-200 ease-in-out"
+                                href="#">
+                                <span class="material-symbols-outlined" data-icon="description">description</span>
+                                <span class="font-label-sm text-label-sm">Documents</span>
+                        </a>
+                        <a class="flex items-center gap-md text-on-surface-variant dark:text-on-tertiary-container px-md py-sm hover:bg-surface-container-highest dark:hover:bg-inverse-surface rounded-lg transition-all duration-200 ease-in-out"
+                                href="#">
+                                <span class="material-symbols-outlined"
+                                        data-icon="contact_support">contact_support</span>
+                                <span class="font-label-sm text-label-sm">Support</span>
+                        </a>
+                </div>
+                <!-- CTA -->
+                <button
+                        class="mt-auto w-full py-md px-md rounded-lg bg-primary text-on-primary font-label-sm text-label-sm hover:bg-primary-container transition-colors">
+                        Upgrade Plan
+                </button>
+        </nav>
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 flex flex-col lg:pl-64 h-full w-full">
+                <!-- JSON TopAppBar (Web ONLY - as requested, though logic says maybe hide, keeping as instructed "Standard TopAppBar and SideNavBar included") -->
+                <header
+                        class="fixed top-0 w-full lg:w-[calc(100%-16rem)] flex justify-between items-center px-gutter mx-auto h-16 bg-surface dark:bg-surface-dim shadow-sm z-50">
+                        <div class="flex items-center gap-md">
+                                <!-- Mobile Menu Button (hidden on desktop) -->
+                                <button class="lg:hidden text-primary">
+                                        <span class="material-symbols-outlined">menu</span>
+                                </button>
+                                <div
+                                        class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim lg:hidden">
+                                        ProVerify</div>
+                        </div>
+                        <nav class="hidden md:flex gap-lg h-full">
+                                <a class="flex items-center h-full text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 font-label-sm text-label-sm"
+                                        href="#">Dashboard</a>
+                                <a class="flex items-center h-full text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 font-label-sm text-label-sm"
+                                        href="#">My Profile</a>
+                                <a class="flex items-center h-full text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer active:opacity-80 font-label-sm text-label-sm"
+                                        href="#">Help</a>
+                        </nav>
+                        <div class="flex items-center gap-md">
+                                <button
+                                        class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80">
+                                        <span class="material-symbols-outlined"
+                                                data-icon="notifications">notifications</span>
+                                </button>
+                                <button
+                                        class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80">
+                                        <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                                </button>
+                                <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container hidden md:block">
+                                        <img alt="Professional user profile" class="w-full h-full object-cover"
+                                                data-alt="A small circular avatar placeholder showing a generic silhouette or subtle pattern in deep green and white, matching the Corporate Modern aesthetic."
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ6962eesW5cyUi-7hWsdESCs3Rr1OccwIBystnOKISy89IoFdzkJD9_DY_LDdyHjjc11EMYk3ohZVhtedDSOpjI8Dhxkw2q45xWwyyl2wsZ7ahC1owcIvMkGzPqZXBG9RTPY80SU--16UvwTw9wDRlUia1iCc3VGqhNCKNGWmCzRNKcRzAIgsdjr32MLNiJrQWTKAOmPcS-ceMcdK0t2trkWCV08GBSrmRr3XVH_6NTBk1iLjcYwY2Q" />
+                                </div>
+                        </div>
+                </header>
+                <!-- Main Canvas -->
+                <main
+                        class="flex-1 overflow-y-auto pt-24 pb-24 px-4 md:px-gutter lg:px-2xl flex flex-col items-center justify-center bg-surface">
+                        <div
+                                class="w-full max-w-2xl mx-auto flex flex-col items-center bg-surface-container-lowest rounded-xl shadow-lg p-xl relative overflow-hidden">
+                                <!-- Background Accent -->
+                                <div
+                                        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-secondary-container">
+                                </div>
+                                <!-- Progress Tracker -->
+                                <div class="w-full mb-2xl">
+                                        <div class="flex justify-between items-center relative">
+                                                <!-- Connecting Line Background -->
+                                                <div
+                                                        class="absolute top-1/2 left-0 w-full h-1 bg-surface-container -z-10 -translate-y-1/2 rounded-full">
+                                                </div>
+                                                <!-- Connecting Line Active (up to step 2) -->
+                                                <div
+                                                        class="absolute top-1/2 left-0 w-1/2 h-1 bg-primary -z-10 -translate-y-1/2 rounded-full">
+                                                </div>
+                                                <!-- Step 1: Completed -->
+                                                <div class="flex flex-col items-center gap-sm">
+                                                        <div
+                                                                class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm z-10">
+                                                                <span
+                                                                        class="material-symbols-outlined text-[18px]">check</span>
+                                                        </div>
+                                                        <span
+                                                                class="font-label-sm text-label-sm text-primary max-w-[100px] text-center">Solicitud
+                                                                Enviada</span>
+                                                </div>
+                                                <!-- Step 2: Active -->
+                                                <div class="flex flex-col items-center gap-sm">
+                                                        <div
+                                                                class="w-8 h-8 rounded-full bg-surface-container-lowest border-2 border-primary text-primary flex items-center justify-center shadow-sm z-10 relative">
+                                                                <span
+                                                                        class="absolute w-full h-full rounded-full border-2 border-primary animate-ping opacity-50"></span>
+                                                                <span
+                                                                        class="material-symbols-outlined text-[18px] animate-pulse">hourglass_top</span>
+                                                        </div>
+                                                        <span
+                                                                class="font-label-sm text-label-sm text-primary max-w-[120px] text-center font-bold">Revisión
+                                                                por Administración</span>
+                                                </div>
+                                                <!-- Step 3: Pending -->
+                                                <div class="flex flex-col items-center gap-sm">
+                                                        <div
+                                                                class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shadow-sm z-10">
+                                                                <span
+                                                                        class="material-symbols-outlined text-[18px]">flag</span>
+                                                        </div>
+                                                        <span
+                                                                class="font-label-sm text-label-sm text-on-surface-variant max-w-[100px] text-center">Resultado
+                                                                de Validación</span>
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- Status Illustration / Icon Area -->
+                                <div
+                                        class="mb-xl p-xl rounded-full bg-[#FFF9E6] border border-[#E07A2C]/20 shadow-sm flex items-center justify-center relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-[#E07A2C]/5 animate-pulse rounded-full"></div>
+                                        <span class="material-symbols-outlined text-[64px] text-[#E07A2C] relative z-10"
+                                                style="font-variation-settings: 'FILL' 1;">pending_actions</span>
+                                </div>
+                                <!-- Text Content -->
+                                <div class="text-center max-w-md mb-2xl">
+                                        <h1
+                                                class="font-display-lg-mobile md:font-headline-md text-display-lg-mobile md:text-headline-md text-on-background mb-sm">
+                                                Tu solicitud está en proceso
+                                        </h1>
+                                        <p class="font-body-lg text-body-lg text-on-surface-variant">
+                                                Nuestro equipo administrativo está revisando tu perfil. Te notificaremos
+                                                en un plazo de 24-48 horas.
+                                        </p>
+                                </div>
+                                <!-- Actions -->
+                                <div class="flex flex-col sm:flex-row gap-md w-full sm:w-auto">
+                                        <button
+                                                class="px-xl py-md bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-sm">
+                                                <span class="material-symbols-outlined text-[18px]">home</span>
+                                                Volver al Inicio
+                                        </button>
+                                </div>
+                        </div>
+                        <!-- Contextual Information Card (Bento style addition for a premium feel) -->
+                        <div class="w-full max-w-2xl mx-auto mt-lg grid grid-cols-1 md:grid-cols-2 gap-md">
+                                <div
+                                        class="bg-surface-container-lowest rounded-lg shadow-sm p-md border border-surface-container flex items-start gap-md">
+                                        <div class="p-sm bg-surface-container rounded-md text-primary">
+                                                <span class="material-symbols-outlined">help</span>
+                                        </div>
+                                        <div>
+                                                <h4 class="font-label-sm text-label-sm text-on-background mb-xs">¿Qué
+                                                        estamos revisando?</h4>
+                                                <p class="font-body-md text-body-md text-on-surface-variant text-sm">Tus
+                                                        documentos de identidad y certificaciones profesionales.</p>
+                                        </div>
+                                </div>
+                                <div
+                                        class="bg-surface-container-lowest rounded-lg shadow-sm p-md border border-surface-container flex items-start gap-md">
+                                        <div class="p-sm bg-surface-container rounded-md text-primary">
+                                                <span class="material-symbols-outlined">mail</span>
+                                        </div>
+                                        <div>
+                                                <h4 class="font-label-sm text-label-sm text-on-background mb-xs">Soporte
+                                                </h4>
+                                                <p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                                                        ¿Tienes dudas urgentes? Contáctanos a soporte@proverify.com</p>
+                                        </div>
+                                </div>
+                        </div>
+                </main>
+        </div>
+</body>
+
+</html>
+
+
+<!-- SOLICITUD VALIDADA -->
+
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Perfil Validado - NearU</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <script id="tailwind-config">
+                tailwind.config = {
+                        darkMode: "class",
+                        theme: {
+                                extend: {
+                                        "colors": {
+                                                "on-tertiary-fixed": "#191c1b",
+                                                "on-primary-container": "#84a895",
+                                                "surface-tint": "#436556",
+                                                "tertiary-container": "#343736",
+                                                "inverse-primary": "#aacfbb",
+                                                "on-background": "#151c27",
+                                                "on-error": "#ffffff",
+                                                "surface": "#f9f9ff",
+                                                "outline": "#727974",
+                                                "surface-variant": "#dce2f3",
+                                                "tertiary-fixed-dim": "#c5c7c5",
+                                                "secondary-fixed": "#ffdbc7",
+                                                "outline-variant": "#c1c8c2",
+                                                "surface-bright": "#f9f9ff",
+                                                "background": "#f9f9ff",
+                                                "surface-container-low": "#f0f3ff",
+                                                "inverse-on-surface": "#ebf1ff",
+                                                "on-primary": "#ffffff",
+                                                "on-secondary-container": "#6b3100",
+                                                "primary-fixed-dim": "#aacfbb",
+                                                "surface-container": "#e7eefe",
+                                                "surface-container-highest": "#dce2f3",
+                                                "inverse-surface": "#2a313d",
+                                                "error": "#ba1a1a",
+                                                "surface-container-high": "#e2e8f8",
+                                                "on-secondary": "#ffffff",
+                                                "tertiary-fixed": "#e1e3e1",
+                                                "on-surface": "#151c27",
+                                                "on-primary-fixed-variant": "#2c4d3f",
+                                                "on-primary-fixed": "#002115",
+                                                "primary-fixed": "#c5ebd7",
+                                                "error-container": "#ffdad6",
+                                                "on-tertiary-fixed-variant": "#444746",
+                                                "secondary-fixed-dim": "#ffb688",
+                                                "surface-dim": "#d3daea",
+                                                "on-tertiary-container": "#9da09e",
+                                                "on-secondary-fixed-variant": "#733600",
+                                                "secondary": "#974800",
+                                                "secondary-container": "#ff9243",
+                                                "primary-container": "#1b3d2f",
+                                                "primary": "#03271a",
+                                                "on-error-container": "#93000a",
+                                                "on-surface-variant": "#414844",
+                                                "on-tertiary": "#ffffff",
+                                                "on-secondary-fixed": "#311300",
+                                                "surface-container-lowest": "#ffffff",
+                                                "tertiary": "#1e2221"
+                                        },
+                                        "borderRadius": {
+                                                "DEFAULT": "0.25rem",
+                                                "lg": "0.5rem",
+                                                "xl": "0.75rem",
+                                                "full": "9999px"
+                                        },
+                                        "spacing": {
+                                                "xl": "32px",
+                                                "gutter": "24px",
+                                                "unit": "4px",
+                                                "xs": "4px",
+                                                "sm": "8px",
+                                                "2xl": "48px",
+                                                "margin": "24px",
+                                                "md": "16px",
+                                                "lg": "24px"
+                                        },
+                                        "fontFamily": {
+                                                "display-lg": ["Plus Jakarta Sans"],
+                                                "headline-md": ["Plus Jakarta Sans"],
+                                                "body-md": ["Inter"],
+                                                "label-sm": ["Inter"],
+                                                "display-lg-mobile": ["Plus Jakarta Sans"],
+                                                "body-lg": ["Inter"]
+                                        },
+                                        "fontSize": {
+                                                "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                                                "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                                                "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                                                "label-sm": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                                                "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                                                "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                                        }
+                                }
+                        }
+                }
+        </script>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen flex items-center justify-center p-4">
+        <!-- Supresión intencionada de Shell Components debido a la naturaleza transaccional/success de la pantalla -->
+        <main class="w-full max-w-2xl mx-auto">
+                <div class="bg-surface rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-2xl text-center">
+                        <!-- Icono de Éxito -->
+                        <div
+                                class="mb-lg inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary-fixed/20 text-primary">
+                                <span class="material-symbols-outlined text-[48px]" data-icon="check_circle"
+                                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        </div>
+                        <h1
+                                class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-sm">
+                                ¡Perfil Validado!
+                        </h1>
+                        <p class="text-body-lg font-body-lg text-on-surface-variant mb-xl max-w-lg mx-auto">
+                                Felicidades. Tu documentación ha sido revisada y aprobada por nuestro equipo de
+                                administradores. Ya puedes empezar a ofrecer tus servicios.
+                        </p>
+                        <!-- Insignia de Proveedor Verificado -->
+                        <div
+                                class="inline-flex items-center gap-2 bg-surface-container-high rounded-full px-lg py-sm mb-2xl shadow-sm border border-outline-variant/30">
+                                <span class="material-symbols-outlined text-primary" data-icon="verified"
+                                        style="font-variation-settings: 'FILL' 1;">verified</span>
+                                <span class="text-label-sm font-label-sm text-primary">Proveedor Verificado</span>
+                        </div>
+                        <!-- Estructura de Seguimiento (Progreso Finalizado) -->
+                        <div
+                                class="mb-2xl text-left bg-surface-container-low rounded-lg p-lg border border-outline-variant/50">
+                                <h3
+                                        class="text-label-sm font-label-sm text-on-surface-variant mb-md uppercase tracking-wider">
+                                        Historial de Solicitud</h3>
+                                <div
+                                        class="relative pl-6 space-y-md before:absolute before:inset-y-0 before:left-2.5 before:w-0.5 before:bg-outline-variant/30">
+                                        <!-- Paso 1 -->
+                                        <div class="relative">
+                                                <div
+                                                        class="absolute -left-6 mt-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center ring-4 ring-surface-container-low">
+                                                        <span class="material-symbols-outlined text-on-primary text-[12px]"
+                                                                data-icon="check"
+                                                                style="font-variation-settings: 'FILL' 1;">check</span>
+                                                </div>
+                                                <p class="text-label-sm font-label-sm text-on-surface">Solicitud Enviada
+                                                </p>
+                                                <p class="text-body-md font-body-md text-on-surface-variant text-sm">
+                                                        Hace 2 días</p>
+                                        </div>
+                                        <!-- Paso 2 -->
+                                        <div class="relative">
+                                                <div
+                                                        class="absolute -left-6 mt-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center ring-4 ring-surface-container-low">
+                                                        <span class="material-symbols-outlined text-on-primary text-[12px]"
+                                                                data-icon="check"
+                                                                style="font-variation-settings: 'FILL' 1;">check</span>
+                                                </div>
+                                                <p class="text-label-sm font-label-sm text-on-surface">Revisión
+                                                        Documental</p>
+                                                <p class="text-body-md font-body-md text-on-surface-variant text-sm">
+                                                        Hace 1 día</p>
+                                        </div>
+                                        <!-- Paso 3 (Actual) -->
+                                        <div class="relative">
+                                                <div
+                                                        class="absolute -left-6 mt-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center ring-4 ring-surface-container-low shadow-sm">
+                                                        <span class="material-symbols-outlined text-on-primary text-[12px]"
+                                                                data-icon="check"
+                                                                style="font-variation-settings: 'FILL' 1;">check</span>
+                                                </div>
+                                                <p class="text-label-sm font-label-sm text-primary">Aprobación Final</p>
+                                                <div
+                                                        class="mt-xs p-md bg-surface rounded-md border border-outline-variant/50 relative">
+                                                        <!-- Pequeño triángulo del bocadillo -->
+                                                        <div
+                                                                class="absolute -top-2 left-4 w-3 h-3 bg-surface border-t border-l border-outline-variant/50 transform rotate-45">
+                                                        </div>
+                                                        <p
+                                                                class="text-body-md font-body-md text-on-surface-variant italic">
+                                                                "Documentación perfecta. Bienvenido a la plataforma,
+                                                                estamos encantados de contar con tus servicios." - Admin
+                                                        </p>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <!-- Acciones -->
+                        <div class="flex flex-col sm:flex-row justify-center gap-md">
+                                <button
+                                        class="bg-primary text-on-primary font-label-sm text-label-sm px-xl py-md rounded-full shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                                        Ir a mi Perfil
+                                        <span class="material-symbols-outlined text-[18px]"
+                                                data-icon="arrow_forward">arrow_forward</span>
+                                </button>
+                        </div>
+                </div>
+        </main>
+</body>
+
+</html>
+
+<!-- SOLICITUD RECHAZADA -->
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Solicitud Rechazada - NearU</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+                rel="stylesheet" />
+        <script id="tailwind-config">
+                tailwind.config = {
+                        darkMode: "class",
+                        theme: {
+                                extend: {
+                                        "colors": {
+                                                "on-tertiary-fixed": "#191c1b",
+                                                "on-primary-container": "#84a895",
+                                                "surface-tint": "#436556",
+                                                "tertiary-container": "#343736",
+                                                "inverse-primary": "#aacfbb",
+                                                "on-background": "#151c27",
+                                                "on-error": "#ffffff",
+                                                "surface": "#f9f9ff",
+                                                "outline": "#727974",
+                                                "surface-variant": "#dce2f3",
+                                                "tertiary-fixed-dim": "#c5c7c5",
+                                                "secondary-fixed": "#ffdbc7",
+                                                "outline-variant": "#c1c8c2",
+                                                "surface-bright": "#f9f9ff",
+                                                "background": "#f9f9ff",
+                                                "surface-container-low": "#f0f3ff",
+                                                "inverse-on-surface": "#ebf1ff",
+                                                "on-primary": "#ffffff",
+                                                "on-secondary-container": "#6b3100",
+                                                "primary-fixed-dim": "#aacfbb",
+                                                "surface-container": "#e7eefe",
+                                                "surface-container-highest": "#dce2f3",
+                                                "inverse-surface": "#2a313d",
+                                                "error": "#ba1a1a",
+                                                "surface-container-high": "#e2e8f8",
+                                                "on-secondary": "#ffffff",
+                                                "tertiary-fixed": "#e1e3e1",
+                                                "on-surface": "#151c27",
+                                                "on-primary-fixed-variant": "#2c4d3f",
+                                                "on-primary-fixed": "#002115",
+                                                "primary-fixed": "#c5ebd7",
+                                                "error-container": "#ffdad6",
+                                                "on-tertiary-fixed-variant": "#444746",
+                                                "secondary-fixed-dim": "#ffb688",
+                                                "surface-dim": "#d3daea",
+                                                "on-tertiary-container": "#9da09e",
+                                                "on-secondary-fixed-variant": "#733600",
+                                                "secondary": "#974800",
+                                                "secondary-container": "#ff9243",
+                                                "primary-container": "#1b3d2f",
+                                                "primary": "#03271a",
+                                                "on-error-container": "#93000a",
+                                                "on-surface-variant": "#414844",
+                                                "on-tertiary": "#ffffff",
+                                                "on-secondary-fixed": "#311300",
+                                                "surface-container-lowest": "#ffffff",
+                                                "tertiary": "#1e2221"
+                                        },
+                                        "borderRadius": {
+                                                "DEFAULT": "0.25rem",
+                                                "lg": "0.5rem",
+                                                "xl": "0.75rem",
+                                                "full": "9999px"
+                                        },
+                                        "spacing": {
+                                                "xl": "32px",
+                                                "gutter": "24px",
+                                                "unit": "4px",
+                                                "xs": "4px",
+                                                "sm": "8px",
+                                                "2xl": "48px",
+                                                "margin": "24px",
+                                                "md": "16px",
+                                                "lg": "24px"
+                                        },
+                                        "fontFamily": {
+                                                "display-lg": [
+                                                        "Plus Jakarta Sans"
+                                                ],
+                                                "headline-md": [
+                                                        "Plus Jakarta Sans"
+                                                ],
+                                                "body-md": [
+                                                        "Inter"
+                                                ],
+                                                "label-sm": [
+                                                        "Inter"
+                                                ],
+                                                "display-lg-mobile": [
+                                                        "Plus Jakarta Sans"
+                                                ],
+                                                "body-lg": [
+                                                        "Inter"
+                                                ]
+                                        },
+                                        "fontSize": {
+                                                "display-lg": [
+                                                        "48px",
+                                                        {
+                                                                "lineHeight": "1.2",
+                                                                "letterSpacing": "-0.02em",
+                                                                "fontWeight": "700"
+                                                        }
+                                                ],
+                                                "headline-md": [
+                                                        "24px",
+                                                        {
+                                                                "lineHeight": "1.4",
+                                                                "fontWeight": "600"
+                                                        }
+                                                ],
+                                                "body-md": [
+                                                        "16px",
+                                                        {
+                                                                "lineHeight": "1.5",
+                                                                "fontWeight": "400"
+                                                        }
+                                                ],
+                                                "label-sm": [
+                                                        "14px",
+                                                        {
+                                                                "lineHeight": "1",
+                                                                "letterSpacing": "0.05em",
+                                                                "fontWeight": "600"
+                                                        }
+                                                ],
+                                                "display-lg-mobile": [
+                                                        "32px",
+                                                        {
+                                                                "lineHeight": "1.2",
+                                                                "fontWeight": "700"
+                                                        }
+                                                ],
+                                                "body-lg": [
+                                                        "18px",
+                                                        {
+                                                                "lineHeight": "1.6",
+                                                                "fontWeight": "400"
+                                                        }
+                                                ]
+                                        }
+                                },
+                        },
+                }
+        </script>
+</head>
+
+<body class="bg-background min-h-screen text-on-background font-body-md">
+        <!-- Header (Suppressed active state logic as this is a specific flow) -->
+        <header
+                class="flex justify-between items-center w-full px-lg py-sm z-50 sticky top-0 bg-surface border-b border-outline-variant shadow-sm">
+                <div class="flex items-center gap-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-primary text-2xl"
+                                data-icon="arrow_back">arrow_back</span>
+                        <span class="text-headline-md font-headline-md font-bold text-primary">NearU</span>
+                </div>
+                <div class="flex items-center gap-md">
+                        <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container transition-colors p-2 rounded-full"
+                                data-icon="notifications">notifications</span>
+                        <div
+                                class="w-10 h-10 rounded-full overflow-hidden border-2 border-outline-variant cursor-pointer">
+                                <img alt="User profile photo" class="w-full h-full object-cover"
+                                        data-alt="A small, circular profile picture placeholder for a user. It shows a neutral avatar icon against a light gray background, matching the clean corporate modern UI aesthetic."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgJ0pYz7DrSU59DjVSLnBpHnCi_Gz_yCd9AwnxeY74-HdW-e2zdVtqdSx3NDqDgOXmWYnvuyYCnpdssXsSIkHTW4UWlwthQ1HtT7JHWD96KzfIGWEu1xcAjlsvb3upJN3K6BvmWHzhojohaj8ay6QS6NUH5ysHBs8Dr8Zz_HXqtBB1SeH0r_p035itnTcolLu5k7tGZIbbh11ZlL-aIFwSctriF-I6iPvIpehlQvqaueilWNE4dkthkA" />
+                        </div>
+                </div>
+        </header>
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-margin md:px-gutter py-2xl grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Center Container -->
+                <div class="lg:col-span-8 lg:col-start-3 space-y-xl">
+                        <!-- Error State Banner -->
+                        <div
+                                class="bg-error-container border border-error rounded-xl p-md flex items-start gap-md shadow-sm">
+                                <span class="material-symbols-outlined text-error text-3xl mt-xs" data-icon="error"
+                                        style="font-variation-settings: 'FILL' 1;">error</span>
+                                <div>
+                                        <h1 class="text-headline-md font-headline-md text-error mb-xs">Solicitud
+                                                Rechazada</h1>
+                                        <p class="text-body-lg font-body-lg text-on-error-container">Lamentablemente, no
+                                                hemos podido aprobar tu solicitud de validación como profesional en este
+                                                momento. Revisa los detalles a continuación.</p>
+                                </div>
+                        </div>
+                        <!-- Feedback Details Card -->
+                        <div
+                                class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-outline-variant p-lg space-y-md">
+                                <div class="border-b border-outline-variant pb-sm">
+                                        <h2
+                                                class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">
+                                                Motivos del Rechazo</h2>
+                                        <p class="text-body-md font-body-md text-on-surface">Nuestro equipo de
+                                                administración ha revisado tu solicitud y ha dejado el siguiente
+                                                comentario:</p>
+                                </div>
+                                <div class="bg-surface-container-low rounded-lg p-md border-l-4 border-error">
+                                        <div class="flex items-start gap-sm">
+                                                <span class="material-symbols-outlined text-on-surface-variant mt-1"
+                                                        data-icon="comment">comment</span>
+                                                <div>
+                                                        <p
+                                                                class="text-body-md font-body-md text-on-surface font-semibold mb-xs">
+                                                                Documentación ilegible o incompleta</p>
+                                                        <p class="text-body-md font-body-md text-on-surface-variant">"El
+                                                                documento de identidad proporcionado está borroso y no
+                                                                se pueden leer los datos con claridad. Además, falta
+                                                                adjuntar el certificado de antecedentes actualizado. Por
+                                                                favor, asegúrate de que las fotos sean nítidas y estén
+                                                                bien iluminadas."</p>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="pt-sm">
+                                        <h3
+                                                class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-sm">
+                                                Archivos Observados</h3>
+                                        <div class="flex flex-col gap-sm">
+                                                <div
+                                                        class="flex items-center gap-sm bg-surface-container rounded-lg p-sm border border-outline-variant/50">
+                                                        <span class="material-symbols-outlined text-error"
+                                                                data-icon="warning">warning</span>
+                                                        <span
+                                                                class="text-body-md font-body-md text-on-surface flex-grow">ID_Frontal_Borroso.jpg</span>
+                                                        <span
+                                                                class="text-label-sm font-label-sm text-error">Rechazado</span>
+                                                </div>
+                                                <div
+                                                        class="flex items-center gap-sm bg-surface-container rounded-lg p-sm border border-outline-variant/50">
+                                                        <span class="material-symbols-outlined text-primary"
+                                                                data-icon="check_circle">check_circle</span>
+                                                        <span
+                                                                class="text-body-md font-body-md text-on-surface flex-grow">Certificado_Estudios.pdf</span>
+                                                        <span
+                                                                class="text-label-sm font-label-sm text-primary">Aprobado</span>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-md justify-end pt-md">
+                                <button
+                                        class="px-xl py-sm rounded-lg text-primary text-label-sm font-label-sm hover:bg-surface-container transition-colors flex items-center justify-center gap-xs">
+                                        <span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+                                        Cancelar
+                                </button>
+                                <button
+                                        class="px-xl py-sm rounded-lg bg-primary text-on-primary border border-primary text-label-sm font-label-sm hover:bg-primary/90 transition-colors shadow-sm flex items-center justify-center gap-xs">
+                                        <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+                                        Editar Perfil y Volver a Intentar
+                                </button>
+                        </div>
+                        <!-- Tracking Status (Updated to Rejected) -->
+                        <div class="mt-2xl">
+                                <h3
+                                        class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-lg">
+                                        Estado de la Solicitud</h3>
+                                <div class="relative flex justify-between items-center w-full">
+                                        <!-- Connecting Lines -->
+                                        <div
+                                                class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container-highest z-0">
+                                        </div>
+                                        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-2/3 h-1 bg-primary z-0">
+                                        </div> <!-- Completed up to review -->
+                                        <!-- Step 1: Enviada -->
+                                        <div class="relative z-10 flex flex-col items-center gap-sm">
+                                                <div
+                                                        class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+                                                        <span class="material-symbols-outlined"
+                                                                data-icon="done">done</span>
+                                                </div>
+                                                <span
+                                                        class="text-label-sm font-label-sm text-on-surface hidden sm:block">Enviada</span>
+                                        </div>
+                                        <!-- Step 2: En Revisión -->
+                                        <div class="relative z-10 flex flex-col items-center gap-sm">
+                                                <div
+                                                        class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+                                                        <span class="material-symbols-outlined"
+                                                                data-icon="done">done</span>
+                                                </div>
+                                                <span
+                                                        class="text-label-sm font-label-sm text-on-surface hidden sm:block">En
+                                                        Revisión</span>
+                                        </div>
+                                        <!-- Step 3: Resultado (Rechazada) -->
+                                        <div class="relative z-10 flex flex-col items-center gap-sm">
+                                                <div
+                                                        class="w-10 h-10 rounded-full bg-error text-on-error flex items-center justify-center shadow-md ring-4 ring-error-container">
+                                                        <span class="material-symbols-outlined"
+                                                                data-icon="close">close</span>
+                                                </div>
+                                                <span
+                                                        class="text-label-sm font-label-sm text-error font-bold hidden sm:block">Rechazada</span>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </main>
+        <!-- Footer -->
+        <footer
+                class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto bg-surface-container dark:bg-surface-container-highest border-t border-outline-variant mt-2xl">
+                <div class="font-bold text-primary dark:text-primary-fixed-dim mb-md md:mb-0">
+                        © 2024 NearU Professional Services. All rights reserved.
+                </div>
+                <div class="flex flex-wrap gap-md justify-center">
+                        <a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all opacity-100 hover:opacity-80"
+                                href="#">Privacy Policy</a>
+                        <a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all opacity-100 hover:opacity-80"
+                                href="#">Terms of Service</a>
+                        <a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all opacity-100 hover:opacity-80"
+                                href="#">Help Center</a>
+                        <a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim underline transition-all opacity-100 hover:opacity-80"
+                                href="#">Contact Us</a>
+                </div>
+        </footer>
+</body>
+
+</html>

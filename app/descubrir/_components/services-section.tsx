@@ -16,7 +16,7 @@ export function ServicesSection({ query }: ServiceSectionProps) {
 
   if (isPending) {
     return (
-      <HorizontalScroll title="Proveedores Destacados" seeAllHref="/search?type=proveedores">
+      <HorizontalScroll title="Proveedores Destacados" seeAllHref="/descubrir?scope=services">
         <div className="flex items-center gap-2 text-muted-foreground py-8">
           <Loader2 className="h-5 w-5 animate-spin" />
           <span>Cargando proveedores...</span>
@@ -27,7 +27,7 @@ export function ServicesSection({ query }: ServiceSectionProps) {
 
   if (isError) {
     return (
-      <HorizontalScroll title="Proveedores Destacados" seeAllHref="/search?type=proveedores">
+      <HorizontalScroll title="Proveedores Destacados" seeAllHref="/descubrir?scope=services">
         <div className="flex flex-col items-center gap-3 py-8 text-center">
           <AlertTriangle className="h-8 w-8 text-destructive" />
           <p className="text-destructive text-sm">Error al cargar proveedores.</p>
@@ -41,7 +41,7 @@ export function ServicesSection({ query }: ServiceSectionProps) {
 
   if (!data || data.length === 0) {
     return (
-      <HorizontalScroll title="Proveedores Destacados" seeAllHref="/search?type=proveedores">
+      <HorizontalScroll title="Proveedores Destacados" seeAllHref="/descubrir?scope=services">
         <div className="flex flex-col items-center gap-3 py-8 text-center">
           <Search className="h-8 w-8 text-muted-foreground" />
           <p className="text-muted-foreground text-sm">
@@ -53,7 +53,7 @@ export function ServicesSection({ query }: ServiceSectionProps) {
   }
 
   return (
-    <HorizontalScroll title="Proveedores Destacados" seeAllHref="/search?type=proveedores">
+    <HorizontalScroll title="Proveedores Destacados" seeAllHref="/descubrir?scope=services">
       {data.map((s) => (
         <ProviderCard
           key={s.id}

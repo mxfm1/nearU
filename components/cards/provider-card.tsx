@@ -13,6 +13,7 @@ interface ProviderCardProps {
   location: string;
   thumbnail: string;
   slug: string;
+  className?: string;
 }
 
 export function ProviderCard({
@@ -22,13 +23,15 @@ export function ProviderCard({
   location,
   thumbnail,
   slug,
+  className,
 }: ProviderCardProps) {
   return (
     <Link
       href={`/servicios/${slug}`}
       className={cn(
         'group block w-[300px] bg-card rounded-md overflow-hidden',
-        'shadow-sm hover:shadow-md transition-shadow duration-300'
+        'shadow-sm hover:shadow-md transition-shadow duration-300',
+        className
       )}
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
@@ -37,7 +40,7 @@ export function ProviderCard({
           alt={name}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500 aspect-[16/9]"
-          sizes="300px"
+          sizes={className ? '(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw' : '300px'}
         />
       </div>
 

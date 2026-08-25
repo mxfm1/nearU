@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 import {
   Plus,
   Trash2,
@@ -36,7 +36,6 @@ import {
 } from '@/components/ui/select';
 
 import { CrearServicioSchema, type CrearServicioFormValues } from '@/components/forms/schemas';
-import { generateSlug } from '@/lib/slug';
 import { cn } from '@/lib/utils';
 import { uploadFiles } from '@/lib/uploadthing';
 import type { Categoria } from '@/lib/catalogo-api';
@@ -295,31 +294,24 @@ export function CrearServicioForm({
     resolver: zodResolver(CrearServicioSchema),
     defaultValues: {
       title: '',
-      slug: '',
       marca: '',
       description: '',
       yearsExperience: '',
       priceMin: '',
       priceMax: '',
       availability: '',
+      availabilityDetails: '',
+      modality: '',
       contacts: [{ type: 'email', value: '' }],
       categoryId: '',
       locationId: '',
       bannerUrl: '',
+      logoUrl: '',
       thumbnailUrl: '',
       serviceImages: [],
       status: 'draft',
     },
   });
-
-  const watchedTitle = form.watch('title');
-
-  useEffect(() => {
-    if (watchedTitle) {
-      const slug = generateSlug(watchedTitle);
-      form.setValue('slug', slug, { shouldValidate: slug.length >= 2 });
-    }
-  }, [watchedTitle, form]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -335,21 +327,26 @@ export function CrearServicioForm({
       description: '',
     }));
 
-    const contacts = data.contacts?.filter((c) => c.value.trim()) ?? [];
+    const contacts = data.contacts.map((contact) => ({
+      type: contact.type,
+      value: contact.value.trim(),
+    }));
 
     return {
-      slug: data.slug || generateSlug(data.title),
-      title: data.title,
-      marca: data.marca || undefined,
-      description: data.description || undefined,
+      title: data.title.trim(),
+      marca: data.marca?.trim() || undefined,
+      description: data.description?.trim() || undefined,
       yearsExperience: data.yearsExperience ? Number(data.yearsExperience) : undefined,
       priceMin: data.priceMin ? Number(data.priceMin) : undefined,
       priceMax: data.priceMax ? Number(data.priceMax) : undefined,
       availability: data.availability || undefined,
-      contacts: contacts.length > 0 ? contacts : undefined,
+      availabilityDetails: data.availabilityDetails?.trim() || undefined,
+      modality: data.modality || undefined,
+      contacts,
       categoryId: data.categoryId || undefined,
       locationId: data.locationId || undefined,
       bannerUrl: data.bannerUrl || undefined,
+      logoUrl: data.logoUrl || undefined,
       thumbnailUrl: data.thumbnailUrl || undefined,
       portfolio: portfolioImages.length > 0 ? portfolioImages : undefined,
       status: data.status,
@@ -357,13 +354,22 @@ export function CrearServicioForm({
   }
 
   function handleFormSubmit(data: CrearServicioFormValues) {
-    mutation.mutate({ ...buildPayload(data), status: 'published' } as never);
+    mutation.mutate(
+      { ...buildPayload(data), status: 'published' },
+      {
+        onSuccess: () => toast.success('Servicio creado correctamente'),
+      }
+    );
   }
 
-  function handleSaveDraft() {
-    const data = form.getValues();
-    mutation.mutate({ ...buildPayload(data), status: 'draft' } as never);
-  }
+  const handleSaveDraft = form.handleSubmit((data) => {
+    mutation.mutate(
+      { ...buildPayload(data), status: 'draft' },
+      {
+        onSuccess: () => toast.success('Borrador guardado correctamente'),
+      }
+    );
+  });
 
   const handleStepClick = (stepId: string) => {
     setActiveStep(stepId);
@@ -371,6 +377,7 @@ export function CrearServicioForm({
   };
 
   const bannerUrl = form.watch('bannerUrl') ?? '';
+  const logoUrl = form.watch('logoUrl') ?? '';
   const thumbnailUrl = form.watch('thumbnailUrl') ?? '';
   const serviceImages = form.watch('serviceImages') ?? [];
 
@@ -536,6 +543,13 @@ export function CrearServicioForm({
                     aspectRatio="16:9"
                   />
                   <ServicioImageUpload
+                    label="Logo del servicio"
+                    value={logoUrl}
+                    onChange={(url) => form.setValue('logoUrl', url)}
+                    route="serviceThumbnail"
+                    aspectRatio="1:1"
+                  />
+                  <ServicioImageUpload
                     label="Thumbnail"
                     value={thumbnailUrl}
                     onChange={(url) => form.setValue('thumbnailUrl', url)}
@@ -580,8 +594,59 @@ export function CrearServicioForm({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Disponibilidad</FormLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Seleccioná disponibilidad" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="immediate">Inmediata</SelectItem>
+                            <SelectItem value="not_immediate">No inmediata</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="modality"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Modalidad</FormLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Seleccioná modalidad" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="in_person">Presencial</SelectItem>
+                            <SelectItem value="online">Online</SelectItem>
+                            <SelectItem value="hybrid">Híbrida</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="availabilityDetails"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Detalle de disponibilidad</FormLabel>
                         <FormControl>
-                          <Input placeholder="Inmediata, Fines de semana..." {...field} />
+                          <Textarea
+                            placeholder="Ej: Disponible fines de semana, contratación con 15 días de anticipación..."
+                            className="min-h-[90px] resize-none"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -664,40 +729,55 @@ export function CrearServicioForm({
                 <div className="space-y-3">
                   <label className="text-sm font-medium">Datos de contacto</label>
                   {fields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2">
-                      <Select
-                        defaultValue={field.type}
-                        onValueChange={(value) => {
-                          const contacts = form.getValues('contacts');
-                          contacts[index].type = value as typeof field.type;
-                          form.setValue('contacts', contacts);
-                        }}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {contactTypes.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
-                              {type.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Input
-                        placeholder="Valor"
-                        value={field.value}
-                        onChange={(e) => {
-                          const contacts = form.getValues('contacts');
-                          contacts[index].value = e.target.value;
-                          form.setValue('contacts', contacts);
-                        }}
-                        className="flex-1"
+                    <div
+                      key={field.id}
+                      className="grid gap-2 sm:grid-cols-[8rem_minmax(0,1fr)_2.5rem]"
+                    >
+                      <FormField
+                        control={form.control}
+                        name={`contacts.${index}.type`}
+                        render={({ field: contactTypeField }) => (
+                          <FormItem>
+                            <Select
+                              value={contactTypeField.value}
+                              onValueChange={contactTypeField.onChange}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {contactTypes.map((type) => (
+                                  <SelectItem key={type.value} value={type.value}>
+                                    {type.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
+
+                      <FormField
+                        control={form.control}
+                        name={`contacts.${index}.value`}
+                        render={({ field: contactValueField }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input placeholder="Valor" {...contactValueField} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
+                        className="self-start"
                         onClick={() => remove(index)}
                         disabled={fields.length === 1}
                       >

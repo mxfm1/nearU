@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import { ServicePageContent } from '../_components/service-page-content';
-import { LoadingSkeleton } from '../_components/loading-skeleton';
+import { ServiceDetailContent } from './_components/service-detail-content';
+import { ServiceDetailSkeleton } from './_components/service-detail-skeleton';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -9,8 +9,8 @@ interface PageProps {
 export default async function ServicePage({ params }: PageProps) {
   const { id } = await params;
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <ServicePageContent id={id} />
+    <Suspense fallback={<ServiceDetailSkeleton />}>
+      <ServiceDetailContent id={id} />
     </Suspense>
   );
 }

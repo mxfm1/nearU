@@ -17,9 +17,9 @@ export function HomeCategories() {
 
   function handleCategoryClick(slug: string) {
     if (slug === 'all') {
-      router.push('/search');
+      router.push('/explorar');
     } else {
-      router.push(`/search?category=${slug}`);
+      router.push(`/explorar?category=${slug}`);
     }
   }
 

@@ -59,21 +59,22 @@ export async function apiFetch<T>(path: string, options?: RequestInit): Promise<
     const body = await res.json();
 
     if (!res.ok) {
-      console.log('response', res);
+      console.error('response', res);
       throw new ApiError(
         body.error?.code ?? body.code ?? body.errorCode ?? 'INTERNAL_SERVER_ERROR',
-        body.error?.message ?? body.message
+        body.error?.message ?? body.message,
+        body.error?.details ?? body.details
       );
     }
 
     return body;
   } catch (err) {
     if (err instanceof ApiError) {
-      console.log(err.message);
+      console.error(err.message);
       throw err;
     }
 
-    console.log(err);
+    console.error(err);
 
     throw new ApiError('INTERNAL_SERVER_ERROR');
   }
@@ -90,14 +91,14 @@ export const authApi = {
     apiFetch<{ user: User; session: Session }>('/auth/sign-in/email', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
-      credentials: 'include'
+      credentials: 'include',
     }),
 
   signUp: (name: string, email: string, password: string) =>
     apiFetch<{ success: boolean; data: User }>('/users', {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
-      credentials: 'include'
+      credentials: 'include',
     }),
 
   signOut: () => apiFetch<void>('/auth/sign-out', { method: 'POST' }),

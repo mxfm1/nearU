@@ -16,7 +16,7 @@ interface EventsSectionProps {
 export function EventsSection({ data, isPending, isError, onRefetch }: EventsSectionProps) {
   if (isPending) {
     return (
-      <HorizontalScroll title="Próximos Eventos" seeAllHref="/search?type=eventos">
+      <HorizontalScroll title="Próximos Eventos" seeAllHref="/descubrir?scope=events">
         <div className="flex items-center gap-2 text-muted-foreground py-8">
           <Loader2 className="h-5 w-5 animate-spin" />
           <span>Cargando eventos...</span>
@@ -27,7 +27,7 @@ export function EventsSection({ data, isPending, isError, onRefetch }: EventsSec
 
   if (isError) {
     return (
-      <HorizontalScroll title="Próximos Eventos" seeAllHref="/search?type=eventos">
+      <HorizontalScroll title="Próximos Eventos" seeAllHref="/descubrir?scope=events">
         <div className="flex flex-col items-center gap-3 py-8 text-center">
           <AlertTriangle className="h-8 w-8 text-destructive" />
           <p className="text-destructive text-sm">Error al cargar eventos.</p>
@@ -41,7 +41,7 @@ export function EventsSection({ data, isPending, isError, onRefetch }: EventsSec
 
   if (!data || data.length === 0) {
     return (
-      <HorizontalScroll title="Próximos Eventos" seeAllHref="/search?type=eventos">
+      <HorizontalScroll title="Próximos Eventos" seeAllHref="/descubrir?scope=events">
         <div className="flex flex-col items-center gap-3 py-8 text-center">
           <CalendarDays className="h-8 w-8 text-muted-foreground" />
           <p className="text-muted-foreground text-sm">
@@ -53,7 +53,7 @@ export function EventsSection({ data, isPending, isError, onRefetch }: EventsSec
   }
 
   return (
-    <HorizontalScroll title="Próximos Eventos" seeAllHref="/search?type=eventos">
+    <HorizontalScroll title="Próximos Eventos" seeAllHref="/descubrir?scope=events">
       {data.map((e) => (
         <EventCard
           key={e.id}

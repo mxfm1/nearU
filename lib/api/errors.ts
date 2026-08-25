@@ -14,6 +14,7 @@ export type BackendErrorCodes =
   | 'NOT_FOUND'
   | 'CONFLICT'
   | 'VALIDATION_ERROR'
+  | 'PROFILE_VERIFICATION_REQUIREMENTS_NOT_MET'
   | 'APPLICATION_ALREADY_EXISTS'
   | 'INTERNAL_SERVER_ERROR';
 
@@ -33,6 +34,8 @@ export const ERROR_MESSAGES: Record<BackendErrorCodes, string> = {
   NOT_FOUND: 'El recurso no existe',
   CONFLICT: 'Ya existe un recurso con esos datos',
   VALIDATION_ERROR: 'Verificá los datos ingresados',
+  PROFILE_VERIFICATION_REQUIREMENTS_NOT_MET:
+    'No cumplís los requisitos obligatorios para solicitar la verificación',
   APPLICATION_ALREADY_EXISTS: 'Ya tenés una postulación activa hacia este evento',
   INTERNAL_SERVER_ERROR: 'Error inesperado, intentá de nuevo',
 };
@@ -45,7 +48,8 @@ export function getErrorMessage(code: string, fallback?: string): string {
 export class ApiError extends Error {
   constructor(
     public readonly errorCode: BackendErrorCodes,
-    message?: string
+    message?: string,
+    public readonly details?: unknown
   ) {
     super(getErrorMessage(errorCode, message));
     this.name = 'ApiError';
