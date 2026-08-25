@@ -5,6 +5,7 @@ import type {
   CreateServicioPayload,
   UpdateServicioPayload,
 } from '@/types/contracts/services';
+import type { paths } from '@/types/contracts/api-contracts-types';
 
 // Re-export contract types for consumers
 export type {
@@ -33,12 +34,27 @@ export type PortfolioImage = {
   orden?: number;
 };
 
+export type ServiciosListParams = NonNullable<
+  paths['/api/servicios']['get']['parameters']['query']
+>;
+
+function toQueryString(params?: Record<string, string | number | boolean | undefined>): string {
+  if (!params) return '';
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== '') searchParams.set(key, String(value));
+  });
+  const query = searchParams.toString();
+  return query ? `?${query}` : '';
+}
+
 // --- API Client ---
 
 export const serviciosApi = {
   misServicios: () => apiFetch<{ success: boolean; data: ServicioListItem[] }>('/mis-servicios'),
 
-  list: () => apiFetch<{ success: boolean; data: ServicioListItem[] }>('/servicios'),
+  list: (params?: ServiciosListParams) =>
+    apiFetch<{ success: boolean; data: ServicioListItem[] }>(`/servicios${toQueryString(params)}`),
 
   getById: (id: string) =>
     apiFetch<{ success: boolean; data: ServicioDetalle }>(`/servicios/${id}`),

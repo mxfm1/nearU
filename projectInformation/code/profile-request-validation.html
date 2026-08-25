@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Validar mi perfil - ProVerify</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2a313d",
+                        "on-primary-fixed": "#002115",
+                        "on-secondary-fixed-variant": "#733600",
+                        "surface-tint": "#436556",
+                        "on-tertiary-fixed-variant": "#444746",
+                        "primary-fixed-dim": "#aacfbb",
+                        "primary-fixed": "#c5ebd7",
+                        "surface-dim": "#d3daea",
+                        "surface": "#f9f9ff",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e2e8f8",
+                        "on-primary-fixed-variant": "#2c4d3f",
+                        "secondary": "#974800",
+                        "inverse-on-surface": "#ebf1ff",
+                        "secondary-fixed-dim": "#ffb688",
+                        "surface-container": "#e7eefe",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "primary": "#03271a",
+                        "on-tertiary-container": "#9da09e",
+                        "secondary-container": "#ff9243",
+                        "tertiary-fixed": "#e1e3e1",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f9f9ff",
+                        "primary-container": "#1b3d2f",
+                        "tertiary": "#1e2221",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#aacfbb",
+                        "secondary-fixed": "#ffdbc7",
+                        "on-tertiary-fixed": "#191c1b",
+                        "tertiary-fixed-dim": "#c5c7c5",
+                        "on-background": "#151c27",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f9f9ff",
+                        "outline": "#727974",
+                        "on-secondary-fixed": "#311300",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "outline-variant": "#c1c8c2",
+                        "surface-container-highest": "#dce2f3",
+                        "on-primary-container": "#84a895",
+                        "on-surface": "#151c27",
+                        "on-surface-variant": "#414844",
+                        "tertiary-container": "#343736",
+                        "on-secondary-container": "#6b3100",
+                        "surface-variant": "#dce2f3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "2xl": "48px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "margin": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["14px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-surface text-on-surface h-full font-body-md overflow-hidden relative">
+    <!-- Blurred/Dimmed Background Context (Profile Dashboard) -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-40 blur-sm flex flex-col transition-all duration-300">
+        <!-- Mock TopNav -->
+        <header
+            class="fixed top-0 w-full bg-surface shadow-sm h-16 flex justify-between items-center px-gutter max-w-7xl mx-auto z-10">
+            <div class="font-headline-md text-headline-md font-bold text-primary">ProVerify</div>
+            <nav class="hidden md:flex gap-lg">
+                <span class="text-on-surface-variant cursor-pointer">Dashboard</span>
+                <span class="text-primary border-b-2 border-primary pb-1 cursor-pointer">My Profile</span>
+                <span class="text-on-surface-variant cursor-pointer">Help</span>
+            </nav>
+            <div class="flex gap-md text-on-surface-variant">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="material-symbols-outlined">settings</span>
+            </div>
+        </header>
+        <!-- Mock Content Area -->
+        <main class="flex-1 pt-24 px-gutter max-w-7xl mx-auto w-full flex flex-col gap-xl pb-24">
+            <div class="flex items-center gap-lg">
+                <div class="w-24 h-24 rounded-full bg-surface-container-high border-4 border-surface overflow-hidden">
+                    <img alt="Profile" class="w-full h-full object-cover"
+                        data-alt="A professional headshot of a person looking friendly and confident, suitable for a business profile. The background is a soft, neutral studio setting with even, bright lighting that complements the modern, clean aesthetic of a corporate platform."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWaCPxiF8oJ-ELV_67vwnSIe5TgnMWf_74_Y85p24tVvlbNfGaFQpFt_v7ZSwBYF5BlMRv4B1r0-1Nle0_G_jw_Uuy0z7an4Z43_nZQdFRiaMCE2H0RwdLxFyoqr7OoDQ89OziyiHQrZoDg5muRS9CzMpFlPJy9K1axc0_y3BsBSB8wETNEdG0CQ2N3Llxgwp0E8hNLP9oZGY56fXMuafM9Bgvs46kcnAkZ_nU-6_TvHEE4if9a8H1hQ" />
+                </div>
+                <div>
+                    <h1 class="font-headline-md text-headline-md text-on-surface">Alex Rivera</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Senior Design Consultant</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+                <div class="bg-surface-container-lowest shadow-lg rounded-xl p-md border border-surface-container">
+                    <h3 class="font-label-sm text-label-sm text-on-surface-variant mb-sm">Earnings</h3>
+                    <p class="font-headline-md text-headline-md text-on-surface">$12,450</p>
+                </div>
+                <div class="bg-surface-container-lowest shadow-lg rounded-xl p-md border border-surface-container">
+                    <h3 class="font-label-sm text-label-sm text-on-surface-variant mb-sm">Completion Rate</h3>
+                    <p class="font-headline-md text-headline-md text-on-surface">98%</p>
+                </div>
+                <div class="bg-surface-container-lowest shadow-lg rounded-xl p-md border border-surface-container">
+                    <h3 class="font-label-sm text-label-sm text-on-surface-variant mb-sm">Active Projects</h3>
+                    <p class="font-headline-md text-headline-md text-on-surface">4</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Alert Dialog Overlay -->
+    <div aria-labelledby="dialog-title" aria-modal="true"
+        class="fixed inset-0 z-50 flex items-center justify-center p-md bg-on-background/40 backdrop-blur-sm"
+        role="dialog">
+        <!-- Dialog Container -->
+        <div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.15)] w-full max-w-lg overflow-hidden flex flex-col border border-surface-container"
+            role="document">
+            <!-- Header -->
+            <div class="px-lg pt-lg pb-md border-b border-surface-container">
+                <div class="flex items-center gap-sm mb-xs">
+                    <span class="material-symbols-outlined text-secondary-container"
+                        style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                    <h2 class="font-headline-md text-headline-md text-on-surface" id="dialog-title">Validar mi perfil
+                    </h2>
+                </div>
+                <p class="font-body-md text-body-md text-on-surface-variant">Completa el proceso de validación para
+                    destacar tu perfil y acceder a mejores oportunidades.</p>
+            </div>
+            <!-- Content Body -->
+            <div class="p-lg flex flex-col gap-lg overflow-y-auto max-h-[614px]">
+                <!-- Requirements Section -->
+                <div class="flex flex-col gap-sm">
+                    <h3 class="font-label-sm text-label-sm text-on-surface">Requisitos cumplidos</h3>
+                    <ul class="flex flex-col gap-xs">
+                        <li
+                            class="flex items-center gap-sm bg-surface-container-low p-sm rounded-lg border border-surface-container-high">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <span class="font-body-md text-body-md text-on-surface">Perfil completado al 100%</span>
+                        </li>
+                        <li
+                            class="flex items-center gap-sm bg-surface-container-low p-sm rounded-lg border border-surface-container-high">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <span class="font-body-md text-body-md text-on-surface">Identidad verificada (KYC)</span>
+                        </li>
+                        <li
+                            class="flex items-center gap-sm bg-surface-container-low p-sm rounded-lg border border-surface-container-high">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <span class="font-body-md text-body-md text-on-surface">Primer servicio publicado</span>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Status Banner (Informational) -->
+                <div class="bg-[#FFF9E6] border border-[#E07A2C] rounded-lg p-md flex items-start gap-sm">
+                    <span class="material-symbols-outlined text-[#E07A2C]"
+                        style="font-variation-settings: 'FILL' 1;">info</span>
+                    <p class="font-body-md text-body-md text-[#E07A2C] text-sm">El proceso de validación puede tardar
+                        hasta 48 horas hábiles una vez enviada la solicitud.</p>
+                </div>
+                <!-- Input Section -->
+                <div class="flex flex-col gap-xs">
+                    <label class="font-label-sm text-label-sm text-on-surface" for="admin-message">Mensaje para
+                        administración <span class="text-on-surface-variant font-normal">(Opcional)</span></label>
+                    <textarea
+                        class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-md font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none"
+                        id="admin-message" placeholder="Explica por qué deberíamos validar tu perfil..."
+                        rows="3"></textarea>
+                </div>
+            </div>
+            <!-- Actions Footer -->
+            <div class="px-lg py-md bg-surface border-t border-surface-container flex justify-end gap-md items-center">
+                <button
+                    class="font-label-sm text-label-sm text-primary px-md py-sm rounded-lg hover:bg-surface-container-highest transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+                    type="button">
+                    Cancelar
+                </button>
+                <button
+                    class="font-label-sm text-label-sm bg-primary-container text-on-primary px-lg py-sm rounded-lg shadow-sm hover:opacity-90 active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    type="button">
+                    Enviar Solicitud
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -7,14 +7,14 @@ import { DirtyGuardProvider } from '@/hooks/use-dirty-guard';
 
 const HIDDEN_ROUTE_PREFIXES = ['/auth', '/reset-password', '/verify-email'];
 
-const HIDDEN_ROUTE_EXACT = ['/'];
+const HIDDEN_ROUTE_EXACT = ['/', '/explorar'];
 
 function shouldHideSidebar(pathname: string): boolean {
   if (HIDDEN_ROUTE_EXACT.includes(pathname)) return true;
   return HIDDEN_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
-const SHOW_FOOTER_ROUTES = ['/'];
+const SHOW_FOOTER_ROUTES = ['/', '/explorar', '/descubrir'];
 
 function shouldHideFooter(pathname: string): boolean {
   return !SHOW_FOOTER_ROUTES.includes(pathname);

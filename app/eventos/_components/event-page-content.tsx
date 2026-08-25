@@ -263,7 +263,7 @@ export function EventPageContent({ id }: EventPageContentProps) {
                 label="Vacantes"
                 value={`${evento.requiredCandidates || 1} Cupos`}
               />
-              <MetricCard icon={Send} label="Postulaciones" value="0 Hoy" />
+              {/* <MetricCard icon={Send} label="Postulaciones" value="0 Hoy" /> */}
             </div>
 
             {/* Description Section */}
@@ -385,8 +385,8 @@ export function EventPageContent({ id }: EventPageContentProps) {
                     <span className="text-xs font-semibold uppercase">Proceso de Selección</span>
                   </div>
                   <p className="text-[11px] text-amber-700/80 leading-relaxed">
-                    El equipo evaluará las postulaciones en un plazo de 72 horas hábiles. Las
-                    entrevistas técnicas se realizarán vía videollamada.
+                    El equipo evaluará las postulaciones en un plazo de 72 horas hábiles.
+                    {/* entrevistas técnicas se realizarán vía videollamada. */}
                   </p>
                 </div>
               </div>

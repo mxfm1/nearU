@@ -66,42 +66,92 @@ export type CrearEventoFormValues = z.infer<typeof CrearEventoSchema>;
 // Contact info item
 const ContactInfoItemSchema = z.object({
   type: z.enum(['email', 'telefono', 'whatsapp', 'website', 'instagram', 'facebook', 'twitter']),
-  value: z.string().min(1, 'Debes ingresar al menos un método de contacto'),
+  value: z.string().trim().min(1, 'Debés ingresar el dato de contacto'),
 });
 
+function parseOptionalNumber(value?: string): number | null {
+  if (!value) return null;
+  const parsed = Number(value);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
 // Crear Servicio Schema (alineado con API)
-export const CrearServicioSchema = z.object({
-  title: z
-    .string({ message: 'Debes ingresar un título' })
-    .min(2, 'El título debe tener al menos 2 caracteres')
-    .max(200, 'El título no puede superar los 200 caracteres'),
-  slug: z.string().optional().or(z.literal('')),
-  marca: z
-    .string()
-    .max(200, 'La marca no puede superar los 200 caracteres')
-    .optional()
-    .or(z.literal('')),
-  description: z
-    .string()
-    .max(5000, 'La descripción no puede superar los 5000 caracteres')
-    .optional()
-    .or(z.literal('')),
-  yearsExperience: z.string().optional().or(z.literal('')),
-  priceMin: z.string().optional().or(z.literal('')),
-  priceMax: z.string().optional().or(z.literal('')),
-  availability: z
-    .string()
-    .max(500, 'La disponibilidad no puede superar los 500 caracteres')
-    .optional()
-    .or(z.literal('')),
-  contacts: z.array(ContactInfoItemSchema).optional().default([]),
-  categoryId: z.string().optional().or(z.literal('')),
-  locationId: z.string().optional().or(z.literal('')),
-  bannerUrl: z.string().optional().or(z.literal('')),
-  thumbnailUrl: z.string().optional().or(z.literal('')),
-  serviceImages: z.array(z.string()).optional().default([]),
-  status: z.enum(['draft', 'published']).default('draft'),
-});
+export const CrearServicioSchema = z
+  .object({
+    title: z
+      .string({ message: 'Debés ingresar un título' })
+      .trim()
+      .min(2, 'El título debe tener al menos 2 caracteres')
+      .max(200, 'El título no puede superar los 200 caracteres'),
+    marca: z
+      .string()
+      .max(200, 'La marca no puede superar los 200 caracteres')
+      .optional()
+      .or(z.literal('')),
+    description: z
+      .string()
+      .max(5000, 'La descripción no puede superar los 5000 caracteres')
+      .optional()
+      .or(z.literal('')),
+    yearsExperience: z.string().optional().or(z.literal('')),
+    priceMin: z.string().optional().or(z.literal('')),
+    priceMax: z.string().optional().or(z.literal('')),
+    availability: z.enum(['immediate', 'not_immediate']).optional().or(z.literal('')),
+    availabilityDetails: z
+      .string()
+      .max(500, 'El detalle de disponibilidad no puede superar los 500 caracteres')
+      .optional()
+      .or(z.literal('')),
+    modality: z.enum(['in_person', 'online', 'hybrid']).optional().or(z.literal('')),
+    contacts: z.array(ContactInfoItemSchema).min(1, 'Debés agregar al menos un contacto'),
+    categoryId: z.string().optional().or(z.literal('')),
+    locationId: z.string().optional().or(z.literal('')),
+    bannerUrl: z.string().optional().or(z.literal('')),
+    logoUrl: z.string().optional().or(z.literal('')),
+    thumbnailUrl: z.string().optional().or(z.literal('')),
+    serviceImages: z.array(z.string()).optional().default([]),
+    status: z.enum(['draft', 'published', 'paused', 'archived']).default('draft'),
+  })
+  .superRefine((data, ctx) => {
+    const priceMin = parseOptionalNumber(data.priceMin);
+    const priceMax = parseOptionalNumber(data.priceMax);
+    const yearsExperience = parseOptionalNumber(data.yearsExperience);
+
+    if (
+      data.yearsExperience &&
+      (yearsExperience === null || !Number.isInteger(yearsExperience) || yearsExperience < 0)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['yearsExperience'],
+        message: 'Ingresá una cantidad de años válida',
+      });
+    }
+
+    if (data.priceMin && (priceMin === null || priceMin < 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['priceMin'],
+        message: 'Ingresá un precio mínimo válido',
+      });
+    }
+
+    if (data.priceMax && (priceMax === null || priceMax < 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['priceMax'],
+        message: 'Ingresá un precio máximo válido',
+      });
+    }
+
+    if (priceMin !== null && priceMax !== null && priceMax < priceMin) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['priceMax'],
+        message: 'El precio máximo debe ser mayor o igual al mínimo',
+      });
+    }
+  });
 
 export type CrearServicioFormValues = z.infer<typeof CrearServicioSchema>;
 

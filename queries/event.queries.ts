@@ -1,10 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
-import { eventosApi } from '@/lib/eventos-api';
+import { eventosApi, type EventosListParams } from '@/lib/eventos-api';
 
-export const EventsQueryOptions = () =>
+export const EventsQueryOptions = (params?: EventosListParams) =>
   queryOptions({
-    queryKey: ['eventos'],
-    queryFn: eventosApi.list,
+    queryKey: ['eventos', params],
+    queryFn: () => eventosApi.list(params),
     select: (res) => res?.data,
   });
 

@@ -7,8 +7,10 @@ import { authApi } from '@/lib/api-client';
 import { useAuth } from '@/hooks';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function SecuritySection() {
+  const queryClient = useQueryClient();
   const [buttonCooldown, setButtonCooldown] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -22,6 +24,8 @@ export function SecuritySection() {
     try {
       if (!user?.email) throw new Error('No se encontró tu correo electrónico');
       await authApi.forgotPassword(user.email);
+      queryClient.invalidateQueries({ queryKey: ['notificaciones'] });
+      queryClient.invalidateQueries({ queryKey: ['notificaciones', 'unread-count'] });
       toast.success('Se ha enviado un enlace a tu correo electrónico.');
       setIsEmailSent(true);
       setButtonCooldown(60);

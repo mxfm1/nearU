@@ -9,17 +9,15 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 
 const publicLinks = [
-  { label: 'Explorar', href: '/descubrir' },
-  { label: 'Proveedores', href: '/search' },
-  { label: 'Eventos', href: '/search?type=eventos' },
-  { label: 'Recursos', href: '/recursos' },
-  { label: 'Sobre NearU', href: '/about' },
+  { label: 'Explorar', href: '/explorar' },
+  { label: 'Quiénes somos', href: '/quienes-somos' },
 ];
 
 const privateLinks = [
   { label: 'Descubrir', href: '/descubrir' },
   { label: 'Crear', href: '/crear' },
   { label: 'Mi perfil', href: '/user/perfil' },
+  { label: 'Solicitudes', href: '/solicitudes' },
   { label: 'Bandeja', href: '/user/inbox' },
 ];
 

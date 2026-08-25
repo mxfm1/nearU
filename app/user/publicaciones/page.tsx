@@ -10,9 +10,13 @@ import { Card } from '@/components/ui/card';
 import { ServiceStatusBadge } from '@/components/ui/service-status-badge';
 import { useAuth } from '@/hooks/use-auth';
 
+function getEventoStatusSlug(evento: EventoResumen): string {
+  return evento.status?.slug ?? 'draft';
+}
+
 function ServicioCard({ servicio }: { servicio: ServicioResumen }) {
   return (
-    <Link href={`/user/publicaciones/${servicio.id}`}>
+    <Link href={`/user/publicaciones/servicio/${servicio.id}`}>
       <Card className="group flex flex-col sm:flex-row gap-4 p-4 hover:shadow-md transition-all duration-200 cursor-pointer rounded-lg">
         <div className="w-full sm:w-40 h-32 sm:h-auto sm:self-stretch overflow-hidden bg-muted flex-shrink-0">
           {servicio.thumbnailUrl ? (
@@ -86,10 +90,7 @@ function EventoCard({ evento }: { evento: EventoResumen }) {
           <div className="space-y-1">
             <div className="flex items-start justify-between gap-2">
               <h3 className="font-semibold text-foreground truncate">{evento.title}</h3>
-              <ServiceStatusBadge
-                status={(evento as any).status?.slug ?? (evento as any).eventStatus ?? 'draft'}
-                className="flex-shrink-0"
-              />
+              <ServiceStatusBadge status={getEventoStatusSlug(evento)} className="flex-shrink-0" />
             </div>
             <p className="text-sm text-muted-foreground line-clamp-2">{evento.description}</p>
           </div>

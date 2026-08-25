@@ -5,6 +5,7 @@ import type {
   CreateEventoPayload,
   UpdateEventoPayload,
 } from '@/types/contracts/event';
+import type { paths } from '@/types/contracts/api-contracts-types';
 
 export type {
   EventoListItem as EventoResumen,
@@ -13,8 +14,21 @@ export type {
   UpdateEventoPayload,
 };
 
+export type EventosListParams = NonNullable<paths['/api/eventos']['get']['parameters']['query']>;
+
+function toQueryString(params?: Record<string, string | number | boolean | undefined>): string {
+  if (!params) return '';
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== '') searchParams.set(key, String(value));
+  });
+  const query = searchParams.toString();
+  return query ? `?${query}` : '';
+}
+
 export const eventosApi = {
-  list: () => apiFetch<{ success: boolean; data: EventoListItem[] }>('/eventos'),
+  list: (params?: EventosListParams) =>
+    apiFetch<{ success: boolean; data: EventoListItem[] }>(`/eventos${toQueryString(params)}`),
 
   getById: (id: string) => apiFetch<{ success: boolean; data: EventoDetalle }>(`/eventos/${id}`),
 

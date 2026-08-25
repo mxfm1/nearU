@@ -11,7 +11,7 @@ export function HomeSearchBar() {
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+      router.push(`/explorar?q=${encodeURIComponent(query.trim())}`);
     }
   }
 

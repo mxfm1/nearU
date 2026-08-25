@@ -7,6 +7,10 @@ type ProfileResponse = NonNullable<
   paths['/api/profiles/{userId}']['get']['responses']['200']['content']['application/json']['data']
 >;
 
+type ProfilesResponse = NonNullable<
+  paths['/api/profiles']['get']['responses']['200']['content']['application/json']['data']
+>;
+
 type UpdateProfileResponse = NonNullable<
   paths['/api/profiles/me']['patch']['responses']['200']['content']['application/json']['data']
 >;
@@ -14,6 +18,8 @@ type UpdateProfileResponse = NonNullable<
 // --- Re-export ---
 
 export type Profile = ProfileResponse;
+export type ProfileListItem = ProfilesResponse[number];
+export type ProfilesListParams = NonNullable<paths['/api/profiles']['get']['parameters']['query']>;
 
 export type SocialLink = NonNullable<ProfileResponse['socialLinks']>[number];
 
@@ -21,9 +27,22 @@ export type UpdateProfileData = NonNullable<
   paths['/api/profiles/me']['patch']['requestBody']
 >['content']['application/json'];
 
+function toQueryString(params?: Record<string, string | number | boolean | undefined>): string {
+  if (!params) return '';
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== '') searchParams.set(key, String(value));
+  });
+  const query = searchParams.toString();
+  return query ? `?${query}` : '';
+}
+
 // --- API Functions ---
 
 export const profileApi = {
+  list: (params?: ProfilesListParams) =>
+    apiFetch<{ success: boolean; data: ProfileListItem[] }>(`/profiles${toQueryString(params)}`),
+
   getByUserId: (userId: string) =>
     apiFetch<{ success: boolean; data: Profile }>(`/profiles/${userId}`),
 

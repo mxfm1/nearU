@@ -63,7 +63,7 @@ export function HomeCta() {
                   asChild
                   className="bg-white/10 border-2 border-white text-white hover:bg-white/20 font-semibold px-6 py-3 rounded-lg transition-colors w-full sm:w-auto"
                 >
-                  <Link href="/search">Explorar proveedores</Link>
+                  <Link href="/explorar?scope=services">Explorar servicios</Link>
                 </Button>
               </motion.div>
             </motion.div>
